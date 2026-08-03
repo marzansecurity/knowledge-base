@@ -1,0 +1,2079 @@
+[
+  {
+    "id": "213858000000636009",
+    "titel": "Telefonische bestelling",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "orderverwerking",
+    "nieuweCategorieNaam": "Orderverwerking",
+    "viaUitzondering": false,
+    "tags": [],
+    "signalen": [
+      "mogelijk duplicaat"
+    ],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000000636114",
+    "titel": "Telefonische bestelling",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "orderverwerking",
+    "nieuweCategorieNaam": "Orderverwerking",
+    "viaUitzondering": false,
+    "tags": [],
+    "signalen": [
+      "mogelijk duplicaat"
+    ],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000000636156",
+    "titel": "Verkeerd besteld, afleveradres, product, aantal, huisnr, etc.",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "orderverwerking",
+    "nieuweCategorieNaam": "Orderverwerking",
+    "viaUitzondering": false,
+    "tags": [
+      "magento",
+      "pon",
+      "dropshipment"
+    ],
+    "signalen": [
+      "mogelijk duplicaat"
+    ],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001030733",
+    "titel": "Retourneren Breda Marzan Warehouse",
+    "zohoCategorie": "Retourneren",
+    "nieuweCategorie": "retour-klachten",
+    "nieuweCategorieNaam": "Retour & Klachten",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001030930",
+    "titel": "Zending Retour adres niet juist",
+    "zohoCategorie": "Retourneren",
+    "nieuweCategorie": "retour-klachten",
+    "nieuweCategorieNaam": "Retour & Klachten",
+    "viaUitzondering": false,
+    "tags": [
+      "magento"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001030978",
+    "titel": "Retourneren De Raat Zoetermeer",
+    "zohoCategorie": "Retourneren",
+    "nieuweCategorie": "retour-klachten",
+    "nieuweCategorieNaam": "Retour & Klachten",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001040001",
+    "titel": "Telefonische bestelling",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "orderverwerking",
+    "nieuweCategorieNaam": "Orderverwerking",
+    "viaUitzondering": false,
+    "tags": [],
+    "signalen": [
+      "mogelijk duplicaat",
+      "was draft in Zoho"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001040035",
+    "titel": "Verkeerd besteld, afleveradres, product, aantal, huisnr, etc.",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "orderverwerking",
+    "nieuweCategorieNaam": "Orderverwerking",
+    "viaUitzondering": false,
+    "tags": [
+      "magento",
+      "pon",
+      "dropshipment"
+    ],
+    "signalen": [
+      "mogelijk duplicaat",
+      "was draft in Zoho"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001040069",
+    "titel": "Kan ik korting krijgen?",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "verkoop-productadvies",
+    "nieuweCategorieNaam": "Verkoop & Productadvies",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [
+      "was draft in Zoho"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001040103",
+    "titel": "Wat zijn de verzendkosten?",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "verzending-magazijnen",
+    "nieuweCategorieNaam": "Verzending & Magazijnen",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001040137",
+    "titel": "Ik wil een kluis anoniem aankopen, kan dat?",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "verkoop-productadvies",
+    "nieuweCategorieNaam": "Verkoop & Productadvies",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [
+      "was draft in Zoho"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001040171",
+    "titel": "Op rekening betalen bedrijven en condities (betaaltermijn)",
+    "zohoCategorie": "Betalen",
+    "nieuweCategorie": "betalen-administratie",
+    "nieuweCategorieNaam": "Betalen & Administratie",
+    "viaUitzondering": false,
+    "tags": [
+      "b2b",
+      "kredietcheck"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001040205",
+    "titel": "Betaalopties backend Magento",
+    "zohoCategorie": "Betalen",
+    "nieuweCategorie": "betalen-administratie",
+    "nieuweCategorieNaam": "Betalen & Administratie",
+    "viaUitzondering": false,
+    "tags": [
+      "magento"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001040239",
+    "titel": "Levertijden & levering op specifieke dag",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "verzending-magazijnen",
+    "nieuweCategorieNaam": "Verzending & Magazijnen",
+    "viaUitzondering": true,
+    "tags": [
+      "installatie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001040273",
+    "titel": "Waar blijft mijn bestelling / service?",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "verzending-magazijnen",
+    "nieuweCategorieNaam": "Verzending & Magazijnen",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001040307",
+    "titel": "Is zaterdag levering mogelijk?",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "verzending-magazijnen",
+    "nieuweCategorieNaam": "Verzending & Magazijnen",
+    "viaUitzondering": true,
+    "tags": [
+      "installatie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001040341",
+    "titel": "Welke service mag ik verwachten bij aflevering van een kluis?",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "installatie-services",
+    "nieuweCategorieNaam": "Installatie & Services",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001040375",
+    "titel": "Tracking link Transmission",
+    "zohoCategorie": "Verzending",
+    "nieuweCategorie": "verzending-magazijnen",
+    "nieuweCategorieNaam": "Verzending & Magazijnen",
+    "viaUitzondering": true,
+    "tags": [
+      "magento"
+    ],
+    "signalen": [
+      "was draft in Zoho"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001040409",
+    "titel": "Kluis afhalen",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "verzending-magazijnen",
+    "nieuweCategorieNaam": "Verzending & Magazijnen",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001040443",
+    "titel": "Installatie van kluizen, brandkasten",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "installatie-services",
+    "nieuweCategorieNaam": "Installatie & Services",
+    "viaUitzondering": true,
+    "tags": [
+      "installatie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001040477",
+    "titel": "6% regeling België (kluis aanrekenen met 6% voor particulieren)",
+    "zohoCategorie": "Betalen",
+    "nieuweCategorie": "betalen-administratie",
+    "nieuweCategorieNaam": "Betalen & Administratie",
+    "viaUitzondering": false,
+    "tags": [
+      "belgie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001040511",
+    "titel": "Retourneren van een bestelling",
+    "zohoCategorie": "Retourneren",
+    "nieuweCategorie": "retour-klachten",
+    "nieuweCategorieNaam": "Retour & Klachten",
+    "viaUitzondering": false,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001040545",
+    "titel": "Bestelling wijzigen of annuleren",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "orderverwerking",
+    "nieuweCategorieNaam": "Orderverwerking",
+    "viaUitzondering": false,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001040579",
+    "titel": "Vervangen/retourneren Puck",
+    "zohoCategorie": "Administratie",
+    "nieuweCategorie": "retour-klachten",
+    "nieuweCategorieNaam": "Retour & Klachten",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001040613",
+    "titel": "Wat is de garantietermijn?",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "verkoop-productadvies",
+    "nieuweCategorieNaam": "Verkoop & Productadvies",
+    "viaUitzondering": true,
+    "tags": [
+      "b2b"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001040647",
+    "titel": "Defect aanmelden",
+    "zohoCategorie": "Schade / Defect",
+    "nieuweCategorie": "retour-klachten",
+    "nieuweCategorieNaam": "Retour & Klachten",
+    "viaUitzondering": false,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001040681",
+    "titel": "Product beschadigd bij levering",
+    "zohoCategorie": "Schade / Defect",
+    "nieuweCategorie": "retour-klachten",
+    "nieuweCategorieNaam": "Retour & Klachten",
+    "viaUitzondering": false,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001040715",
+    "titel": "De onderkant van mijn kluis is beschadigd, is dat normaal?",
+    "zohoCategorie": "Schade / Defect",
+    "nieuweCategorie": "verkoop-productadvies",
+    "nieuweCategorieNaam": "Verkoop & Productadvies",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001040749",
+    "titel": "Ruilprogramma Puck Keysafe",
+    "zohoCategorie": "Administratie",
+    "nieuweCategorie": "retour-klachten",
+    "nieuweCategorieNaam": "Retour & Klachten",
+    "viaUitzondering": true,
+    "tags": [
+      "sleutels"
+    ],
+    "signalen": [
+      "was draft in Zoho"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001040783",
+    "titel": "Mijn kluis gaat niet open - klant",
+    "zohoCategorie": "Administratie",
+    "nieuweCategorie": "kluisproblemen",
+    "nieuweCategorieNaam": "Kluisproblemen",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [
+      "was draft in Zoho"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001040817",
+    "titel": "Kluis met elektronisch codeslot gaat niet open - gebruikersfout of batterijprobleem",
+    "zohoCategorie": "Kluis niet open / dicht",
+    "nieuweCategorie": "kluisproblemen",
+    "nieuweCategorieNaam": "Kluisproblemen",
+    "viaUitzondering": false,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001040851",
+    "titel": "Puck sleutelkluis gaat niet meer open, er zit geen beweging meer in. Wat nu?",
+    "zohoCategorie": "Kluis niet open / dicht",
+    "nieuweCategorie": "kluisproblemen",
+    "nieuweCategorieNaam": "Kluisproblemen",
+    "viaUitzondering": false,
+    "tags": [
+      "sleutels"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001040885",
+    "titel": "Mijn kluis gaat niet open - GEEN klant",
+    "zohoCategorie": "Administratie",
+    "nieuweCategorie": "kluisproblemen",
+    "nieuweCategorieNaam": "Kluisproblemen",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [
+      "was draft in Zoho"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001040919",
+    "titel": "Verdere opvolging After Sales Support, kluis gaat niet open, e.d.",
+    "zohoCategorie": "Administratie",
+    "nieuweCategorie": "kluisproblemen",
+    "nieuweCategorieNaam": "Kluisproblemen",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [
+      "was draft in Zoho"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001040953",
+    "titel": "Sleutels bijbestellen, bijmaken, dupliceren",
+    "zohoCategorie": "Kluis niet open / dicht",
+    "nieuweCategorie": "kluisproblemen",
+    "nieuweCategorieNaam": "Kluisproblemen",
+    "viaUitzondering": true,
+    "tags": [
+      "sleutels"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001040987",
+    "titel": "Procedure koppelen Klant SafetyFirst Brandbeveiliging Pro",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "b2b-accounts",
+    "nieuweCategorieNaam": "B2B Accounts",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001041021",
+    "titel": "Factuur (opnieuw) doorsturen naar klant per email",
+    "zohoCategorie": "Administratie",
+    "nieuweCategorie": "betalen-administratie",
+    "nieuweCategorieNaam": "Betalen & Administratie",
+    "viaUitzondering": true,
+    "tags": [
+      "magento"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001041055",
+    "titel": "Factuurgegevens aanpassen",
+    "zohoCategorie": "Administratie",
+    "nieuweCategorie": "betalen-administratie",
+    "nieuweCategorieNaam": "Betalen & Administratie",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001041089",
+    "titel": "Verkeerd emailadres opgegeven",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "orderverwerking",
+    "nieuweCategorieNaam": "Orderverwerking",
+    "viaUitzondering": false,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001041123",
+    "titel": "Uitvragen, welke vragen stel ik?",
+    "zohoCategorie": "Advies",
+    "nieuweCategorie": "verkoop-productadvies",
+    "nieuweCategorieNaam": "Verkoop & Productadvies",
+    "viaUitzondering": false,
+    "tags": [
+      "sleutels"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001041157",
+    "titel": "Smelt het elektronisch codeslot van een (brandwerende) kluis in een brand?",
+    "zohoCategorie": "Advies",
+    "nieuweCategorie": "verkoop-productadvies",
+    "nieuweCategorieNaam": "Verkoop & Productadvies",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001041225",
+    "titel": "Uitvragen sleutelkast, sleutelkluis, sleutelmanagement",
+    "zohoCategorie": "Advies",
+    "nieuweCategorie": "verkoop-productadvies",
+    "nieuweCategorieNaam": "Verkoop & Productadvies",
+    "viaUitzondering": false,
+    "tags": [
+      "sleutels"
+    ],
+    "signalen": [
+      "was draft in Zoho"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001041259",
+    "titel": "Inwerkprogramma Nieuwe Medewerker",
+    "zohoCategorie": "Introductie nieuwe agents",
+    "nieuweCategorie": "start-hier",
+    "nieuweCategorieNaam": "Start hier",
+    "viaUitzondering": false,
+    "tags": [
+      "start-hier"
+    ],
+    "signalen": [
+      "was draft in Zoho"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001041293",
+    "titel": "Ticket onderwerpen",
+    "zohoCategorie": "Introductie nieuwe agents",
+    "nieuweCategorie": "start-hier",
+    "nieuweCategorieNaam": "Start hier",
+    "viaUitzondering": true,
+    "tags": [
+      "escalatie-verplicht"
+    ],
+    "signalen": [
+      "was draft in Zoho"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001041327",
+    "titel": "Software en systemen",
+    "zohoCategorie": "Introductie nieuwe agents",
+    "nieuweCategorie": "start-hier",
+    "nieuweCategorieNaam": "Start hier",
+    "viaUitzondering": false,
+    "tags": [
+      "start-hier"
+    ],
+    "signalen": [
+      "noemt Freshdesk"
+    ],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001041361",
+    "titel": "Orderstatussen & labels in Magento — overzicht voor nieuwe medewerkers",
+    "zohoCategorie": "Introductie nieuwe agents",
+    "nieuweCategorie": "orderverwerking",
+    "nieuweCategorieNaam": "Orderverwerking",
+    "viaUitzondering": true,
+    "tags": [
+      "magento",
+      "start-hier"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001041395",
+    "titel": "Zelf doen, zelf ervaren, test product bestellen",
+    "zohoCategorie": "Introductie nieuwe agents",
+    "nieuweCategorie": "start-hier",
+    "nieuweCategorieNaam": "Start hier",
+    "viaUitzondering": false,
+    "tags": [
+      "nederland",
+      "start-hier"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001041429",
+    "titel": "Ticket en klant aanmaken in Freshdesk",
+    "zohoCategorie": "Introductie nieuwe agents",
+    "nieuweCategorie": "start-hier",
+    "nieuweCategorieNaam": "Start hier",
+    "viaUitzondering": false,
+    "tags": [],
+    "signalen": [
+      "noemt Freshdesk",
+      "was draft in Zoho"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001041463",
+    "titel": "Claim indienen bij e-warehouse",
+    "zohoCategorie": "Introductie nieuwe agents",
+    "nieuweCategorie": "verzending-magazijnen",
+    "nieuweCategorieNaam": "Verzending & Magazijnen",
+    "viaUitzondering": true,
+    "tags": [
+      "pon"
+    ],
+    "signalen": [
+      "was draft in Zoho"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001041497",
+    "titel": "Screencasts Magento",
+    "zohoCategorie": "Introductie nieuwe agents",
+    "nieuweCategorie": "start-hier",
+    "nieuweCategorieNaam": "Start hier",
+    "viaUitzondering": false,
+    "tags": [
+      "magento",
+      "start-hier"
+    ],
+    "signalen": [
+      "noemt Freshdesk"
+    ],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001041565",
+    "titel": "Opvolging openstaande bestellingen",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "orderverwerking",
+    "nieuweCategorieNaam": "Orderverwerking",
+    "viaUitzondering": false,
+    "tags": [
+      "pon",
+      "dropshipment",
+      "installatie"
+    ],
+    "signalen": [
+      "was draft in Zoho"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001041599",
+    "titel": "Opvolging installatie kluizen",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "installatie-services",
+    "nieuweCategorieNaam": "Installatie & Services",
+    "viaUitzondering": true,
+    "tags": [
+      "installatie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001041633",
+    "titel": "Inboeken verzending Magento (track&trace, POD, e.d.)",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "verzending-magazijnen",
+    "nieuweCategorieNaam": "Verzending & Magazijnen",
+    "viaUitzondering": true,
+    "tags": [
+      "magento"
+    ],
+    "signalen": [
+      "Google Drive-link",
+      "was draft in Zoho"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001041667",
+    "titel": "Overzicht merken toeleveranciers",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "toeleveranciers-partners",
+    "nieuweCategorieNaam": "Toeleveranciers & Partners",
+    "viaUitzondering": true,
+    "tags": [
+      "magento"
+    ],
+    "signalen": [
+      "Google Drive-link",
+      "was draft in Zoho"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001041701",
+    "titel": "Klant email sturen vanuit bestelling, factuur, verzending of creditfactuur in webshops@marzansecurity.com",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "orderverwerking",
+    "nieuweCategorieNaam": "Orderverwerking",
+    "viaUitzondering": false,
+    "tags": [],
+    "signalen": [
+      "Google Drive-link",
+      "was draft in Zoho"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001041735",
+    "titel": "Efulfilment / e-warehouse",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "verzending-magazijnen",
+    "nieuweCategorieNaam": "Verzending & Magazijnen",
+    "viaUitzondering": true,
+    "tags": [
+      "pon"
+    ],
+    "signalen": [
+      "was draft in Zoho"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001041769",
+    "titel": "Emailen naar klant vanuit Freshdesk",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "start-hier",
+    "nieuweCategorieNaam": "Start hier",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [
+      "noemt Freshdesk",
+      "Google Drive-link",
+      "was draft in Zoho"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001041803",
+    "titel": "Opvolging aanvraag afvoer of verhuis kluis",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "installatie-services",
+    "nieuweCategorieNaam": "Installatie & Services",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [
+      "was draft in Zoho",
+      "niet gewijzigd sinds 2023"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001041837",
+    "titel": "Afhandelen retour",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "retour-klachten",
+    "nieuweCategorieNaam": "Retour & Klachten",
+    "viaUitzondering": true,
+    "tags": [
+      "pon"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001041905",
+    "titel": "Website bewerken",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "orderverwerking",
+    "nieuweCategorieNaam": "Orderverwerking",
+    "viaUitzondering": false,
+    "tags": [],
+    "signalen": [
+      "Google Drive-link",
+      "was draft in Zoho",
+      "niet gewijzigd sinds 2024"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001041939",
+    "titel": "Bestelling / inkooporder invoeren in Magento",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "orderverwerking",
+    "nieuweCategorieNaam": "Orderverwerking",
+    "viaUitzondering": false,
+    "tags": [
+      "magento"
+    ],
+    "signalen": [
+      "Google Drive-link"
+    ],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001042075",
+    "titel": "Orderverwerking kluis openen, inkoopdracht verstrekken aan toeleverancier",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "kluisproblemen",
+    "nieuweCategorieNaam": "Kluisproblemen",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [
+      "Google Drive-link"
+    ],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001042143",
+    "titel": "Werkroutine Customer Service",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "start-hier",
+    "nieuweCategorieNaam": "Start hier",
+    "viaUitzondering": true,
+    "tags": [
+      "magento",
+      "start-hier"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001042177",
+    "titel": "HS code Harmonized Statistical code",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "betalen-administratie",
+    "nieuweCategorieNaam": "Betalen & Administratie",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001042211",
+    "titel": "Werkinstructie orderproces New York Pizza NIEUWE filialen",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "b2b-accounts",
+    "nieuweCategorieNaam": "B2B Accounts",
+    "viaUitzondering": true,
+    "tags": [
+      "b2b"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001042245",
+    "titel": "Producten uitfaseren (maar actief houden)",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "orderverwerking",
+    "nieuweCategorieNaam": "Orderverwerking",
+    "viaUitzondering": false,
+    "tags": [
+      "uk"
+    ],
+    "signalen": [
+      "was draft in Zoho",
+      "niet gewijzigd sinds 2023"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001042279",
+    "titel": "Voorraad Breda toevoegen",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "verzending-magazijnen",
+    "nieuweCategorieNaam": "Verzending & Magazijnen",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [
+      "was draft in Zoho"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001042313",
+    "titel": "Order export (indien mail niet in orderbox komt)",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "orderverwerking",
+    "nieuweCategorieNaam": "Orderverwerking",
+    "viaUitzondering": false,
+    "tags": [
+      "magento",
+      "installatie"
+    ],
+    "signalen": [
+      "was draft in Zoho",
+      "niet gewijzigd sinds 2023"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001042347",
+    "titel": "Verzendmethode aanpassen in Magento",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "verzending-magazijnen",
+    "nieuweCategorieNaam": "Verzending & Magazijnen",
+    "viaUitzondering": true,
+    "tags": [
+      "magento",
+      "installatie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001042381",
+    "titel": "Formulier problemen oplossen",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "orderverwerking",
+    "nieuweCategorieNaam": "Orderverwerking",
+    "viaUitzondering": false,
+    "tags": [
+      "magento"
+    ],
+    "signalen": [
+      "was draft in Zoho",
+      "niet gewijzigd sinds 2023"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001042415",
+    "titel": "Klachtprocedure Masterlock",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "retour-klachten",
+    "nieuweCategorieNaam": "Retour & Klachten",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [
+      "was draft in Zoho",
+      "niet gewijzigd sinds 2023"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001042483",
+    "titel": "Werkinstructie POD inboeken New York Pizza NIEUWE filialen",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "b2b-accounts",
+    "nieuweCategorieNaam": "B2B Accounts",
+    "viaUitzondering": true,
+    "tags": [
+      "magento",
+      "b2b"
+    ],
+    "signalen": [
+      "mogelijk duplicaat"
+    ],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001042517",
+    "titel": "City Clinnics Key Account",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "b2b-accounts",
+    "nieuweCategorieNaam": "B2B Accounts",
+    "viaUitzondering": true,
+    "tags": [
+      "installatie",
+      "b2b"
+    ],
+    "signalen": [
+      "was draft in Zoho"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001042551",
+    "titel": "Klant informeren levertijd (proactief)",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "verzending-magazijnen",
+    "nieuweCategorieNaam": "Verzending & Magazijnen",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [
+      "was draft in Zoho",
+      "niet gewijzigd sinds 2023"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001042585",
+    "titel": "Brandbeveiliging Pro jaarlijkse licentie factureren",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "betalen-administratie",
+    "nieuweCategorieNaam": "Betalen & Administratie",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [
+      "was draft in Zoho",
+      "niet gewijzigd sinds 2024"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001042619",
+    "titel": "Email account Kniggendorf Portal naar klant",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "toeleveranciers-partners",
+    "nieuweCategorieNaam": "Toeleveranciers & Partners",
+    "viaUitzondering": true,
+    "tags": [
+      "sleutels"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001042653",
+    "titel": "PON procedures",
+    "zohoCategorie": "Toeleveranciers",
+    "nieuweCategorie": "verzending-magazijnen",
+    "nieuweCategorieNaam": "Verzending & Magazijnen",
+    "viaUitzondering": true,
+    "tags": [
+      "pon"
+    ],
+    "signalen": [
+      "mogelijk duplicaat"
+    ],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001042687",
+    "titel": "Wat te doen bij aanvraag afvoer of verhuis kluis?",
+    "zohoCategorie": "Diversen",
+    "nieuweCategorie": "installatie-services",
+    "nieuweCategorieNaam": "Installatie & Services",
+    "viaUitzondering": true,
+    "tags": [
+      "belgie"
+    ],
+    "signalen": [
+      "was draft in Zoho",
+      "niet gewijzigd sinds 2024"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001042721",
+    "titel": "Verkopen via Bol.com",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "toeleveranciers-partners",
+    "nieuweCategorieNaam": "Toeleveranciers & Partners",
+    "viaUitzondering": true,
+    "tags": [
+      "sleutels",
+      "belgie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001042823",
+    "titel": "BTW verlegd, intercommanautaire levering",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "betalen-administratie",
+    "nieuweCategorieNaam": "Betalen & Administratie",
+    "viaUitzondering": true,
+    "tags": [
+      "b2b",
+      "belgie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001042857",
+    "titel": "Werkinstructie orderproces Fletcher",
+    "zohoCategorie": "Instructies B2B accounts",
+    "nieuweCategorie": "b2b-accounts",
+    "nieuweCategorieNaam": "B2B Accounts",
+    "viaUitzondering": false,
+    "tags": [
+      "b2b"
+    ],
+    "signalen": [
+      "mogelijk duplicaat"
+    ],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001042891",
+    "titel": "EORI Marzan Security BV: NL857696531",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "betalen-administratie",
+    "nieuweCategorieNaam": "Betalen & Administratie",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [
+      "mogelijk duplicaat",
+      "nauwelijks inhoud"
+    ],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001042925",
+    "titel": "Kniggendorf API",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "toeleveranciers-partners",
+    "nieuweCategorieNaam": "Toeleveranciers & Partners",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001042959",
+    "titel": "Nieuwe verankeraar VGW",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "installatie-services",
+    "nieuweCategorieNaam": "Installatie & Services",
+    "viaUitzondering": true,
+    "tags": [
+      "installatie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001042993",
+    "titel": "XL100: EM1520 slot. te vaak foutieve code",
+    "zohoCategorie": "Kluis niet open / dicht",
+    "nieuweCategorie": "kluisproblemen",
+    "nieuweCategorieNaam": "Kluisproblemen",
+    "viaUitzondering": false,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001062090",
+    "titel": "Wit poeder, brandwerende box",
+    "zohoCategorie": "Schade / Defect",
+    "nieuweCategorie": "verkoop-productadvies",
+    "nieuweCategorieNaam": "Verkoop & Productadvies",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001062146",
+    "titel": "Kluis openen doorzetten naar S2L",
+    "zohoCategorie": "Kluis niet open / dicht",
+    "nieuweCategorie": "kluisproblemen",
+    "nieuweCategorieNaam": "Kluisproblemen",
+    "viaUitzondering": false,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001101663",
+    "titel": "Certificaat van kluis voor o.a. verzekering, kopie certificaat",
+    "zohoCategorie": "Administratie",
+    "nieuweCategorie": "verkoop-productadvies",
+    "nieuweCategorieNaam": "Verkoop & Productadvies",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001213828",
+    "titel": "Werkinstructie POD inboeken New York Pizza NIEUWE filialen",
+    "zohoCategorie": "Instructies B2B accounts",
+    "nieuweCategorie": "b2b-accounts",
+    "nieuweCategorieNaam": "B2B Accounts",
+    "viaUitzondering": true,
+    "tags": [
+      "magento",
+      "b2b"
+    ],
+    "signalen": [
+      "mogelijk duplicaat"
+    ],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001505938",
+    "titel": "Procedure masterresetcode Phoenix Titan / SafetyFirst FireDoc",
+    "zohoCategorie": "Kluis niet open / dicht",
+    "nieuweCategorie": "kluisproblemen",
+    "nieuweCategorieNaam": "Kluisproblemen",
+    "viaUitzondering": false,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001656271",
+    "titel": "Bij ons aangekocht? Navragen order- of factuurnummer",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "orderverwerking",
+    "nieuweCategorieNaam": "Orderverwerking",
+    "viaUitzondering": false,
+    "tags": [],
+    "signalen": [
+      "mogelijk duplicaat"
+    ],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001656323",
+    "titel": "MasterLock 5426 instellen",
+    "zohoCategorie": "Kluis niet open / dicht",
+    "nieuweCategorie": "kluisproblemen",
+    "nieuweCategorieNaam": "Kluisproblemen",
+    "viaUitzondering": false,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001748336",
+    "titel": "LIPS OUDE Black Box OPEN",
+    "zohoCategorie": "Kluis niet open / dicht",
+    "nieuweCategorie": "kluisproblemen",
+    "nieuweCategorieNaam": "Kluisproblemen",
+    "viaUitzondering": false,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001748394",
+    "titel": "LIPS OUDE Black Box DICHT",
+    "zohoCategorie": "Kluis niet open / dicht",
+    "nieuweCategorie": "kluisproblemen",
+    "nieuweCategorieNaam": "Kluisproblemen",
+    "viaUitzondering": false,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001815953",
+    "titel": "Nieuwe batterij plaatsen (Duracell)",
+    "zohoCategorie": "Kluis niet open / dicht",
+    "nieuweCategorie": "kluisproblemen",
+    "nieuweCategorieNaam": "Kluisproblemen",
+    "viaUitzondering": false,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000001922259",
+    "titel": "Info oude LIPS kluis, geen toegang archieven",
+    "zohoCategorie": "Administratie",
+    "nieuweCategorie": "kluisproblemen",
+    "nieuweCategorieNaam": "Kluisproblemen",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000002113788",
+    "titel": "HS codes, Harmonized Statistical code",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "betalen-administratie",
+    "nieuweCategorieNaam": "Betalen & Administratie",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000002126749",
+    "titel": "Werkinstructie orderproces Fletcher2",
+    "zohoCategorie": "Instructies B2B accounts",
+    "nieuweCategorie": "b2b-accounts",
+    "nieuweCategorieNaam": "B2B Accounts",
+    "viaUitzondering": false,
+    "tags": [
+      "b2b"
+    ],
+    "signalen": [
+      "mogelijk duplicaat"
+    ],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000002273252",
+    "titel": "Installatie uitvragen geen gehoor",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "installatie-services",
+    "nieuweCategorieNaam": "Installatie & Services",
+    "viaUitzondering": true,
+    "tags": [
+      "installatie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000002301001",
+    "titel": "Dank voor bestelling + installatie",
+    "zohoCategorie": "Betalen",
+    "nieuweCategorie": "installatie-services",
+    "nieuweCategorieNaam": "Installatie & Services",
+    "viaUitzondering": true,
+    "tags": [
+      "installatie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000002301608",
+    "titel": "Installatie aftersales geen gehoor",
+    "zohoCategorie": "Administratie",
+    "nieuweCategorie": "installatie-services",
+    "nieuweCategorieNaam": "Installatie & Services",
+    "viaUitzondering": true,
+    "tags": [
+      "installatie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000002380644",
+    "titel": "Bedrijfsgegevens KluisShop.be",
+    "zohoCategorie": "Administratie",
+    "nieuweCategorie": "betalen-administratie",
+    "nieuweCategorieNaam": "Betalen & Administratie",
+    "viaUitzondering": true,
+    "tags": [
+      "belgie"
+    ],
+    "signalen": [
+      "mogelijk duplicaat"
+    ],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000002380698",
+    "titel": "Bedrijfsgegevens KluisStore.nl",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "betalen-administratie",
+    "nieuweCategorieNaam": "Betalen & Administratie",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000002380753",
+    "titel": "Bedrijfsgegevens LIPS Brandkasten",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "betalen-administratie",
+    "nieuweCategorieNaam": "Betalen & Administratie",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000002380804",
+    "titel": "Bij ons aangekocht? Navragen order- of factuurnummer",
+    "zohoCategorie": "Kluis niet open / dicht",
+    "nieuweCategorie": "kluisproblemen",
+    "nieuweCategorieNaam": "Kluisproblemen",
+    "viaUitzondering": false,
+    "tags": [],
+    "signalen": [
+      "mogelijk duplicaat"
+    ],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000002380855",
+    "titel": "Achterwand verankering niet doorgeboord",
+    "zohoCategorie": "Administratie",
+    "nieuweCategorie": "installatie-services",
+    "nieuweCategorieNaam": "Installatie & Services",
+    "viaUitzondering": true,
+    "tags": [
+      "installatie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000002380907",
+    "titel": "Waardeberging op deze kluis? > Nee.",
+    "zohoCategorie": "Administratie",
+    "nieuweCategorie": "verkoop-productadvies",
+    "nieuweCategorieNaam": "Verkoop & Productadvies",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000002380963",
+    "titel": "Trap 1 - rechte trap",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "installatie-services",
+    "nieuweCategorieNaam": "Installatie & Services",
+    "viaUitzondering": true,
+    "tags": [
+      "installatie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000002383011",
+    "titel": "Trap 2 - rechte trap met bordes",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "installatie-services",
+    "nieuweCategorieNaam": "Installatie & Services",
+    "viaUitzondering": true,
+    "tags": [
+      "installatie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000002383064",
+    "titel": "Trap 3 - rechte trap met klein bordes",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "installatie-services",
+    "nieuweCategorieNaam": "Installatie & Services",
+    "viaUitzondering": true,
+    "tags": [
+      "installatie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000002383115",
+    "titel": "Trap 4 - rechte trap met 1 knik",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "installatie-services",
+    "nieuweCategorieNaam": "Installatie & Services",
+    "viaUitzondering": true,
+    "tags": [
+      "installatie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000002383159",
+    "titel": "Trap 5  - rechte trap met 2 bordessen",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "installatie-services",
+    "nieuweCategorieNaam": "Installatie & Services",
+    "viaUitzondering": true,
+    "tags": [
+      "installatie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000002383210",
+    "titel": "Trap 6  - rechte trap met knik bovenaan",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "installatie-services",
+    "nieuweCategorieNaam": "Installatie & Services",
+    "viaUitzondering": true,
+    "tags": [
+      "installatie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000002383265",
+    "titel": "Trap 7 - draaitrap 180 graden",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "installatie-services",
+    "nieuweCategorieNaam": "Installatie & Services",
+    "viaUitzondering": true,
+    "tags": [
+      "installatie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000002383320",
+    "titel": "Trap 8 - wenteltrap",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "installatie-services",
+    "nieuweCategorieNaam": "Installatie & Services",
+    "viaUitzondering": true,
+    "tags": [
+      "installatie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000002383366",
+    "titel": "Orders opnieuw aanbieden PON",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "verzending-magazijnen",
+    "nieuweCategorieNaam": "Verzending & Magazijnen",
+    "viaUitzondering": true,
+    "tags": [
+      "magento",
+      "pon"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000002503437",
+    "titel": "PON procedures",
+    "zohoCategorie": "Administratie",
+    "nieuweCategorie": "verzending-magazijnen",
+    "nieuweCategorieNaam": "Verzending & Magazijnen",
+    "viaUitzondering": true,
+    "tags": [
+      "pon"
+    ],
+    "signalen": [
+      "mogelijk duplicaat"
+    ],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000002523277",
+    "titel": "Zdialer, bellen vanaf je PC / Zoho",
+    "zohoCategorie": "Administratie",
+    "nieuweCategorie": "start-hier",
+    "nieuweCategorieNaam": "Start hier",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [
+      "nauwelijks inhoud"
+    ],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000002741023",
+    "titel": "Schadelevering",
+    "zohoCategorie": "Schade / Defect",
+    "nieuweCategorie": "retour-klachten",
+    "nieuweCategorieNaam": "Retour & Klachten",
+    "viaUitzondering": false,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000003029643",
+    "titel": "Openstaande factuur, verzoek tot betaling",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "betalen-administratie",
+    "nieuweCategorieNaam": "Betalen & Administratie",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000003243032",
+    "titel": "EORI Marzan Security BV: NL857696531",
+    "zohoCategorie": "Administratie",
+    "nieuweCategorie": "betalen-administratie",
+    "nieuweCategorieNaam": "Betalen & Administratie",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [
+      "mogelijk duplicaat",
+      "nauwelijks inhoud"
+    ],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000004345137",
+    "titel": "E-factureren overheid - Nederland",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "betalen-administratie",
+    "nieuweCategorieNaam": "Betalen & Administratie",
+    "viaUitzondering": true,
+    "tags": [
+      "nederland"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000005059838",
+    "titel": "Track en Trace wordt niet automatisch weergegeven in order",
+    "zohoCategorie": "Administratie",
+    "nieuweCategorie": "verzending-magazijnen",
+    "nieuweCategorieNaam": "Verzending & Magazijnen",
+    "viaUitzondering": true,
+    "tags": [
+      "magento"
+    ],
+    "signalen": [
+      "was draft in Zoho"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000007540053",
+    "titel": "Bedrijfsgegevens Marzan Security NL",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "betalen-administratie",
+    "nieuweCategorieNaam": "Betalen & Administratie",
+    "viaUitzondering": true,
+    "tags": [
+      "nederland"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000007540075",
+    "titel": "Bedrijfsgegevens KluisShop.be",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "betalen-administratie",
+    "nieuweCategorieNaam": "Betalen & Administratie",
+    "viaUitzondering": true,
+    "tags": [
+      "belgie"
+    ],
+    "signalen": [
+      "mogelijk duplicaat"
+    ],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000007540098",
+    "titel": "Bedrijfsgegevens Marzan Security Belgium BV",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "betalen-administratie",
+    "nieuweCategorieNaam": "Betalen & Administratie",
+    "viaUitzondering": true,
+    "tags": [
+      "belgie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000007613248",
+    "titel": "Uitvragen kluis",
+    "zohoCategorie": "Advies",
+    "nieuweCategorie": "verkoop-productadvies",
+    "nieuweCategorieNaam": "Verkoop & Productadvies",
+    "viaUitzondering": false,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000008024789",
+    "titel": "Questionaier, opname accukluis voor hotelmanager - Fletcher",
+    "zohoCategorie": "Instructies B2B accounts",
+    "nieuweCategorie": "b2b-accounts",
+    "nieuweCategorieNaam": "B2B Accounts",
+    "viaUitzondering": false,
+    "tags": [
+      "installatie",
+      "b2b"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000008120612",
+    "titel": "Afhaler Gunnebo invullen",
+    "zohoCategorie": "Bestellen",
+    "nieuweCategorie": "verzending-magazijnen",
+    "nieuweCategorieNaam": "Verzending & Magazijnen",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000008613124",
+    "titel": "Opvolging installatie-orders — stap voor stap",
+    "zohoCategorie": "Introductie nieuwe agents",
+    "nieuweCategorie": "installatie-services",
+    "nieuweCategorieNaam": "Installatie & Services",
+    "viaUitzondering": true,
+    "tags": [
+      "installatie",
+      "start-hier"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000008614036",
+    "titel": "Kredietcheck zakelijke orders — procedure op rekening betalen",
+    "zohoCategorie": "Introductie nieuwe agents",
+    "nieuweCategorie": "betalen-administratie",
+    "nieuweCategorieNaam": "Betalen & Administratie",
+    "viaUitzondering": true,
+    "tags": [
+      "b2b",
+      "kredietcheck",
+      "escalatie-verplicht",
+      "start-hier"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000008627004",
+    "titel": "Orderbevestigingen leveranciers — handmatig verwerken",
+    "zohoCategorie": "Introductie nieuwe agents",
+    "nieuweCategorie": "orderverwerking",
+    "nieuweCategorieNaam": "Orderverwerking",
+    "viaUitzondering": true,
+    "tags": [
+      "dropshipment",
+      "start-hier"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000009391205",
+    "titel": "Leverancier Autolok – SimplySafes (UK)",
+    "zohoCategorie": "Toeleveranciers",
+    "nieuweCategorie": "toeleveranciers-partners",
+    "nieuweCategorieNaam": "Toeleveranciers & Partners",
+    "viaUitzondering": false,
+    "tags": [
+      "uk"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000009392151",
+    "titel": "Leverancier Bishopsgate – SimplySafes (UK)",
+    "zohoCategorie": "Toeleveranciers",
+    "nieuweCategorie": "toeleveranciers-partners",
+    "nieuweCategorieNaam": "Toeleveranciers & Partners",
+    "viaUitzondering": false,
+    "tags": [
+      "uk"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000009393173",
+    "titel": "Leverancier BurgWachter – SimplySafes (UK)",
+    "zohoCategorie": "Toeleveranciers",
+    "nieuweCategorie": "toeleveranciers-partners",
+    "nieuweCategorieNaam": "Toeleveranciers & Partners",
+    "viaUitzondering": false,
+    "tags": [
+      "uk"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000009393189",
+    "titel": "Leverancier Bulldog – SimplySafes (UK)",
+    "zohoCategorie": "Toeleveranciers",
+    "nieuweCategorie": "toeleveranciers-partners",
+    "nieuweCategorieNaam": "Toeleveranciers & Partners",
+    "viaUitzondering": false,
+    "tags": [
+      "uk"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000009399230",
+    "titel": "Leverancier Aldridge – SimplySafes (UK)",
+    "zohoCategorie": "Toeleveranciers",
+    "nieuweCategorie": "toeleveranciers-partners",
+    "nieuweCategorieNaam": "Toeleveranciers & Partners",
+    "viaUitzondering": false,
+    "tags": [
+      "uk"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000009400125",
+    "titel": "Leverancier Securikey – SimplySafes (UK)",
+    "zohoCategorie": "Toeleveranciers",
+    "nieuweCategorie": "toeleveranciers-partners",
+    "nieuweCategorieNaam": "Toeleveranciers & Partners",
+    "viaUitzondering": false,
+    "tags": [
+      "uk"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000009404192",
+    "titel": "Leverancier Brattonsound – SimplySafes (UK)",
+    "zohoCategorie": "Toeleveranciers",
+    "nieuweCategorie": "toeleveranciers-partners",
+    "nieuweCategorieNaam": "Toeleveranciers & Partners",
+    "viaUitzondering": false,
+    "tags": [
+      "uk"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000009404208",
+    "titel": "Leverancier De Raat – SimplySafes (UK)",
+    "zohoCategorie": "Toeleveranciers",
+    "nieuweCategorie": "toeleveranciers-partners",
+    "nieuweCategorieNaam": "Toeleveranciers & Partners",
+    "viaUitzondering": false,
+    "tags": [
+      "uk"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000009405189",
+    "titel": "Leverancier Eastern Sporting (Spika) – SimplySafes (UK)",
+    "zohoCategorie": "Toeleveranciers",
+    "nieuweCategorie": "toeleveranciers-partners",
+    "nieuweCategorieNaam": "Toeleveranciers & Partners",
+    "viaUitzondering": false,
+    "tags": [
+      "uk"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000009405205",
+    "titel": "Leverancier Insafe – SimplySafes (UK)",
+    "zohoCategorie": "Toeleveranciers",
+    "nieuweCategorie": "toeleveranciers-partners",
+    "nieuweCategorieNaam": "Toeleveranciers & Partners",
+    "viaUitzondering": false,
+    "tags": [
+      "uk"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000009406380",
+    "titel": "Leverancier Highland Outdoors (Buffalo River + Boston) – SimplySafes (UK)",
+    "zohoCategorie": "Toeleveranciers",
+    "nieuweCategorie": "toeleveranciers-partners",
+    "nieuweCategorieNaam": "Toeleveranciers & Partners",
+    "viaUitzondering": false,
+    "tags": [
+      "uk"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000009408241",
+    "titel": "Leverancier Armorgard – SimplySafes (UK)",
+    "zohoCategorie": "Toeleveranciers",
+    "nieuweCategorie": "toeleveranciers-partners",
+    "nieuweCategorieNaam": "Toeleveranciers & Partners",
+    "viaUitzondering": false,
+    "tags": [
+      "uk"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000009410189",
+    "titel": "Leverancier Phoenix – SimplySafes (UK)",
+    "zohoCategorie": "Toeleveranciers",
+    "nieuweCategorie": "toeleveranciers-partners",
+    "nieuweCategorieNaam": "Toeleveranciers & Partners",
+    "viaUitzondering": false,
+    "tags": [
+      "uk"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000009411118",
+    "titel": "Leverancier Burton Safes – SimplySafes (UK)",
+    "zohoCategorie": "Toeleveranciers",
+    "nieuweCategorie": "toeleveranciers-partners",
+    "nieuweCategorieNaam": "Toeleveranciers & Partners",
+    "viaUitzondering": false,
+    "tags": [
+      "uk"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000009412215",
+    "titel": "Leverancier Keysecure – SimplySafes (UK)",
+    "zohoCategorie": "Toeleveranciers",
+    "nieuweCategorie": "toeleveranciers-partners",
+    "nieuweCategorieNaam": "Toeleveranciers & Partners",
+    "viaUitzondering": false,
+    "tags": [
+      "uk"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000009515101",
+    "titel": "Opname (site survey) aanmaken en versturen - installatie voorbereiden | handleiding medewerkers",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "installatie-services",
+    "nieuweCategorieNaam": "Installatie & Services",
+    "viaUitzondering": true,
+    "tags": [
+      "installatie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000009683083",
+    "titel": "Werkbonnen beheren - aanmaken, team toewijzen, vrijgeven en verzenden | handleiding back office",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "installatie-services",
+    "nieuweCategorieNaam": "Installatie & Services",
+    "viaUitzondering": true,
+    "tags": [
+      "installatie"
+    ],
+    "signalen": [],
+    "zohoStatus": "Published"
+  },
+  {
+    "id": "213858000009716012",
+    "titel": "Managing work orders - create, assign a team, release and send | back office guide",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "installatie-services",
+    "nieuweCategorieNaam": "Installatie & Services",
+    "viaUitzondering": true,
+    "tags": [
+      "installatie"
+    ],
+    "signalen": [
+      "was unpublished in Zoho"
+    ],
+    "zohoStatus": "Unpublished"
+  },
+  {
+    "id": "213858000001041531",
+    "titel": "Hoe verloopt een bestelling, status Magento",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "orderverwerking",
+    "nieuweCategorieNaam": "Orderverwerking",
+    "viaUitzondering": false,
+    "tags": [
+      "magento",
+      "pon",
+      "nederland"
+    ],
+    "signalen": [
+      "was draft in Zoho",
+      "niet gewijzigd sinds 2020"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001041973",
+    "titel": "Opnieuw bestellen voor bestaande klant in Magento",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "orderverwerking",
+    "nieuweCategorieNaam": "Orderverwerking",
+    "viaUitzondering": false,
+    "tags": [
+      "magento"
+    ],
+    "signalen": [
+      "was draft in Zoho",
+      "niet gewijzigd sinds 2020"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001042007",
+    "titel": "Opvolging klacht / defect / waar blijft mijn bestelling / mijn kluis gaat niet open - klant, e.d.",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "retour-klachten",
+    "nieuweCategorieNaam": "Retour & Klachten",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [
+      "was draft in Zoho",
+      "niet gewijzigd sinds 2020"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001042041",
+    "titel": "Opvolging sleutels dupliceren",
+    "zohoCategorie": "Procedures / werkwijzes",
+    "nieuweCategorie": "kluisproblemen",
+    "nieuweCategorieNaam": "Kluisproblemen",
+    "viaUitzondering": true,
+    "tags": [
+      "sleutels"
+    ],
+    "signalen": [
+      "was draft in Zoho",
+      "niet gewijzigd sinds 2020"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001042755",
+    "titel": "Order flow Magento",
+    "zohoCategorie": "Diversen",
+    "nieuweCategorie": "orderverwerking",
+    "nieuweCategorieNaam": "Orderverwerking",
+    "viaUitzondering": false,
+    "tags": [
+      "magento"
+    ],
+    "signalen": [
+      "was draft in Zoho",
+      "nauwelijks inhoud",
+      "niet gewijzigd sinds 2020"
+    ],
+    "zohoStatus": "Draft"
+  },
+  {
+    "id": "213858000001042789",
+    "titel": "SPAM berichten sluiten / verwijderen",
+    "zohoCategorie": "Diversen",
+    "nieuweCategorie": "start-hier",
+    "nieuweCategorieNaam": "Start hier",
+    "viaUitzondering": true,
+    "tags": [],
+    "signalen": [
+      "noemt Freshdesk",
+      "was draft in Zoho",
+      "niet gewijzigd sinds 2020"
+    ],
+    "zohoStatus": "Draft"
+  }
+]

@@ -1,26 +1,141 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Marzan Security — designtokens, gelijk aan het omzetdashboard. */
+@theme {
+  --color-navy: #10395b;
+  --color-navy-deep: #004874;
+  --color-navy-mid: #005c94;
+  --color-blue-light: #1ba2dd;
+  --color-teal: #3dbf93;
+  --color-orange: #ff8c30;
+  --color-amber: #f39c12;
+  --color-page: #eef0f4;
+  --color-line: #dde1e9;
+  --color-muted: #8a93a8;
+  --color-ink: #1a2940;
+  --color-ink-soft: #2d3748;
+  --color-negative: #e74c3c;
+  --color-positive: #27ae60;
+
+  --font-sans: var(--font-open-sans), "Open Sans", sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-page);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 14px;
+}
+
+/* --- Herbruikbare componenten uit het designsysteem ---------------------- */
+
+@layer components {
+  .kb-card {
+    @apply rounded-[10px] border border-[#eef0f4] bg-white shadow-[0_1px_4px_rgba(0,0,0,.06)];
+  }
+
+  .kb-label {
+    @apply text-[10px] font-bold uppercase tracking-[0.08em] text-muted;
+  }
+
+  .kb-section-title {
+    @apply text-[11px] font-bold uppercase tracking-[0.06em] text-navy;
+  }
+
+  .kb-input {
+    @apply w-full rounded-md border border-line bg-page px-3 py-2 text-[13px] text-ink-soft
+           outline-none transition-colors placeholder:text-muted
+           focus:border-teal focus:bg-white;
+  }
+
+  .kb-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-md border border-line
+           bg-page px-3 py-1.5 text-[12px] font-medium text-[#4a5568]
+           transition-colors hover:border-[#aab] hover:bg-[#e2e8f0]
+           disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .kb-btn-primary {
+    @apply border-navy bg-navy text-white hover:border-navy-deep hover:bg-navy-deep;
+  }
+
+  .kb-btn-accent {
+    @apply border-orange bg-orange text-white hover:border-[#e87c22] hover:bg-[#e87c22];
+  }
+
+  /* Pill-chip, zoals de webshop-toggle in het dashboard. */
+  .kb-chip {
+    @apply inline-flex items-center rounded-full border border-line bg-white px-[11px] py-[3px]
+           text-[12px] font-medium text-[#4a5568] transition-colors
+           hover:border-teal hover:bg-[#f0faf6];
+  }
+
+  .kb-chip-active {
+    @apply border-navy bg-navy text-white hover:border-navy hover:bg-navy;
+  }
+
+  .kb-empty {
+    @apply py-9 text-center text-[13px] text-[#aab];
+  }
+
+  /* Weergave van artikel-Markdown. */
+  .kb-prose {
+    @apply max-w-none text-[13px] leading-relaxed text-ink-soft;
+  }
+  .kb-prose h1 {
+    @apply mt-0 mb-3 text-[20px] font-bold text-navy;
+  }
+  .kb-prose h2 {
+    @apply mt-7 mb-2.5 scroll-mt-24 text-[16px] font-bold text-navy;
+  }
+  .kb-prose h3 {
+    @apply mt-5 mb-2 scroll-mt-24 text-[13px] font-bold tracking-[0.02em] text-navy uppercase;
+  }
+  .kb-prose p {
+    @apply my-3;
+  }
+  .kb-prose ul {
+    @apply my-3 list-disc space-y-1 pl-5;
+  }
+  .kb-prose ol {
+    @apply my-3 list-decimal space-y-1 pl-5;
+  }
+  .kb-prose li > p {
+    @apply my-0;
+  }
+  .kb-prose strong {
+    @apply font-semibold text-ink;
+  }
+  .kb-prose hr {
+    @apply my-6 border-line;
+  }
+  .kb-prose a {
+    @apply text-navy-mid underline underline-offset-2 hover:text-orange;
+  }
+  .kb-prose blockquote {
+    @apply my-3 border-l-2 border-teal pl-3 text-muted italic;
+  }
+  .kb-prose code {
+    @apply rounded bg-page px-1 py-0.5 text-[12px];
+  }
+  .kb-prose pre {
+    @apply my-3 overflow-x-auto rounded-md bg-[#0d2035] p-3 text-[12px] text-[#c8d6e5];
+  }
+  .kb-prose img {
+    @apply my-3 max-w-full rounded-md border border-line;
+  }
+  .kb-prose table {
+    @apply my-3 w-full border-collapse text-[12px];
+  }
+  .kb-prose th {
+    @apply border-b border-line bg-page px-2.5 py-1.5 text-left font-semibold text-muted;
+  }
+  .kb-prose td {
+    @apply border-b border-line px-2.5 py-1.5 align-top;
+  }
 }

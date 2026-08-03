@@ -1,0 +1,56 @@
+[
+  {
+    "id": "213858000001041531",
+    "title": "Hoe verloopt een bestelling, status Magento",
+    "status": "Draft",
+    "zohoCategory": "Procedures / werkwijzes",
+    "permalink": "hoe-verloopt-een-bestelling-status-magento",
+    "summary": "Label in Magento Wordt verstuurd vanuit Contactpersoon Vervoerder Opmerkingen E-fulfilment Eigen magazijn, Weert, NL Customer support HC Distributie PostNL, Transmission, e.d.",
+    "modifiedTime": "2020-12-15T10:43:39.000Z"
+  },
+  {
+    "id": "213858000001041973",
+    "title": "Opnieuw bestellen voor bestaande klant in Magento",
+    "status": "Draft",
+    "zohoCategory": "Procedures / werkwijzes",
+    "permalink": "opnieuw-bestellen-voor-bestaande-klant-in-magento",
+    "summary": "Situatie: Klant wil graag opnieuw bestellen. STAP 1 Zoek bestelling op in Magento, rechts bovenaan klik op Opnieuw bestellen.",
+    "modifiedTime": "2020-12-15T10:43:39.000Z"
+  },
+  {
+    "id": "213858000001042007",
+    "title": "Opvolging klacht / defect / waar blijft mijn bestelling / mijn kluis gaat niet open - klant, e.d.",
+    "status": "Draft",
+    "zohoCategory": "Procedures / werkwijzes",
+    "permalink": "opvolging-klacht-defect-waar-blijft-mijn-bestelling-mijn-kluis-gaat-niet-open-klant-e-d",
+    "summary": "Geldig voor alle webshops Marzan Security. Waar blijft mijn bestelling? Mijn kluis gaat niet open. Defect. Schademelding.",
+    "modifiedTime": "2020-12-15T10:43:39.000Z"
+  },
+  {
+    "id": "213858000001042041",
+    "title": "Opvolging sleutels dupliceren",
+    "status": "Draft",
+    "zohoCategory": "Procedures / werkwijzes",
+    "permalink": "opvolging-sleutels-dupliceren",
+    "summary": "Check of sleutel te dupliceren is adhv foto. Stuur foto door naar De Raat Service. Indien dupliceren mogelijk is stuur instructie naar de klant.",
+    "modifiedTime": "2020-12-15T10:43:39.000Z"
+  },
+  {
+    "id": "213858000001042755",
+    "title": "Order flow Magento",
+    "status": "Draft",
+    "zohoCategory": "Diversen",
+    "permalink": "order-flow-magento",
+    "summary": "Order flow",
+    "modifiedTime": "2020-12-15T10:43:39.000Z"
+  },
+  {
+    "id": "213858000001042789",
+    "title": "SPAM berichten sluiten / verwijderen",
+    "status": "Draft",
+    "zohoCategory": "Diversen",
+    "permalink": "spam-berichten-sluiten-verwijderen",
+    "summary": "Ondanks nodige filters blijven er dagelijks veel SPAM berichten binnenkomen in Freshdesk.",
+    "modifiedTime": "2020-12-15T10:43:39.000Z"
+  }
+]

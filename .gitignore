@@ -32,6 +32,11 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+
+# ruwe Zoho-scrape: regenereerbaar via scripts/zoho-ophalen.mjs, hoort niet in git
+/import/zoho-ruw/
+/import/afbeeldingen-map.json
 
 # vercel
 .vercel
