@@ -2,7 +2,7 @@
 
 import { useRef, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArtikelMarkdown } from '@/lib/markdown';
+import { ArtikelMarkdown, CALLOUT_TYPES, type CalloutType } from '@/lib/markdown';
 import { StatusBadge } from '@/components/status-badge';
 import type { ArticleDetail, ArticleStatus, Category } from '@/lib/types';
 import {
@@ -10,8 +10,15 @@ import {
   bewaarArtikel,
   herstelRevisie,
   markeerGecontroleerd,
+  uploadAfbeelding,
   wijzigStatus,
 } from '@/app/beheer/artikelen/acties';
+
+const CALLOUT_LABELS: Record<CalloutType, string> = {
+  TIP: '💡 Tip',
+  INFO: 'ℹ️ Info',
+  WARNING: '⚠️ Waarschuwing',
+};
 
 type Revisie = {
   id: string;
@@ -49,10 +56,77 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
   const [categoryId, setCategoryId] = useState(artikel.category_id ?? '');
   const [melding, setMelding] = useState<string | null>(null);
   const [fout, setFout] = useState<string | null>(null);
+  const [uploadBezig, setUploadBezig] = useState(false);
   const [bezig, startTransitie] = useTransition();
   const wijzignotitieRef = useRef<HTMLInputElement>(null);
+  const inhoudRef = useRef<HTMLTextAreaElement>(null);
+  const bestandInputRef = useRef<HTMLInputElement>(null);
 
   const gewijzigd = titel !== artikel.title || inhoud !== artikel.content_markdown;
+
+  /** Voegt tekst in op de cursorpositie van het tekstvak (of vervangt de selectie). */
+  function voegInBijCursor(tekst: string) {
+    const el = inhoudRef.current;
+    if (!el) {
+      setInhoud((huidig) => `${huidig}\n\n${tekst}\n`);
+      return;
+    }
+    const start = el.selectionStart ?? el.value.length;
+    const eind = el.selectionEnd ?? el.value.length;
+    const nieuw = `${el.value.slice(0, start)}${tekst}${el.value.slice(eind)}`;
+    setInhoud(nieuw);
+    requestAnimationFrame(() => {
+      el.focus();
+      const cursor = start + tekst.length;
+      el.setSelectionRange(cursor, cursor);
+    });
+  }
+
+  function voegCalloutIn(type: CalloutType) {
+    voegInBijCursor(`\n> [!${type}] Typ hier de tekst\n\n`);
+  }
+
+  async function uploadEnVoegAfbeeldingIn(bestand: File) {
+    if (!bestand.type.startsWith('image/')) {
+      setFout('Alleen afbeeldingen zijn toegestaan.');
+      return;
+    }
+    setFout(null);
+    setUploadBezig(true);
+    const formData = new FormData();
+    formData.set('bestand', bestand);
+    const resultaat = await uploadAfbeelding(formData);
+    setUploadBezig(false);
+    if (resultaat.fout || !resultaat.pad) {
+      setFout(resultaat.fout ?? 'Uploaden mislukt.');
+      return;
+    }
+    voegInBijCursor(`![${bestand.name}](${resultaat.pad})`);
+  }
+
+  function opBestandGekozen(e: React.ChangeEvent<HTMLInputElement>) {
+    const bestand = e.target.files?.[0];
+    e.target.value = '';
+    if (bestand) void uploadEnVoegAfbeeldingIn(bestand);
+  }
+
+  function opPlakken(e: React.ClipboardEvent<HTMLTextAreaElement>) {
+    const bestand = Array.from(e.clipboardData.items)
+      .find((item) => item.type.startsWith('image/'))
+      ?.getAsFile();
+    if (bestand) {
+      e.preventDefault();
+      void uploadEnVoegAfbeeldingIn(bestand);
+    }
+  }
+
+  function opSlepen(e: React.DragEvent<HTMLTextAreaElement>) {
+    const bestand = Array.from(e.dataTransfer.files).find((f) => f.type.startsWith('image/'));
+    if (bestand) {
+      e.preventDefault();
+      void uploadEnVoegAfbeeldingIn(bestand);
+    }
+  }
 
   function bewaar() {
     setFout(null);
@@ -168,13 +242,53 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
 
         <div className="p-5">
           {tab === 'bewerken' && (
-            <textarea
-              value={inhoud}
-              onChange={(e) => setInhoud(e.target.value)}
-              className="h-[520px] w-full resize-y rounded-md border border-line bg-page p-4 font-mono text-[13px] leading-relaxed text-ink outline-none focus:border-teal focus:bg-white"
-              placeholder="# Titel&#10;&#10;Inhoud in Markdown…"
-              spellCheck={false}
-            />
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <input
+                  ref={bestandInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={opBestandGekozen}
+                />
+                <button
+                  type="button"
+                  onClick={() => bestandInputRef.current?.click()}
+                  disabled={uploadBezig}
+                  className="kb-btn"
+                >
+                  {uploadBezig ? 'Uploaden…' : '🖼️ Afbeelding'}
+                </button>
+                <span className="mx-1 h-5 w-px bg-line" />
+                {CALLOUT_TYPES.map((type) => (
+                  <button
+                    key={type}
+                    type="button"
+                    onClick={() => voegCalloutIn(type)}
+                    className="kb-btn"
+                  >
+                    {CALLOUT_LABELS[type]}
+                  </button>
+                ))}
+              </div>
+
+              <textarea
+                ref={inhoudRef}
+                value={inhoud}
+                onChange={(e) => setInhoud(e.target.value)}
+                onPaste={opPlakken}
+                onDrop={opSlepen}
+                onDragOver={(e) => e.preventDefault()}
+                className="h-[520px] w-full resize-y rounded-md border border-line bg-page p-4 font-mono text-[13px] leading-relaxed text-ink outline-none focus:border-teal focus:bg-white"
+                placeholder="# Titel&#10;&#10;Inhoud in Markdown… (plak of sleep een afbeelding hierin)"
+                spellCheck={false}
+              />
+              <p className="text-[11px] text-muted">
+                Tip: plak of sleep een afbeelding rechtstreeks in het tekstvak. Gebruik de knoppen
+                hierboven voor een gekleurd highlight-vak (tip, info of waarschuwing), zoals in Zoho
+                Desk.
+              </p>
+            </div>
           )}
 
           {tab === 'voorbeeld' && (

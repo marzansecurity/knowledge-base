@@ -1,9 +1,14 @@
 'use server';
 
+import { randomUUID } from 'crypto';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { vereisBeheerder } from '@/lib/auth';
+import { createAdminClient } from '@/lib/supabase/admin';
 import type { ArticleStatus } from '@/lib/types';
+
+const AFBEELDING_BUCKET = 'artikel-afbeeldingen';
+const MAX_AFBEELDING_BYTES = 5 * 1024 * 1024;
 
 function maakSlug(titel: string) {
   return (
@@ -171,6 +176,27 @@ export async function herstelRevisie(articleId: string, revisionId: string): Pro
   revalidatePath(`/beheer/artikelen/${huidig.slug}`);
   revalidatePath(`/bibliotheek/${huidig.slug}`);
   return { slug: huidig.slug };
+}
+
+/** Uploadt een afbeelding voor in een artikel en levert het pad om in te voegen in de Markdown. */
+export async function uploadAfbeelding(formData: FormData): Promise<{ fout?: string; pad?: string }> {
+  const { user } = await vereisBeheerder();
+
+  const bestand = formData.get('bestand');
+  if (!(bestand instanceof File)) return { fout: 'Geen bestand ontvangen.' };
+  if (!bestand.type.startsWith('image/')) return { fout: 'Alleen afbeeldingen zijn toegestaan.' };
+  if (bestand.size > MAX_AFBEELDING_BYTES) return { fout: 'Afbeelding is te groot (max 5 MB).' };
+
+  const extensie = bestand.name.split('.').pop()?.toLowerCase().replace(/[^a-z0-9]/g, '') || 'png';
+  const bestandspad = `${user.id}/${randomUUID()}.${extensie}`;
+
+  const admin = createAdminClient();
+  const { error } = await admin.storage.from(AFBEELDING_BUCKET).upload(bestandspad, bestand, {
+    contentType: bestand.type,
+  });
+  if (error) return { fout: error.message };
+
+  return { pad: `/api/afbeelding/${bestandspad}` };
 }
 
 /** Archiveert een artikel — de enige manier om iets te verwijderen (soft delete). */

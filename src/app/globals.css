@@ -129,6 +129,31 @@ body {
   .kb-prose img {
     @apply my-3 max-w-full rounded-md border border-line;
   }
+  /* Highlight-vakken (callouts), zoals de tip/info/waarschuwing-blokken in Zoho Desk. */
+  .kb-callout {
+    @apply my-3 flex items-start gap-2 rounded-md border-l-4 px-3.5 py-2.5 text-[13px] not-italic;
+  }
+  .kb-callout-tip {
+    @apply border-l-teal bg-[#f0faf6] text-[#1d5c46];
+  }
+  .kb-callout-tip::before {
+    content: "💡";
+  }
+  .kb-callout-info {
+    @apply border-l-navy-mid bg-[#eaf6fc] text-navy;
+  }
+  .kb-callout-info::before {
+    content: "ℹ️";
+  }
+  .kb-callout-warning {
+    @apply border-l-orange bg-[#fff3e8] text-[#8a4a12];
+  }
+  .kb-callout-warning::before {
+    content: "⚠️";
+  }
+  .kb-callout > p {
+    @apply my-0;
+  }
   .kb-prose table {
     @apply my-3 w-full border-collapse text-[12px];
   }
