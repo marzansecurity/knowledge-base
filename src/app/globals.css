@@ -29,7 +29,7 @@ body {
   background: var(--color-page);
   color: var(--color-ink);
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: 16px;
 }
 
 /* --- Herbruikbare componenten uit het designsysteem ---------------------- */
@@ -40,22 +40,22 @@ body {
   }
 
   .kb-label {
-    @apply text-[10px] font-bold uppercase tracking-[0.08em] text-muted;
+    @apply text-[11px] font-bold uppercase tracking-[0.08em] text-muted;
   }
 
   .kb-section-title {
-    @apply text-[11px] font-bold uppercase tracking-[0.06em] text-navy;
+    @apply text-[12px] font-bold uppercase tracking-[0.06em] text-navy;
   }
 
   .kb-input {
-    @apply w-full rounded-md border border-line bg-page px-3 py-2 text-[13px] text-ink-soft
+    @apply w-full rounded-md border border-line bg-page px-3.5 py-2.5 text-[15px] text-ink-soft
            outline-none transition-colors placeholder:text-muted
            focus:border-teal focus:bg-white;
   }
 
   .kb-btn {
     @apply inline-flex items-center justify-center gap-2 rounded-md border border-line
-           bg-page px-3 py-1.5 text-[12px] font-medium text-[#4a5568]
+           bg-page px-3.5 py-2 text-[14px] font-medium text-[#4a5568]
            transition-colors hover:border-[#aab] hover:bg-[#e2e8f0]
            disabled:cursor-not-allowed disabled:opacity-50;
   }
@@ -70,8 +70,8 @@ body {
 
   /* Pill-chip, zoals de webshop-toggle in het dashboard. */
   .kb-chip {
-    @apply inline-flex items-center rounded-full border border-line bg-white px-[11px] py-[3px]
-           text-[12px] font-medium text-[#4a5568] transition-colors
+    @apply inline-flex items-center rounded-full border border-line bg-white px-3.5 py-[5px]
+           text-[13px] font-medium text-[#4a5568] transition-colors
            hover:border-teal hover:bg-[#f0faf6];
   }
 
@@ -80,21 +80,21 @@ body {
   }
 
   .kb-empty {
-    @apply py-9 text-center text-[13px] text-[#aab];
+    @apply py-9 text-center text-[14px] text-[#aab];
   }
 
   /* Weergave van artikel-Markdown. */
   .kb-prose {
-    @apply max-w-none text-[13px] leading-relaxed text-ink-soft;
+    @apply max-w-none text-[15px] leading-relaxed text-ink-soft;
   }
   .kb-prose h1 {
-    @apply mt-0 mb-3 text-[20px] font-bold text-navy;
+    @apply mt-0 mb-3 text-[23px] font-bold text-navy;
   }
   .kb-prose h2 {
-    @apply mt-7 mb-2.5 scroll-mt-24 text-[16px] font-bold text-navy;
+    @apply mt-7 mb-2.5 scroll-mt-24 text-[18px] font-bold text-navy;
   }
   .kb-prose h3 {
-    @apply mt-5 mb-2 scroll-mt-24 text-[13px] font-bold tracking-[0.02em] text-navy uppercase;
+    @apply mt-5 mb-2 scroll-mt-24 text-[15px] font-bold tracking-[0.02em] text-navy uppercase;
   }
   .kb-prose p {
     @apply my-3;
@@ -121,17 +121,17 @@ body {
     @apply my-3 border-l-2 border-teal pl-3 text-muted italic;
   }
   .kb-prose code {
-    @apply rounded bg-page px-1 py-0.5 text-[12px];
+    @apply rounded bg-page px-1 py-0.5 text-[13px];
   }
   .kb-prose pre {
-    @apply my-3 overflow-x-auto rounded-md bg-[#0d2035] p-3 text-[12px] text-[#c8d6e5];
+    @apply my-3 overflow-x-auto rounded-md bg-[#0d2035] p-3 text-[13px] text-[#c8d6e5];
   }
   .kb-prose img {
     @apply my-3 max-w-full rounded-md border border-line;
   }
   /* Highlight-vakken (callouts), zoals de tip/info/waarschuwing-blokken in Zoho Desk. */
   .kb-callout {
-    @apply my-3 flex items-start gap-2 rounded-md border-l-4 px-3.5 py-2.5 text-[13px] not-italic;
+    @apply my-3 flex items-start gap-2 rounded-md border-l-4 px-3.5 py-2.5 text-[14px] not-italic;
   }
   .kb-callout-tip {
     @apply border-l-teal bg-[#f0faf6] text-[#1d5c46];
@@ -155,7 +155,7 @@ body {
     @apply my-0;
   }
   .kb-prose table {
-    @apply my-3 w-full border-collapse text-[12px];
+    @apply my-3 w-full border-collapse text-[13px];
   }
   .kb-prose th {
     @apply border-b border-line bg-page px-2.5 py-1.5 text-left font-semibold text-muted;

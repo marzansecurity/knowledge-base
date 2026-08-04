@@ -29,15 +29,15 @@ export default async function BeheerPagina() {
         rol={profiel?.role}
       />
 
-      <main className="grid gap-3.5 px-6 py-[18px]">
+      <main className="mx-auto grid max-w-[860px] gap-4 px-6 py-8">
         <div className="flex items-center justify-between">
-          <h1 className="text-[17px] font-bold text-navy">Artikelbeheer</h1>
+          <h1 className="text-[20px] font-bold text-navy">Artikelbeheer</h1>
           <Link href="/beheer/artikelen/nieuw" className="kb-btn kb-btn-accent">
             + Nieuw artikel
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {tegels.map((t) => (
             <Link
               key={t.status}
@@ -46,16 +46,16 @@ export default async function BeheerPagina() {
             >
               <span className={`absolute top-0 left-0 h-full w-1 ${t.kleur}`} />
               <div className="kb-label mb-1">{t.label}</div>
-              <div className="text-[22px] font-bold text-navy">{t.aantal}</div>
+              <div className="text-[26px] font-bold text-navy">{t.aantal}</div>
             </Link>
           ))}
         </div>
 
-        <Link href="/beheer/artikelen" className="kb-card p-4 text-[13px] font-medium text-navy hover:bg-page">
+        <Link href="/beheer/artikelen" className="kb-card p-4 text-[15px] font-medium text-navy hover:bg-page">
           Alle artikelen bekijken en bewerken →
         </Link>
 
-        <Link href="/beheer/export" className="kb-card p-4 text-[13px] font-medium text-navy hover:bg-page">
+        <Link href="/beheer/export" className="kb-card p-4 text-[15px] font-medium text-navy hover:bg-page">
           Export & back-up →
         </Link>
       </main>

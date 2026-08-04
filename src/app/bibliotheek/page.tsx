@@ -55,7 +55,7 @@ export default async function BibliotheekPagina({
         rol={profiel?.role}
       />
 
-      <main className="grid grid-cols-1 gap-4 px-6 py-[18px] md:grid-cols-[240px_1fr]">
+      <main className="mx-auto grid max-w-[1080px] grid-cols-1 gap-5 px-6 py-6 md:grid-cols-[220px_1fr]">
         <div className="md:sticky md:top-[86px] md:self-start">
           <CategorieBoom
             categorieen={categorieen}
@@ -64,17 +64,17 @@ export default async function BibliotheekPagina({
           />
         </div>
 
-        <div className="space-y-3.5">
+        <div className="space-y-4">
           <div className="kb-card space-y-3 p-4">
             <Zoekbalk basisPad="/bibliotheek" />
             <TagFilter tags={alleTags} basisPad="/bibliotheek" />
           </div>
 
           <div className="flex items-center justify-between">
-            <h1 className="text-[15px] font-bold text-navy">
+            <h1 className="text-[19px] font-bold text-navy">
               {actieveCategorie?.name ?? 'Alle artikelen'}
             </h1>
-            <span className="text-[12px] text-muted">
+            <span className="text-[13px] text-muted">
               {artikelen.length} {artikelen.length === 1 ? 'artikel' : 'artikelen'}
             </span>
           </div>
@@ -86,7 +86,7 @@ export default async function BibliotheekPagina({
                 : 'Nog geen gepubliceerde artikelen in deze categorie.'}
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+            <div className="grid grid-cols-1 gap-3.5">
               {artikelen.map((a) => (
                 <ArtikelKaart key={a.id} artikel={a} />
               ))}

@@ -15,8 +15,8 @@ export function Header({ titel, subtitel, naam, rol }: Props) {
         <Image src="/marzan-logo.svg" alt="Marzan Security" width={132} height={52} className="h-[52px] w-auto" priority />
         <span className="h-8 w-px bg-line" />
         <span className="flex flex-col gap-px">
-          <span className="text-[17px] font-bold text-navy">{titel}</span>
-          <span className="text-[11px] text-muted">{subtitel}</span>
+          <span className="text-[19px] font-bold text-navy">{titel}</span>
+          <span className="text-[12px] text-muted">{subtitel}</span>
         </span>
       </Link>
 
@@ -25,8 +25,8 @@ export function Header({ titel, subtitel, naam, rol }: Props) {
       {naam && (
         <div className="flex items-center gap-4">
           <div className="text-right leading-tight">
-            <div className="text-[12px] font-semibold text-ink">{naam}</div>
-            <div className="text-[11px] text-muted">
+            <div className="text-[14px] font-semibold text-ink">{naam}</div>
+            <div className="text-[12px] text-muted">
               {rol === 'admin' ? 'Beheerder' : 'Medewerker'}
             </div>
           </div>

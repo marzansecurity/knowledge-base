@@ -36,32 +36,32 @@ export default async function Startpagina() {
         rol={profiel?.role}
       />
 
-      <main className="grid gap-3.5 px-6 py-[18px]">
-        <div className={`grid grid-cols-1 gap-3.5 ${isBeheerder ? 'md:grid-cols-2' : ''}`}>
+      <main className="mx-auto grid max-w-[720px] gap-4 px-6 py-8">
+        <div className={`grid grid-cols-1 gap-4 ${isBeheerder ? 'sm:grid-cols-2' : ''}`}>
           <Link href="/bibliotheek" className="kb-card relative block overflow-hidden p-5 transition-shadow hover:shadow-[0_2px_10px_rgba(16,57,91,.12)]">
             <span className="absolute top-0 left-0 h-full w-1 bg-teal" />
             <div className="kb-label mb-1.5">Gepubliceerde artikelen</div>
-            <div className="text-[24px] leading-tight font-bold text-navy">
+            <div className="text-[28px] leading-tight font-bold text-navy">
               {aantalGepubliceerd ?? 0}
             </div>
-            <div className="mt-1.5 text-[11px] text-muted">Naar de bibliotheek →</div>
+            <div className="mt-1.5 text-[13px] text-muted">Naar de bibliotheek →</div>
           </Link>
 
           {isBeheerder && (
             <Link href="/beheer/artikelen?status=draft" className="kb-card relative block overflow-hidden p-5 transition-shadow hover:shadow-[0_2px_10px_rgba(16,57,91,.12)]">
               <span className="absolute top-0 left-0 h-full w-1 bg-amber" />
               <div className="kb-label mb-1.5">Nog te beoordelen</div>
-              <div className="text-[24px] leading-tight font-bold text-navy">
+              <div className="text-[28px] leading-tight font-bold text-navy">
                 {aantalConcepten ?? 0}
               </div>
-              <div className="mt-1.5 text-[11px] text-muted">Concepten uit de Zoho-import →</div>
+              <div className="mt-1.5 text-[13px] text-muted">Concepten uit de Zoho-import →</div>
             </Link>
           )}
         </div>
 
         <div className="kb-card p-5">
           <div className="kb-section-title mb-3">Aan de slag</div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2.5">
             <Link href="/bibliotheek" className="kb-chip">
               Bibliotheek
             </Link>
@@ -79,7 +79,7 @@ export default async function Startpagina() {
               </>
             )}
           </div>
-          <p className="mt-4 text-[12px] leading-relaxed text-muted">
+          <p className="mt-4 text-[14px] leading-relaxed text-muted">
             De AI-assistent wordt in de volgende stap gebouwd, zodra er artikelen gepubliceerd zijn.
           </p>
         </div>

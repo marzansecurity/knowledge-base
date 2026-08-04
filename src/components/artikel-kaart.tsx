@@ -25,20 +25,20 @@ export function ArtikelKaart({
   return (
     <Link href={`/bibliotheek/${artikel.slug}`} className="kb-card block p-4 transition-shadow hover:shadow-[0_2px_10px_rgba(16,57,91,.12)]">
       <div className="flex items-start justify-between gap-3">
-        <h3 className="text-[14px] font-semibold text-navy">{artikel.title}</h3>
+        <h3 className="text-[16px] font-semibold text-navy">{artikel.title}</h3>
         {toonStatus && (
           <span
-            className={`shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-semibold whitespace-nowrap ${STATUS_STIJL[artikel.status]}`}
+            className={`shrink-0 rounded-full border px-2 py-0.5 text-[11px] font-semibold whitespace-nowrap ${STATUS_STIJL[artikel.status]}`}
           >
             {STATUS_TEKST[artikel.status]}
           </span>
         )}
       </div>
       {artikel.summary && (
-        <p className="mt-1.5 line-clamp-2 text-[12px] leading-relaxed text-muted">{artikel.summary}</p>
+        <p className="mt-1.5 line-clamp-2 text-[14px] leading-relaxed text-muted">{artikel.summary}</p>
       )}
       {artikel.reviewed_at && (
-        <p className="mt-2 text-[11px] text-muted">
+        <p className="mt-2 text-[12px] text-muted">
           Laatst gecontroleerd:{' '}
           {new Date(artikel.reviewed_at).toLocaleDateString('nl-NL', {
             day: 'numeric',
