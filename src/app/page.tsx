@@ -36,7 +36,7 @@ export default async function Startpagina() {
         rol={profiel?.role}
       />
 
-      <main className="mx-auto grid max-w-[720px] gap-4 px-6 py-8">
+      <main className="mx-auto grid max-w-[1080px] gap-4 px-6 py-8">
         <div className={`grid grid-cols-1 gap-4 ${isBeheerder ? 'sm:grid-cols-2' : ''}`}>
           <Link href="/bibliotheek" className="kb-card relative block overflow-hidden p-5 transition-shadow hover:shadow-[0_2px_10px_rgba(16,57,91,.12)]">
             <span className="absolute top-0 left-0 h-full w-1 bg-teal" />
