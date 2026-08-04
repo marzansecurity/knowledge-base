@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { Header } from '@/components/header';
+import { KbShell } from '@/components/kb-shell';
 import { CategorieBoom } from '@/components/categorie-boom';
 import { Zoekbalk } from '@/components/zoekbalk';
 import { TagFilter } from '@/components/tag-filter';
@@ -47,16 +47,9 @@ export default async function BibliotheekPagina({
   const actieveCategorie = categorie ? categorieen.find((c) => c.slug === categorie) : null;
 
   return (
-    <>
-      <Header
-        titel="Marzan Kennisbank"
-        subtitel="Bibliotheek"
-        naam={profiel?.display_name ?? user.email ?? undefined}
-        rol={profiel?.role}
-      />
-
+    <KbShell naam={profiel?.display_name ?? user.email ?? undefined} rol={profiel?.role}>
       <main className="mx-auto grid max-w-[1080px] grid-cols-1 gap-5 px-6 py-6 md:grid-cols-[220px_1fr]">
-        <div className="md:sticky md:top-[86px] md:self-start">
+        <div className="md:sticky md:top-[18px] md:self-start">
           <CategorieBoom
             categorieen={categorieen}
             actieveSlug={categorie}
@@ -94,6 +87,6 @@ export default async function BibliotheekPagina({
           )}
         </div>
       </main>
-    </>
+    </KbShell>
   );
 }

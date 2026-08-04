@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Header } from '@/components/header';
+import { KbShell } from '@/components/kb-shell';
 import { StatusBadge } from '@/components/status-badge';
 import { vereisBeheerder } from '@/lib/auth';
 import type { ArticleStatus } from '@/lib/types';
@@ -31,14 +31,7 @@ export default async function ArtikelenBeheerPagina({
   const { data: artikelen } = await query.limit(300);
 
   return (
-    <>
-      <Header
-        titel="Marzan Kennisbank"
-        subtitel="Beheer · Artikelen"
-        naam={profiel?.display_name ?? undefined}
-        rol={profiel?.role}
-      />
-
+    <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
       <main className="grid gap-3.5 px-6 py-[18px]">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap gap-1.5">
@@ -106,6 +99,6 @@ export default async function ArtikelenBeheerPagina({
           </table>
         </div>
       </main>
-    </>
+    </KbShell>
   );
 }

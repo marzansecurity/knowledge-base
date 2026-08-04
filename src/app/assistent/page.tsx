@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { Header } from '@/components/header';
+import { KbShell } from '@/components/kb-shell';
 import { AssistentChat } from '@/components/assistent-chat';
 import { vereisIngelogd } from '@/lib/auth';
 import { haalBerichten, haalGesprekken } from '@/lib/data';
@@ -21,16 +21,9 @@ export default async function AssistentPagina({
   ]);
 
   return (
-    <>
-      <Header
-        titel="Marzan Kennisbank"
-        subtitel="AI-assistent"
-        naam={profiel?.display_name ?? undefined}
-        rol={profiel?.role}
-      />
-
+    <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
       <main className="grid grid-cols-1 gap-4 px-6 py-[18px] md:grid-cols-[220px_1fr]">
-        <aside className="kb-card p-3 md:sticky md:top-[86px] md:self-start">
+        <aside className="kb-card p-3 md:sticky md:top-[18px] md:self-start">
           <Link href="/assistent" className="kb-btn kb-btn-primary mb-2.5 w-full">
             + Nieuw gesprek
           </Link>
@@ -55,6 +48,6 @@ export default async function AssistentPagina({
 
         <AssistentChat key={gesprek ?? 'nieuw'} conversationId={gesprek ?? null} initieleBerichten={berichten} />
       </main>
-    </>
+    </KbShell>
   );
 }

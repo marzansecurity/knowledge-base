@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
-import { Header } from '@/components/header';
+import { KbShell } from '@/components/kb-shell';
 import { ArtikelMarkdown, haalKoppenOp } from '@/lib/markdown';
 import { createClient } from '@/lib/supabase/server';
 import { haalArtikel, haalTagsVoorArtikel } from '@/lib/data';
@@ -42,14 +42,7 @@ export default async function ArtikelPagina({
   const koppen = haalKoppenOp(artikel.content_markdown);
 
   return (
-    <>
-      <Header
-        titel="Marzan Kennisbank"
-        subtitel="Bibliotheek"
-        naam={profiel?.display_name ?? user.email ?? undefined}
-        rol={profiel?.role}
-      />
-
+    <KbShell naam={profiel?.display_name ?? user.email ?? undefined} rol={profiel?.role}>
       <main className="grid grid-cols-1 gap-4 px-6 py-[18px] lg:grid-cols-[1fr_220px]">
         <article className="kb-card p-7">
           <nav className="mb-3 text-[11px] text-muted">
@@ -109,7 +102,7 @@ export default async function ArtikelPagina({
         </article>
 
         {koppen.length > 0 && (
-          <aside className="lg:sticky lg:top-[86px] lg:self-start">
+          <aside className="lg:sticky lg:top-[18px] lg:self-start">
             <div className="kb-card p-4">
               <div className="kb-section-title mb-2.5">Inhoudsopgave</div>
               <ul className="space-y-1.5 text-[12px]">
@@ -125,6 +118,6 @@ export default async function ArtikelPagina({
           </aside>
         )}
       </main>
-    </>
+    </KbShell>
   );
 }

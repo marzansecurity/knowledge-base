@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Header } from '@/components/header';
+import { KbShell } from '@/components/kb-shell';
 import { vereisBeheerder } from '@/lib/auth';
 
 export default async function BeheerPagina() {
@@ -21,14 +21,7 @@ export default async function BeheerPagina() {
   ];
 
   return (
-    <>
-      <Header
-        titel="Marzan Kennisbank"
-        subtitel="Beheer"
-        naam={profiel?.display_name ?? undefined}
-        rol={profiel?.role}
-      />
-
+    <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
       <main className="mx-auto grid max-w-[860px] gap-4 px-6 py-8">
         <div className="flex items-center justify-between">
           <h1 className="text-[20px] font-bold text-navy">Artikelbeheer</h1>
@@ -59,6 +52,6 @@ export default async function BeheerPagina() {
           Export & back-up →
         </Link>
       </main>
-    </>
+    </KbShell>
   );
 }

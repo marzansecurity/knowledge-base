@@ -1,4 +1,4 @@
-import { Header } from '@/components/header';
+import { KbShell } from '@/components/kb-shell';
 import { vereisBeheerder } from '@/lib/auth';
 import { maakArtikel } from '@/app/beheer/artikelen/acties';
 
@@ -6,13 +6,7 @@ export default async function NieuwArtikelPagina() {
   const { profiel } = await vereisBeheerder();
 
   return (
-    <>
-      <Header
-        titel="Marzan Kennisbank"
-        subtitel="Beheer · Nieuw artikel"
-        naam={profiel?.display_name ?? undefined}
-        rol={profiel?.role}
-      />
+    <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
       <main className="mx-auto max-w-lg px-6 py-[18px]">
         <form action={maakArtikel} className="kb-card space-y-4 p-6">
           <div>
@@ -36,6 +30,6 @@ export default async function NieuwArtikelPagina() {
           </p>
         </form>
       </main>
-    </>
+    </KbShell>
   );
 }

@@ -1,4 +1,4 @@
-import { Header } from '@/components/header';
+import { KbShell } from '@/components/kb-shell';
 import { vereisBeheerder } from '@/lib/auth';
 
 export default async function ExportPagina() {
@@ -21,14 +21,7 @@ export default async function ExportPagina() {
   );
 
   return (
-    <>
-      <Header
-        titel="Marzan Kennisbank"
-        subtitel="Beheer · Export & back-up"
-        naam={profiel?.display_name ?? undefined}
-        rol={profiel?.role}
-      />
-
+    <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
       <main className="mx-auto max-w-2xl px-6 py-[18px]">
         <div className="kb-card p-6">
           <h1 className="text-[17px] font-bold text-navy">Export & back-up</h1>
@@ -71,6 +64,6 @@ export default async function ExportPagina() {
           </a>
         </div>
       </main>
-    </>
+    </KbShell>
   );
 }

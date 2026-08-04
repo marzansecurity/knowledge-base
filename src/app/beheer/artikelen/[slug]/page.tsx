@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { Header } from '@/components/header';
+import { KbShell } from '@/components/kb-shell';
 import { ArtikelEditor } from '@/components/artikel-editor';
 import { vereisBeheerder } from '@/lib/auth';
 import { haalArtikel, haalCategorieen } from '@/lib/data';
@@ -33,16 +33,10 @@ export default async function ArtikelBewerkenPagina({
   }));
 
   return (
-    <>
-      <Header
-        titel="Marzan Kennisbank"
-        subtitel="Beheer · Artikel bewerken"
-        naam={profiel?.display_name ?? undefined}
-        rol={profiel?.role}
-      />
+    <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
       <main className="mx-auto max-w-4xl px-6 py-[18px]">
         <ArtikelEditor artikel={artikel} categorieen={categorieen} revisies={revisies} />
       </main>
-    </>
+    </KbShell>
   );
 }
