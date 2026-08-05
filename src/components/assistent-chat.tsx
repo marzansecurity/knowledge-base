@@ -13,6 +13,43 @@ type WeergaveBericht = Partial<Bericht> & {
   escaleren?: boolean;
 };
 
+function FeedbackKnoppen({
+  berichtId,
+  helpful,
+  onFeedback,
+}: {
+  berichtId?: string;
+  helpful?: boolean | null;
+  onFeedback: (berichtId: string, helpful: boolean) => void;
+}) {
+  if (!berichtId) return null;
+  return (
+    <div className="mt-3 flex items-center gap-2 border-t border-line pt-3">
+      <span className="kb-label">Was dit nuttig?</span>
+      <button
+        type="button"
+        onClick={() => onFeedback(berichtId, true)}
+        aria-pressed={helpful === true}
+        className={`rounded-md border px-2 py-1 text-[13px] transition-colors ${
+          helpful === true ? 'border-teal bg-[#f0faf6] text-[#1d5c46]' : 'border-line text-muted hover:bg-page'
+        }`}
+      >
+        👍
+      </button>
+      <button
+        type="button"
+        onClick={() => onFeedback(berichtId, false)}
+        aria-pressed={helpful === false}
+        className={`rounded-md border px-2 py-1 text-[13px] transition-colors ${
+          helpful === false ? 'border-negative bg-[#fdf0ef] text-negative' : 'border-line text-muted hover:bg-page'
+        }`}
+      >
+        👎
+      </button>
+    </div>
+  );
+}
+
 export function AssistentChat({
   conversationId,
   initieleBerichten,
@@ -50,7 +87,14 @@ export function AssistentChat({
 
         setBerichten((b) => [
           ...b,
-          { role: 'assistant', content: data.antwoord, bronnen: data.bronnen, escaleren: data.escaleren },
+          {
+            id: data.berichtId,
+            role: 'assistant',
+            content: data.antwoord,
+            bronnen: data.bronnen,
+            escaleren: data.escaleren,
+            helpful: null,
+          },
         ]);
 
         if (!huidigId) {
@@ -62,6 +106,17 @@ export function AssistentChat({
       } catch (e) {
         setFout(e instanceof Error ? e.message : 'Onbekende fout.');
       }
+    });
+  }
+
+  function geefFeedback(berichtId: string, helpful: boolean) {
+    setBerichten((b) => b.map((m) => (m.id === berichtId ? { ...m, helpful } : m)));
+    fetch('/api/assistent/feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messageId: berichtId, helpful }),
+    }).catch(() => {
+      setBerichten((b) => b.map((m) => (m.id === berichtId ? { ...m, helpful: null } : m)));
     });
   }
 
@@ -95,6 +150,9 @@ export function AssistentChat({
                       </Link>
                     ))}
                   </div>
+                )}
+                {!b.escaleren && (
+                  <FeedbackKnoppen berichtId={b.id} helpful={b.helpful} onFeedback={geefFeedback} />
                 )}
               </div>
             )}

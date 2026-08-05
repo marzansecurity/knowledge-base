@@ -1,17 +1,26 @@
 import Link from 'next/link';
 import { KbShell } from '@/components/kb-shell';
 import { vereisBeheerder } from '@/lib/auth';
+import { telNietNuttigeAntwoorden, telOpenEscalaties } from '@/lib/data';
 
 export default async function BeheerPagina() {
   const { supabase, profiel } = await vereisBeheerder();
 
-  const [{ count: draft }, { count: published }, { count: outdated }, { count: archived }] =
-    await Promise.all([
-      supabase.from('articles').select('id', { count: 'exact', head: true }).eq('status', 'draft'),
-      supabase.from('articles').select('id', { count: 'exact', head: true }).eq('status', 'published'),
-      supabase.from('articles').select('id', { count: 'exact', head: true }).eq('status', 'outdated'),
-      supabase.from('articles').select('id', { count: 'exact', head: true }).eq('status', 'archived'),
-    ]);
+  const [
+    { count: draft },
+    { count: published },
+    { count: outdated },
+    { count: archived },
+    openEscalaties,
+    nietNuttig,
+  ] = await Promise.all([
+    supabase.from('articles').select('id', { count: 'exact', head: true }).eq('status', 'draft'),
+    supabase.from('articles').select('id', { count: 'exact', head: true }).eq('status', 'published'),
+    supabase.from('articles').select('id', { count: 'exact', head: true }).eq('status', 'outdated'),
+    supabase.from('articles').select('id', { count: 'exact', head: true }).eq('status', 'archived'),
+    telOpenEscalaties(supabase),
+    telNietNuttigeAntwoorden(supabase),
+  ]);
 
   const tegels = [
     { label: 'Concept', aantal: draft ?? 0, status: 'draft', kleur: 'bg-amber' },
@@ -46,6 +55,36 @@ export default async function BeheerPagina() {
 
         <Link href="/beheer/artikelen" className="kb-card p-4 text-[15px] font-medium text-navy hover:bg-page">
           Alle artikelen bekijken en bewerken →
+        </Link>
+
+        <Link
+          href="/beheer/escalaties"
+          className="kb-card relative overflow-hidden p-4 text-[15px] font-medium text-navy hover:bg-page"
+        >
+          {openEscalaties > 0 && <span className="absolute top-0 left-0 h-full w-1 bg-amber" />}
+          Escalatie-inbox bekijken →
+          {openEscalaties > 0 && (
+            <span className="ml-2 rounded-full bg-amber px-2 py-0.5 text-[11px] font-bold text-white">
+              {openEscalaties} open
+            </span>
+          )}
+        </Link>
+
+        <Link
+          href="/beheer/feedback"
+          className="kb-card relative overflow-hidden p-4 text-[15px] font-medium text-navy hover:bg-page"
+        >
+          {nietNuttig > 0 && <span className="absolute top-0 left-0 h-full w-1 bg-negative" />}
+          Feedback op AI-antwoorden →
+          {nietNuttig > 0 && (
+            <span className="ml-2 rounded-full bg-negative px-2 py-0.5 text-[11px] font-bold text-white">
+              {nietNuttig} niet nuttig
+            </span>
+          )}
+        </Link>
+
+        <Link href="/beheer/gebruikers" className="kb-card p-4 text-[15px] font-medium text-navy hover:bg-page">
+          Kennis-toegang per medewerker →
         </Link>
 
         <Link href="/beheer/export" className="kb-card p-4 text-[15px] font-medium text-navy hover:bg-page">

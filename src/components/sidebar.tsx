@@ -50,6 +50,16 @@ function IconChat(props: IconProps) {
   );
 }
 
+function IconChecklist(props: IconProps) {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <path d="m3.5 6 1.5 1.5L7.5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="m3.5 12 1.5 1.5 2.5-2.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10.5 6h6M10.5 12.5h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function IconSettings(props: IconProps) {
   return (
     <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
@@ -76,6 +86,7 @@ function navItems(isBeheerder: boolean): NavItem[] {
     { href: '/', label: 'Dashboard', icon: IconDashboard, exact: true },
     { href: '/bibliotheek', label: 'Bibliotheek', icon: IconBook },
     { href: '/assistent', label: 'AI-assistent', icon: IconChat },
+    { href: '/onboarding', label: 'Onboarding', icon: IconChecklist },
     ...(isBeheerder ? [{ href: '/beheer', label: 'Beheer', icon: IconSettings }] : []),
   ];
 }

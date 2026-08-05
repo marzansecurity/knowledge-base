@@ -146,12 +146,13 @@ export type Bericht = {
   role: 'user' | 'assistant';
   content: string;
   bronnen: BerichtBron[];
+  helpful: boolean | null;
 };
 
 export async function haalBerichten(supabase: SupabaseClient, conversationId: string): Promise<Bericht[]> {
   const { data, error } = await supabase
     .from('messages')
-    .select('id, role, content, cited_article_ids')
+    .select('id, role, content, cited_article_ids, helpful')
     .eq('conversation_id', conversationId)
     .order('created_at');
   if (error) throw error;
@@ -170,5 +171,128 @@ export async function haalBerichten(supabase: SupabaseClient, conversationId: st
     bronnen: (m.cited_article_ids ?? [])
       .map((id: string): BerichtBron | undefined => artikelenPerId.get(id))
       .filter((b: BerichtBron | undefined): b is BerichtBron => Boolean(b)),
+    helpful: m.helpful,
   }));
+}
+
+export type NietNuttigAntwoord = {
+  id: string;
+  vraag: string;
+  antwoord: string;
+  gebruiker: string;
+  created_at: string;
+  bronnen: BerichtBron[];
+};
+
+/** AI-antwoorden die een medewerker als "niet nuttig" heeft gemarkeerd — signaal voor zwakke artikelen. */
+export async function haalNietNuttigeAntwoorden(supabase: SupabaseClient): Promise<NietNuttigAntwoord[]> {
+  const { data, error } = await supabase
+    .from('messages')
+    .select(
+      'id, content, origin_question, cited_article_ids, created_at, conversations(user_id, profiles(display_name))',
+    )
+    .eq('helpful', false)
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+
+  const alleIds = [...new Set((data ?? []).flatMap((m) => m.cited_article_ids ?? []))];
+  let artikelenPerId = new Map<string, BerichtBron>();
+  if (alleIds.length > 0) {
+    const { data: artikelen } = await supabase.from('articles').select('id, slug, title').in('id', alleIds);
+    artikelenPerId = new Map((artikelen ?? []).map((a) => [a.id, { slug: a.slug, title: a.title }]));
+  }
+
+  return (data ?? []).map((m) => {
+    const gesprek = m.conversations as unknown as {
+      user_id: string;
+      profiles: { display_name: string } | null;
+    } | null;
+    return {
+      id: m.id,
+      vraag: m.origin_question ?? '(vraag onbekend)',
+      antwoord: m.content,
+      gebruiker: gesprek?.profiles?.display_name ?? 'Onbekend',
+      created_at: m.created_at,
+      bronnen: (m.cited_article_ids ?? [])
+        .map((id: string): BerichtBron | undefined => artikelenPerId.get(id))
+        .filter((b: BerichtBron | undefined): b is BerichtBron => Boolean(b)),
+    };
+  });
+}
+
+export type Escalatie = {
+  id: string;
+  vraag: string;
+  antwoord: string;
+  gebruiker: string;
+  created_at: string;
+  resolved_at: string | null;
+  resolution_note: string | null;
+};
+
+/** Alle geëscaleerde AI-antwoorden, nieuwste eerst. Basis voor de escalatie-inbox in beheer. */
+export async function haalEscalaties(
+  supabase: SupabaseClient,
+  filter: { alleenOpen?: boolean } = {},
+): Promise<Escalatie[]> {
+  let query = supabase
+    .from('messages')
+    .select(
+      'id, content, origin_question, created_at, resolved_at, resolution_note, conversations(user_id, profiles(display_name))',
+    )
+    .eq('escalated', true)
+    .order('created_at', { ascending: false });
+
+  if (filter.alleenOpen) query = query.is('resolved_at', null);
+
+  const { data, error } = await query;
+  if (error) throw error;
+
+  return (data ?? []).map((m) => {
+    const gesprek = m.conversations as unknown as {
+      user_id: string;
+      profiles: { display_name: string } | null;
+    } | null;
+    return {
+      id: m.id,
+      vraag: m.origin_question ?? '(vraag onbekend)',
+      antwoord: m.content,
+      gebruiker: gesprek?.profiles?.display_name ?? 'Onbekend',
+      created_at: m.created_at,
+      resolved_at: m.resolved_at,
+      resolution_note: m.resolution_note,
+    };
+  });
+}
+
+export async function telOpenEscalaties(supabase: SupabaseClient): Promise<number> {
+  const { count, error } = await supabase
+    .from('messages')
+    .select('id', { count: 'exact', head: true })
+    .eq('escalated', true)
+    .is('resolved_at', null);
+  if (error) throw error;
+  return count ?? 0;
+}
+
+export async function telNietNuttigeAntwoorden(supabase: SupabaseClient): Promise<number> {
+  const { count, error } = await supabase
+    .from('messages')
+    .select('id', { count: 'exact', head: true })
+    .eq('helpful', false);
+  if (error) throw error;
+  return count ?? 0;
+}
+
+/** Welke artikelen een medewerker al als gelezen heeft afgevinkt, voor de onboarding-checklist. */
+export async function haalGelezenArtikelIds(
+  supabase: SupabaseClient,
+  profileId: string,
+): Promise<Set<string>> {
+  const { data, error } = await supabase
+    .from('article_reads')
+    .select('article_id')
+    .eq('profile_id', profileId);
+  if (error) throw error;
+  return new Set((data ?? []).map((r) => r.article_id as string));
 }

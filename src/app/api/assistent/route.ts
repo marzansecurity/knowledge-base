@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
 import { createClient } from '@/lib/supabase/server';
 import { bouwKennisbank } from '@/lib/kennisbank';
+import { haalToegankelijkeCategorieIds } from '@/lib/toegang';
 import { ANTWOORD_SCHEMA, ESCALATIE_TEKST, SYSTEEMPROMPT_VAST } from '@/lib/prompt';
 
 type ModelAntwoord = {
@@ -19,7 +20,7 @@ export async function POST(request: Request) {
 
   const { data: profiel } = await supabase
     .from('profiles')
-    .select('active')
+    .select('active, role')
     .eq('user_id', user.id)
     .single();
   if (!profiel?.active) return NextResponse.json({ fout: 'Dit account is niet actief.' }, { status: 403 });
@@ -60,7 +61,21 @@ export async function POST(request: Request) {
     .order('created_at');
   if (geschiedenisFout) return NextResponse.json({ fout: geschiedenisFout.message }, { status: 500 });
 
-  const kennisbank = await bouwKennisbank(supabase);
+  let toegestaneCategorieIds: Set<string> | null = null;
+  if (profiel.role !== 'admin') {
+    toegestaneCategorieIds = await haalToegankelijkeCategorieIds(supabase, user.id);
+    if (toegestaneCategorieIds) {
+      // "Start hier" is voor iedereen bedoeld, ook wanneer de kennisbank verder is afgeschermd.
+      const { data: startHier } = await supabase
+        .from('categories')
+        .select('id')
+        .eq('slug', 'start-hier')
+        .maybeSingle();
+      if (startHier) toegestaneCategorieIds.add(startHier.id);
+    }
+  }
+
+  const kennisbank = await bouwKennisbank(supabase, { toegestaneCategorieIds });
 
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
@@ -109,12 +124,19 @@ export async function POST(request: Request) {
   const antwoord = moetEscaleren ? ESCALATIE_TEKST : (geparsed!.antwoord ?? ESCALATIE_TEKST);
   const bronnenDetails = moetEscaleren ? [] : geldigeBronnen.map((id) => kennisbank.artikelen.get(id)!);
 
-  await supabase.from('messages').insert({
-    conversation_id: conversationId,
-    role: 'assistant',
-    content: antwoord,
-    cited_article_ids: moetEscaleren ? [] : geldigeBronnen,
-  });
+  const { data: opgeslagenBericht, error: berichtFout } = await supabase
+    .from('messages')
+    .insert({
+      conversation_id: conversationId,
+      role: 'assistant',
+      content: antwoord,
+      cited_article_ids: moetEscaleren ? [] : geldigeBronnen,
+      escalated: moetEscaleren,
+      origin_question: vraag,
+    })
+    .select('id')
+    .single();
+  if (berichtFout) return NextResponse.json({ fout: berichtFout.message }, { status: 500 });
 
   await supabase
     .from('conversations')
@@ -123,6 +145,7 @@ export async function POST(request: Request) {
 
   return NextResponse.json({
     conversationId,
+    berichtId: opgeslagenBericht.id,
     antwoord,
     escaleren: moetEscaleren,
     bronnen: bronnenDetails,

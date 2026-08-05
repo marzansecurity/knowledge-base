@@ -23,18 +23,28 @@ export type Kennisbank = {
  *
  * Concepten, verouderde en gearchiveerde artikelen komen hier nooit in.
  */
-export async function bouwKennisbank(supabase: SupabaseClient): Promise<Kennisbank> {
+export async function bouwKennisbank(
+  supabase: SupabaseClient,
+  opties: { toegestaneCategorieIds?: Set<string> | null } = {},
+): Promise<Kennisbank> {
   const { data: artikelen, error } = await supabase
     .from('articles')
-    .select('id, slug, title, content_markdown, categories(name), article_tags(tags(name))')
+    .select('id, slug, title, content_markdown, category_id, categories(name), article_tags(tags(name))')
     .eq('status', 'published')
     .order('title');
   if (error) throw error;
 
+  const toegestaan = opties.toegestaneCategorieIds ?? null;
   const artikelMap = new Map<string, KennisbankArtikel>();
   const delen: string[] = [];
 
   for (const a of artikelen ?? []) {
+    // Ongecategoriseerde artikelen zijn altijd zichtbaar; een gecategoriseerd
+    // artikel alleen als de medewerker daarvoor toegang heeft. De aanroeper is
+    // verantwoordelijk voor het toevoegen van altijd-zichtbare categorieën
+    // (zoals "Start hier") aan toegestaneCategorieIds — zie route.ts.
+    if (toegestaan && a.category_id && !toegestaan.has(a.category_id)) continue;
+
     const categorie = (a.categories as unknown as { name: string } | null)?.name ?? null;
     const tags = ((a.article_tags as unknown as { tags: { name: string } | null }[]) ?? [])
       .map((t) => t.tags?.name)
