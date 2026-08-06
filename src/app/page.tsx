@@ -78,31 +78,34 @@ export default async function Startpagina() {
 
   return (
     <KbShell naam={profiel?.display_name ?? user.email ?? undefined} rol={profiel?.role}>
-      <main className="grid w-full max-w-[1400px] gap-4 px-8 py-8">
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <main className="kb-main grid gap-6">
+        <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
           {tegels.map((t) => (
             <Link
               key={t.label}
               href={t.href}
-              className="kb-card relative block overflow-hidden p-5 transition-shadow hover:shadow-[0_2px_10px_rgba(16,57,91,.12)]"
+              className="kb-card relative block overflow-hidden p-6 transition-shadow hover:shadow-[0_2px_10px_rgba(16,57,91,.12)]"
             >
-              <span className={`absolute top-0 left-0 h-full w-1 ${t.kleur}`} />
-              <div className="kb-label mb-1.5">{t.label}</div>
-              <div className="text-[28px] leading-tight font-bold text-navy">{t.aantal}</div>
-              <div className="mt-1.5 text-[13px] text-muted">{t.voetnoot}</div>
+              <span className={`absolute top-0 left-0 h-full w-1.5 ${t.kleur}`} />
+              <div className="kb-label mb-2">{t.label}</div>
+              <div className="text-[34px] leading-tight font-bold text-navy">{t.aantal}</div>
+              <div className="mt-2 text-[14px] text-muted">{t.voetnoot}</div>
             </Link>
           ))}
         </div>
 
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_1.4fr]">
-          <div className="kb-card p-5">
-            <div className="kb-section-title mb-3">Aan de slag</div>
-            <div className="flex flex-wrap gap-2.5">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_1.4fr]">
+          <div className="kb-card p-6">
+            <div className="kb-section-title mb-4">Aan de slag</div>
+            <div className="flex flex-wrap gap-3">
               <Link href="/bibliotheek" className="kb-chip">
                 Bibliotheek
               </Link>
               <Link href="/assistent" className="kb-chip">
                 AI-assistent
+              </Link>
+              <Link href="/onboarding" className="kb-chip">
+                Onboarding
               </Link>
               {isBeheerder && (
                 <>
@@ -115,23 +118,24 @@ export default async function Startpagina() {
                 </>
               )}
             </div>
-            <p className="mt-4 text-[14px] leading-relaxed text-muted">
-              De AI-assistent wordt in de volgende stap gebouwd, zodra er artikelen gepubliceerd zijn.
+            <p className="mt-5 text-[15px] leading-relaxed text-muted">
+              De AI-assistent beantwoordt vragen op basis van de gepubliceerde artikelen en escaleert
+              automatisch als iets niet in de kennisbank staat.
             </p>
           </div>
 
-          <div className="kb-card p-5">
-            <div className="kb-section-title mb-3">Recent bijgewerkt</div>
+          <div className="kb-card p-6">
+            <div className="kb-section-title mb-4">Recent bijgewerkt</div>
             {recenteArtikelen && recenteArtikelen.length > 0 ? (
               <ul className="divide-y divide-line">
                 {recenteArtikelen.map((a) => (
                   <li key={a.slug}>
                     <Link
                       href={`/bibliotheek/${a.slug}`}
-                      className="flex items-center justify-between gap-3 py-2.5 text-[14px] font-medium text-ink-soft hover:text-navy"
+                      className="flex items-center justify-between gap-3 py-3 text-[15px] font-medium text-ink-soft hover:text-navy"
                     >
                       <span className="truncate">{a.title}</span>
-                      <span className="shrink-0 text-[12px] text-muted">
+                      <span className="shrink-0 text-[13px] text-muted">
                         {new Date(a.updated_at).toLocaleDateString('nl-NL', {
                           day: 'numeric',
                           month: 'short',

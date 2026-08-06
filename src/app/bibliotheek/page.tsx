@@ -48,7 +48,7 @@ export default async function BibliotheekPagina({
 
   return (
     <KbShell naam={profiel?.display_name ?? user.email ?? undefined} rol={profiel?.role}>
-      <main className="mx-auto grid max-w-[1080px] grid-cols-1 gap-5 px-6 py-6 md:grid-cols-[220px_1fr]">
+      <main className="kb-main grid grid-cols-1 gap-6 md:grid-cols-[260px_1fr]">
         <div className="md:sticky md:top-[18px] md:self-start">
           <CategorieBoom
             categorieen={categorieen}
@@ -57,17 +57,15 @@ export default async function BibliotheekPagina({
           />
         </div>
 
-        <div className="space-y-4">
-          <div className="kb-card space-y-3 p-4">
+        <div className="space-y-5">
+          <div className="kb-card space-y-3 p-5">
             <Zoekbalk basisPad="/bibliotheek" />
             <TagFilter tags={alleTags} basisPad="/bibliotheek" />
           </div>
 
           <div className="flex items-center justify-between">
-            <h1 className="text-[19px] font-bold text-navy">
-              {actieveCategorie?.name ?? 'Alle artikelen'}
-            </h1>
-            <span className="text-[13px] text-muted">
+            <h1 className="kb-page-title">{actieveCategorie?.name ?? 'Alle artikelen'}</h1>
+            <span className="text-[14px] text-muted">
               {artikelen.length} {artikelen.length === 1 ? 'artikel' : 'artikelen'}
             </span>
           </div>
@@ -79,7 +77,7 @@ export default async function BibliotheekPagina({
                 : 'Nog geen gepubliceerde artikelen in deze categorie.'}
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-3.5">
+            <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
               {artikelen.map((a) => (
                 <ArtikelKaart key={a.id} artikel={a} />
               ))}

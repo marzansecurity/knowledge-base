@@ -36,26 +36,35 @@ body {
 
 @layer components {
   .kb-card {
-    @apply rounded-[10px] border border-[#eef0f4] bg-white shadow-[0_1px_4px_rgba(0,0,0,.06)];
+    @apply rounded-xl border border-[#eef0f4] bg-white shadow-[0_1px_4px_rgba(0,0,0,.06)];
+  }
+
+  /* Standaard main-container: volle breedte, consistente marge, op elke pagina. */
+  .kb-main {
+    @apply w-full px-8 py-8 lg:px-10 lg:py-10;
+  }
+
+  .kb-page-title {
+    @apply text-[26px] font-bold text-navy;
   }
 
   .kb-label {
-    @apply text-[11px] font-bold uppercase tracking-[0.08em] text-muted;
+    @apply text-[12px] font-bold uppercase tracking-[0.08em] text-muted;
   }
 
   .kb-section-title {
-    @apply text-[12px] font-bold uppercase tracking-[0.06em] text-navy;
+    @apply text-[14px] font-bold uppercase tracking-[0.06em] text-navy;
   }
 
   .kb-input {
-    @apply w-full rounded-md border border-line bg-page px-3.5 py-2.5 text-[15px] text-ink-soft
+    @apply w-full rounded-md border border-line bg-page px-4 py-3 text-[16px] text-ink-soft
            outline-none transition-colors placeholder:text-muted
            focus:border-teal focus:bg-white;
   }
 
   .kb-btn {
     @apply inline-flex items-center justify-center gap-2 rounded-md border border-line
-           bg-page px-3.5 py-2 text-[14px] font-medium text-[#4a5568]
+           bg-page px-4 py-2.5 text-[15px] font-medium text-[#4a5568]
            transition-colors hover:border-[#aab] hover:bg-[#e2e8f0]
            disabled:cursor-not-allowed disabled:opacity-50;
   }
@@ -70,8 +79,8 @@ body {
 
   /* Pill-chip, zoals de webshop-toggle in het dashboard. */
   .kb-chip {
-    @apply inline-flex items-center rounded-full border border-line bg-white px-3.5 py-[5px]
-           text-[13px] font-medium text-[#4a5568] transition-colors
+    @apply inline-flex items-center rounded-full border border-line bg-white px-4 py-1.5
+           text-[14px] font-medium text-[#4a5568] transition-colors
            hover:border-teal hover:bg-[#f0faf6];
   }
 
@@ -80,21 +89,21 @@ body {
   }
 
   .kb-empty {
-    @apply py-9 text-center text-[14px] text-[#aab];
+    @apply py-10 text-center text-[16px] text-[#aab];
   }
 
   /* Weergave van artikel-Markdown. */
   .kb-prose {
-    @apply max-w-none text-[15px] leading-relaxed text-ink-soft;
+    @apply max-w-none text-[16px] leading-relaxed text-ink-soft;
   }
   .kb-prose h1 {
-    @apply mt-0 mb-3 text-[23px] font-bold text-navy;
+    @apply mt-0 mb-3 text-[27px] font-bold text-navy;
   }
   .kb-prose h2 {
-    @apply mt-7 mb-2.5 scroll-mt-24 text-[18px] font-bold text-navy;
+    @apply mt-8 mb-3 scroll-mt-24 text-[21px] font-bold text-navy;
   }
   .kb-prose h3 {
-    @apply mt-5 mb-2 scroll-mt-24 text-[15px] font-bold tracking-[0.02em] text-navy uppercase;
+    @apply mt-6 mb-2 scroll-mt-24 text-[17px] font-bold tracking-[0.02em] text-navy uppercase;
   }
   .kb-prose p {
     @apply my-3;

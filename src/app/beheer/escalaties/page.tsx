@@ -27,17 +27,17 @@ export default async function EscalatiesPagina({
 
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
-      <main className="mx-auto grid max-w-[860px] gap-4 px-6 py-8">
-        <div className="flex items-center justify-between">
+      <main className="kb-main grid gap-6">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className="text-[20px] font-bold text-navy">Escalatie-inbox</h1>
-            <p className="mt-1 text-[13px] text-muted">
+            <h1 className="kb-page-title">Escalatie-inbox</h1>
+            <p className="mt-1.5 max-w-[720px] text-[15px] leading-relaxed text-muted">
               Vragen die de AI-assistent niet met zekerheid uit de kennisbank kon beantwoorden. Elke
               openstaande escalatie is een gat in de kennisbank — verwerk de vraag in een artikel en vink
               hem daarna af.
             </p>
           </div>
-          <div className="flex gap-1.5">
+          <div className="flex gap-2">
             <Link href="/beheer/escalaties" className={`kb-chip ${!toonAlles ? 'kb-chip-active' : ''}`}>
               Open
             </Link>
@@ -53,13 +53,13 @@ export default async function EscalatiesPagina({
           </div>
         )}
 
-        <div className="grid gap-3">
+        <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
           {escalaties.map((e) => (
-            <div key={e.id} className="kb-card p-4">
+            <div key={e.id} className="kb-card p-5">
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div>
-                  <div className="text-[15px] font-semibold text-navy">{e.vraag}</div>
-                  <div className="mt-0.5 text-[12px] text-muted">
+                  <div className="text-[16px] font-semibold text-navy">{e.vraag}</div>
+                  <div className="mt-1 text-[13px] text-muted">
                     {e.gebruiker} · {new Date(e.created_at).toLocaleDateString('nl-NL', DATUM_OPTIES)}
                   </div>
                 </div>
@@ -70,13 +70,13 @@ export default async function EscalatiesPagina({
                 )}
               </div>
 
-              <div className="mt-3 rounded-md border border-line bg-page p-3 text-[13px]">
+              <div className="mt-3 rounded-md border border-line bg-page p-4 text-[14px]">
                 <ArtikelMarkdown>{e.antwoord}</ArtikelMarkdown>
               </div>
 
               {e.resolved_at ? (
                 <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-line pt-3">
-                  <p className="text-[12px] text-ink-soft">
+                  <p className="text-[13px] text-ink-soft">
                     {e.resolution_note ? e.resolution_note : 'Afgehandeld zonder notitie.'}
                   </p>
                   <form action={heropenEscalatie.bind(null, e.id)}>
@@ -101,7 +101,7 @@ export default async function EscalatiesPagina({
           ))}
 
           {escalaties.length === 0 && (
-            <div className="kb-empty">
+            <div className="kb-card kb-empty xl:col-span-2">
               {toonAlles ? 'Nog geen escalaties geweest.' : 'Geen openstaande escalaties. Goed bezig.'}
             </div>
           )}

@@ -29,67 +29,96 @@ export default async function BeheerPagina() {
     { label: 'Gearchiveerd', aantal: archived ?? 0, status: 'archived', kleur: 'bg-muted' },
   ];
 
+  const acties = [
+    {
+      href: '/beheer/artikelen',
+      titel: 'Artikelbeheer',
+      beschrijving: 'Alle artikelen bekijken, bewerken en publiceren.',
+      kleur: 'bg-navy-mid',
+      badge: null as number | null,
+      badgeKleur: '',
+    },
+    {
+      href: '/beheer/escalaties',
+      titel: 'Escalatie-inbox',
+      beschrijving: 'Vragen die de assistent niet met zekerheid kon beantwoorden.',
+      kleur: 'bg-amber',
+      badge: openEscalaties,
+      badgeKleur: 'bg-amber',
+    },
+    {
+      href: '/beheer/feedback',
+      titel: 'Feedback op AI-antwoorden',
+      beschrijving: 'Antwoorden die een medewerker als niet nuttig markeerde.',
+      kleur: 'bg-negative',
+      badge: nietNuttig,
+      badgeKleur: 'bg-negative',
+    },
+    {
+      href: '/beheer/gebruikers',
+      titel: 'Kennis-toegang per medewerker',
+      beschrijving: 'Bepaal welke categorieën een medewerker in de AI-context krijgt.',
+      kleur: 'bg-teal',
+      badge: null,
+      badgeKleur: '',
+    },
+    {
+      href: '/beheer/export',
+      titel: 'Export & back-up',
+      beschrijving: 'Download de volledige kennisbank als zip-bestand.',
+      kleur: 'bg-orange',
+      badge: null,
+      badgeKleur: '',
+    },
+  ];
+
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
-      <main className="mx-auto grid max-w-[860px] gap-4 px-6 py-8">
+      <main className="kb-main grid gap-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-[20px] font-bold text-navy">Artikelbeheer</h1>
+          <h1 className="kb-page-title">Beheer</h1>
           <Link href="/beheer/artikelen/nieuw" className="kb-btn kb-btn-accent">
             + Nieuw artikel
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
           {tegels.map((t) => (
             <Link
               key={t.status}
               href={`/beheer/artikelen?status=${t.status}`}
-              className="kb-card relative overflow-hidden p-4 transition-shadow hover:shadow-[0_2px_10px_rgba(16,57,91,.12)]"
+              className="kb-card relative overflow-hidden p-6 transition-shadow hover:shadow-[0_2px_10px_rgba(16,57,91,.12)]"
             >
-              <span className={`absolute top-0 left-0 h-full w-1 ${t.kleur}`} />
-              <div className="kb-label mb-1">{t.label}</div>
-              <div className="text-[26px] font-bold text-navy">{t.aantal}</div>
+              <span className={`absolute top-0 left-0 h-full w-1.5 ${t.kleur}`} />
+              <div className="kb-label mb-2">{t.label}</div>
+              <div className="text-[34px] font-bold text-navy">{t.aantal}</div>
             </Link>
           ))}
         </div>
 
-        <Link href="/beheer/artikelen" className="kb-card p-4 text-[15px] font-medium text-navy hover:bg-page">
-          Alle artikelen bekijken en bewerken →
-        </Link>
-
-        <Link
-          href="/beheer/escalaties"
-          className="kb-card relative overflow-hidden p-4 text-[15px] font-medium text-navy hover:bg-page"
-        >
-          {openEscalaties > 0 && <span className="absolute top-0 left-0 h-full w-1 bg-amber" />}
-          Escalatie-inbox bekijken →
-          {openEscalaties > 0 && (
-            <span className="ml-2 rounded-full bg-amber px-2 py-0.5 text-[11px] font-bold text-white">
-              {openEscalaties} open
-            </span>
-          )}
-        </Link>
-
-        <Link
-          href="/beheer/feedback"
-          className="kb-card relative overflow-hidden p-4 text-[15px] font-medium text-navy hover:bg-page"
-        >
-          {nietNuttig > 0 && <span className="absolute top-0 left-0 h-full w-1 bg-negative" />}
-          Feedback op AI-antwoorden →
-          {nietNuttig > 0 && (
-            <span className="ml-2 rounded-full bg-negative px-2 py-0.5 text-[11px] font-bold text-white">
-              {nietNuttig} niet nuttig
-            </span>
-          )}
-        </Link>
-
-        <Link href="/beheer/gebruikers" className="kb-card p-4 text-[15px] font-medium text-navy hover:bg-page">
-          Kennis-toegang per medewerker →
-        </Link>
-
-        <Link href="/beheer/export" className="kb-card p-4 text-[15px] font-medium text-navy hover:bg-page">
-          Export & back-up →
-        </Link>
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {acties.map((a) => (
+            <Link
+              key={a.href}
+              href={a.href}
+              className="kb-card relative overflow-hidden p-6 transition-shadow hover:shadow-[0_2px_10px_rgba(16,57,91,.12)]"
+            >
+              <span className={`absolute top-0 left-0 h-full w-1.5 ${a.kleur}`} />
+              <div className="flex items-start justify-between gap-2">
+                <div className="text-[17px] font-semibold text-navy">{a.titel}</div>
+                {!!a.badge && (
+                  <span
+                    className={`shrink-0 rounded-full px-2.5 py-0.5 text-[12px] font-bold text-white ${a.badgeKleur}`}
+                  >
+                    {a.badge}
+                  </span>
+                )}
+              </div>
+              <p className="mt-2 text-[14px] leading-relaxed text-muted">{a.beschrijving}</p>
+              <span className="mt-4 inline-block text-[14px] font-medium text-navy">Bekijken →</span>
+            </Link>
+          ))}
+        </div>
       </main>
     </KbShell>
   );

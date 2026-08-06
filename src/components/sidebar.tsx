@@ -101,26 +101,26 @@ export function Sidebar({ naam, rol }: Props) {
   const isBeheerder = rol === 'admin';
 
   return (
-    <aside className="bg-navy-deep sticky top-0 flex h-screen w-[220px] shrink-0 flex-col">
+    <aside className="bg-navy-deep sticky top-0 flex h-screen w-[240px] shrink-0 flex-col">
       <Link href="/" className="flex flex-col gap-2.5 px-5 py-6">
         <span className="inline-flex w-fit rounded-lg bg-white px-3 py-2 shadow-sm">
           <Image src="/marzan-logo.svg" alt="Marzan Security" width={132} height={52} className="h-7 w-auto" priority />
         </span>
-        <span className="text-[11px] font-bold tracking-[0.1em] text-white/70 uppercase">Kennisbank</span>
+        <span className="text-[12px] font-bold tracking-[0.1em] text-white/70 uppercase">Kennisbank</span>
       </Link>
 
-      <nav className="flex-1 space-y-0.5 px-3">
+      <nav className="flex-1 space-y-1 px-3">
         {navItems(isBeheerder).map(({ href, label, icon: Icon, exact }) => {
           const actief = exact ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
           return (
             <Link
               key={href}
               href={href}
-              className={`flex items-center gap-3 rounded-md px-3 py-2.5 text-[13px] font-medium transition-colors ${
+              className={`flex items-center gap-3 rounded-md px-3 py-3 text-[14px] font-medium transition-colors ${
                 actief ? 'bg-orange text-white' : 'text-white/70 hover:bg-white/10 hover:text-white'
               }`}
             >
-              <Icon className="h-[18px] w-[18px] shrink-0" />
+              <Icon className="h-5 w-5 shrink-0" />
               {label}
             </Link>
           );
@@ -129,8 +129,8 @@ export function Sidebar({ naam, rol }: Props) {
 
       {naam && (
         <div className="border-t border-white/10 px-4 py-4">
-          <div className="truncate text-[13px] font-semibold text-white">{naam}</div>
-          <div className="text-[11px] text-white/50">{rol === 'admin' ? 'Beheerder' : 'Medewerker'}</div>
+          <div className="truncate text-[14px] font-semibold text-white">{naam}</div>
+          <div className="text-[12px] text-white/50">{rol === 'admin' ? 'Beheerder' : 'Medewerker'}</div>
           <form action="/auth/signout" method="post" className="mt-2.5">
             <button
               type="submit"

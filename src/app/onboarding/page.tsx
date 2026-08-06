@@ -31,37 +31,39 @@ export default async function OnboardingPagina() {
 
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
-      <main className="mx-auto grid max-w-[760px] gap-4 px-6 py-8">
-        <div>
-          <h1 className="text-[20px] font-bold text-navy">Onboarding-checklist</h1>
-          <p className="mt-1 text-[13px] text-muted">
-            De procedures die voor jouw rol relevant zijn. Vink een artikel af zodra je het hebt gelezen —
-            dat is alleen voor jouzelf, om je voortgang bij te houden.
-          </p>
+      <main className="kb-main grid gap-6">
+        <div className="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <h1 className="kb-page-title">Onboarding-checklist</h1>
+            <p className="mt-1.5 max-w-[640px] text-[15px] leading-relaxed text-muted">
+              De procedures die voor jouw rol relevant zijn. Vink een artikel af zodra je het hebt gelezen —
+              dat is alleen voor jouzelf, om je voortgang bij te houden.
+            </p>
+          </div>
+
+          <div className="kb-card w-full max-w-sm p-5">
+            <div className="flex items-center justify-between text-[14px]">
+              <span className="font-medium text-navy">Voortgang</span>
+              <span className="text-muted">
+                {aantalGelezen} / {alleArtikelen.length} gelezen
+              </span>
+            </div>
+            <div className="mt-2.5 h-2.5 overflow-hidden rounded-full bg-page">
+              <div className="h-full rounded-full bg-teal transition-all" style={{ width: `${voortgang}%` }} />
+            </div>
+          </div>
         </div>
 
-        <div className="kb-card p-4">
-          <div className="flex items-center justify-between text-[13px]">
-            <span className="font-medium text-navy">Voortgang</span>
-            <span className="text-muted">
-              {aantalGelezen} / {alleArtikelen.length} gelezen
-            </span>
-          </div>
-          <div className="mt-2 h-2 overflow-hidden rounded-full bg-page">
-            <div className="h-full rounded-full bg-teal transition-all" style={{ width: `${voortgang}%` }} />
-          </div>
-        </div>
-
-        <div className="grid gap-4">
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-3">
           {topCategorieen.map((c, i) => {
             const artikelen = artikelenPerCategorie[i];
             if (artikelen.length === 0) return null;
             return (
-              <div key={c.id} className="kb-card p-4">
-                <div className="kb-section-title mb-2.5">{c.name}</div>
+              <div key={c.id} className="kb-card p-5">
+                <div className="kb-section-title mb-3">{c.name}</div>
                 <ul className="divide-y divide-line">
                   {artikelen.map((a) => (
-                    <li key={a.id} className="flex items-center gap-3 py-2">
+                    <li key={a.id} className="flex items-center gap-3 py-2.5">
                       <GelezenCheckbox
                         articleId={a.id}
                         initieelGelezen={gelezenIds.has(a.id)}
@@ -69,7 +71,7 @@ export default async function OnboardingPagina() {
                       />
                       <Link
                         href={`/bibliotheek/${a.slug}`}
-                        className={`flex-1 text-[13px] ${
+                        className={`flex-1 text-[14px] ${
                           gelezenIds.has(a.id) ? 'text-muted line-through' : 'text-ink-soft hover:text-navy'
                         }`}
                       >
@@ -83,7 +85,7 @@ export default async function OnboardingPagina() {
           })}
 
           {alleArtikelen.length === 0 && (
-            <div className="kb-card kb-empty">
+            <div className="kb-card kb-empty lg:col-span-2 xl:col-span-3">
               Nog geen artikelen beschikbaar voor jouw toegang. Vraag Martijn om je kennis-toegang in te
               stellen.
             </div>

@@ -43,9 +43,9 @@ export default async function ArtikelPagina({
 
   return (
     <KbShell naam={profiel?.display_name ?? user.email ?? undefined} rol={profiel?.role}>
-      <main className="grid grid-cols-1 gap-4 px-6 py-[18px] lg:grid-cols-[1fr_220px]">
-        <article className="kb-card p-7">
-          <nav className="mb-3 text-[11px] text-muted">
+      <main className="kb-main grid grid-cols-1 gap-6 lg:grid-cols-[1fr_280px]">
+        <article className="kb-card p-9">
+          <nav className="mb-4 text-[13px] text-muted">
             <Link href="/bibliotheek" className="hover:text-navy">
               Bibliotheek
             </Link>
@@ -60,15 +60,15 @@ export default async function ArtikelPagina({
           </nav>
 
           <div className="flex items-start justify-between gap-3">
-            <h1 className="text-[22px] font-bold text-navy">{artikel.title}</h1>
+            <h1 className="text-[28px] font-bold text-navy">{artikel.title}</h1>
             {artikel.status !== 'published' && (
-              <span className="shrink-0 rounded-full border border-amber bg-[#fffbf5] px-2.5 py-1 text-[11px] font-semibold whitespace-nowrap text-amber">
+              <span className="shrink-0 rounded-full border border-amber bg-[#fffbf5] px-3 py-1 text-[13px] font-semibold whitespace-nowrap text-amber">
                 {STATUS_LABEL[artikel.status]}
               </span>
             )}
           </div>
 
-          <div className="mt-2 flex flex-wrap items-center gap-3 text-[11px] text-muted">
+          <div className="mt-3 flex flex-wrap items-center gap-3 text-[13px] text-muted">
             {artikel.reviewed_at && (
               <span>
                 Laatst gecontroleerd:{' '}
@@ -87,7 +87,7 @@ export default async function ArtikelPagina({
           </div>
 
           {tags.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-1.5">
+            <div className="mt-4 flex flex-wrap gap-2">
               {tags.map((t) => (
                 <Link key={t.id} href={`/bibliotheek?tags=${t.name}`} className="kb-chip">
                   {t.name}
@@ -96,16 +96,19 @@ export default async function ArtikelPagina({
             </div>
           )}
 
-          <hr className="mt-5 mb-1 border-line" />
+          <hr className="mt-6 mb-1 border-line" />
 
-          <ArtikelMarkdown>{artikel.content_markdown}</ArtikelMarkdown>
+          {/* Leesbare regellengte blijft beperkt, ook al is de pagina eromheen volle breedte. */}
+          <div className="mx-auto max-w-[860px]">
+            <ArtikelMarkdown>{artikel.content_markdown}</ArtikelMarkdown>
+          </div>
         </article>
 
         {koppen.length > 0 && (
           <aside className="lg:sticky lg:top-[18px] lg:self-start">
-            <div className="kb-card p-4">
-              <div className="kb-section-title mb-2.5">Inhoudsopgave</div>
-              <ul className="space-y-1.5 text-[12px]">
+            <div className="kb-card p-5">
+              <div className="kb-section-title mb-3">Inhoudsopgave</div>
+              <ul className="space-y-2 text-[13px]">
                 {koppen.map((k) => (
                   <li key={k.id} style={{ paddingLeft: k.niveau === 3 ? '12px' : '0px' }}>
                     <a href={`#${k.id}`} className="text-ink-soft hover:text-orange">
