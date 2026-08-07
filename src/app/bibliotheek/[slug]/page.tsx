@@ -44,7 +44,7 @@ export default async function ArtikelPagina({
   return (
     <KbShell naam={profiel?.display_name ?? user.email ?? undefined} rol={profiel?.role}>
       <main className="kb-main grid grid-cols-1 gap-6 lg:grid-cols-[1fr_280px]">
-        <article className="kb-card p-9">
+        <article className="kb-card p-5 sm:p-7 lg:p-9">
           <nav className="mb-4 text-[13px] text-muted">
             <Link href="/bibliotheek" className="hover:text-navy">
               Bibliotheek

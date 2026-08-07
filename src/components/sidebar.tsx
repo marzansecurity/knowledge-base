@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import type { ComponentType, SVGProps } from 'react';
+import { useState, type ComponentType, type SVGProps } from 'react';
 
 type IconProps = SVGProps<SVGSVGElement>;
 
@@ -60,6 +60,22 @@ function IconChecklist(props: IconProps) {
   );
 }
 
+function IconMenu(props: IconProps) {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <path d="M3 5.5h14M3 10h14M3 14.5h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconClose(props: IconProps) {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <path d="M5 5l10 10M15 5 5 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function IconSettings(props: IconProps) {
   return (
     <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
@@ -96,51 +112,116 @@ type Props = {
   rol?: string;
 };
 
+function NavLinks({
+  isBeheerder,
+  pathname,
+  onNavigeer,
+}: {
+  isBeheerder: boolean;
+  pathname: string;
+  onNavigeer?: () => void;
+}) {
+  return (
+    <nav className="flex-1 space-y-1 px-3">
+      {navItems(isBeheerder).map(({ href, label, icon: Icon, exact }) => {
+        const actief = exact ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
+        return (
+          <Link
+            key={href}
+            href={href}
+            onClick={onNavigeer}
+            className={`flex items-center gap-3 rounded-md px-3 py-3 text-[14px] font-medium transition-colors ${
+              actief ? 'bg-orange text-white' : 'text-white/70 hover:bg-white/10 hover:text-white'
+            }`}
+          >
+            <Icon className="h-5 w-5 shrink-0" />
+            {label}
+          </Link>
+        );
+      })}
+    </nav>
+  );
+}
+
+function AccountVoetnoot({ naam, rol }: Props) {
+  if (!naam) return null;
+  return (
+    <div className="border-t border-white/10 px-4 py-4">
+      <div className="truncate text-[14px] font-semibold text-white">{naam}</div>
+      <div className="text-[12px] text-white/50">{rol === 'admin' ? 'Beheerder' : 'Medewerker'}</div>
+      <form action="/auth/signout" method="post" className="mt-2.5">
+        <button
+          type="submit"
+          className="w-full rounded-md border border-white/15 px-3 py-1.5 text-[12px] font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+        >
+          Uitloggen
+        </button>
+      </form>
+    </div>
+  );
+}
+
 export function Sidebar({ naam, rol }: Props) {
   const pathname = usePathname();
   const isBeheerder = rol === 'admin';
+  const [open, setOpen] = useState(false);
 
   return (
-    <aside className="bg-navy-deep sticky top-0 flex h-screen w-[240px] shrink-0 flex-col">
-      <Link href="/" className="flex flex-col gap-2.5 px-5 py-6">
-        <span className="inline-flex w-fit rounded-lg bg-white px-3 py-2 shadow-sm">
-          <Image src="/marzan-logo.svg" alt="Marzan Security" width={132} height={52} className="h-7 w-auto" priority />
-        </span>
-        <span className="text-[12px] font-bold tracking-[0.1em] text-white/70 uppercase">Kennisbank</span>
-      </Link>
+    <>
+      {/* Mobiele topbalk: vervangt de vaste zijbalk op smalle schermen. */}
+      <div className="bg-navy-deep sticky top-0 z-40 flex items-center justify-between px-4 py-3 md:hidden">
+        <Link href="/" className="flex items-center gap-2.5">
+          <span className="inline-flex w-fit rounded-md bg-white px-2 py-1.5 shadow-sm">
+            <Image src="/marzan-logo.svg" alt="Marzan Security" width={132} height={52} className="h-5 w-auto" />
+          </span>
+          <span className="text-[11px] font-bold tracking-[0.1em] text-white/70 uppercase">Kennisbank</span>
+        </Link>
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          aria-label="Menu openen"
+          className="rounded-md p-2 text-white/80 hover:bg-white/10 hover:text-white"
+        >
+          <IconMenu className="h-6 w-6" />
+        </button>
+      </div>
 
-      <nav className="flex-1 space-y-1 px-3">
-        {navItems(isBeheerder).map(({ href, label, icon: Icon, exact }) => {
-          const actief = exact ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
-          return (
-            <Link
-              key={href}
-              href={href}
-              className={`flex items-center gap-3 rounded-md px-3 py-3 text-[14px] font-medium transition-colors ${
-                actief ? 'bg-orange text-white' : 'text-white/70 hover:bg-white/10 hover:text-white'
-              }`}
-            >
-              <Icon className="h-5 w-5 shrink-0" />
-              {label}
-            </Link>
-          );
-        })}
-      </nav>
-
-      {naam && (
-        <div className="border-t border-white/10 px-4 py-4">
-          <div className="truncate text-[14px] font-semibold text-white">{naam}</div>
-          <div className="text-[12px] text-white/50">{rol === 'admin' ? 'Beheerder' : 'Medewerker'}</div>
-          <form action="/auth/signout" method="post" className="mt-2.5">
-            <button
-              type="submit"
-              className="w-full rounded-md border border-white/15 px-3 py-1.5 text-[12px] font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
-            >
-              Uitloggen
-            </button>
-          </form>
+      {/* Overlay + uitklapmenu, alleen op smalle schermen. */}
+      {open && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setOpen(false)} />
+          <aside className="bg-navy-deep absolute top-0 left-0 flex h-full w-[280px] max-w-[80vw] flex-col shadow-xl">
+            <div className="flex items-center justify-between px-5 py-6">
+              <span className="inline-flex w-fit rounded-lg bg-white px-3 py-2 shadow-sm">
+                <Image src="/marzan-logo.svg" alt="Marzan Security" width={132} height={52} className="h-7 w-auto" />
+              </span>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="Menu sluiten"
+                className="rounded-md p-2 text-white/80 hover:bg-white/10 hover:text-white"
+              >
+                <IconClose className="h-5 w-5" />
+              </button>
+            </div>
+            <NavLinks isBeheerder={isBeheerder} pathname={pathname} onNavigeer={() => setOpen(false)} />
+            <AccountVoetnoot naam={naam} rol={rol} />
+          </aside>
         </div>
       )}
-    </aside>
+
+      {/* Vaste zijbalk op middelgrote en grote schermen. */}
+      <aside className="bg-navy-deep sticky top-0 hidden h-screen w-[240px] shrink-0 flex-col md:flex">
+        <Link href="/" className="flex flex-col gap-2.5 px-5 py-6">
+          <span className="inline-flex w-fit rounded-lg bg-white px-3 py-2 shadow-sm">
+            <Image src="/marzan-logo.svg" alt="Marzan Security" width={132} height={52} className="h-7 w-auto" priority />
+          </span>
+          <span className="text-[12px] font-bold tracking-[0.1em] text-white/70 uppercase">Kennisbank</span>
+        </Link>
+
+        <NavLinks isBeheerder={isBeheerder} pathname={pathname} />
+        <AccountVoetnoot naam={naam} rol={rol} />
+      </aside>
+    </>
   );
 }

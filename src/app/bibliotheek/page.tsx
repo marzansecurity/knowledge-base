@@ -63,7 +63,7 @@ export default async function BibliotheekPagina({
             <TagFilter tags={alleTags} basisPad="/bibliotheek" />
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-2">
             <h1 className="kb-page-title">{actieveCategorie?.name ?? 'Alle artikelen'}</h1>
             <span className="text-[14px] text-muted">
               {artikelen.length} {artikelen.length === 1 ? 'artikel' : 'artikelen'}

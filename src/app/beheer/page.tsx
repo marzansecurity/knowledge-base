@@ -75,7 +75,7 @@ export default async function BeheerPagina() {
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
       <main className="kb-main grid gap-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <h1 className="kb-page-title">Beheer</h1>
           <Link href="/beheer/artikelen/nieuw" className="kb-btn kb-btn-accent">
             + Nieuw artikel
