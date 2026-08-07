@@ -79,13 +79,13 @@ export default async function Startpagina() {
 
   return (
     <KbShell naam={profiel?.display_name ?? user.email ?? undefined} rol={profiel?.role}>
-      <main className="kb-main grid gap-5">
-        <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
+      <main className="kb-main grid gap-3.5">
+        <div className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
           {tegels.map((t) => (
             <Link
               key={t.label}
               href={t.href}
-              className="kb-card relative block overflow-hidden p-5 transition-shadow hover:shadow-[0_2px_10px_rgba(16,57,91,.12)]"
+              className="kb-card relative block overflow-hidden p-3.5 transition-shadow hover:shadow-[0_2px_10px_rgba(16,57,91,.12)]"
             >
               <span className={`absolute top-0 left-0 h-full w-1.5 ${t.kleur}`} />
               <div className="kb-label mb-1.5">{t.label}</div>
@@ -95,8 +95,8 @@ export default async function Startpagina() {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_1.4fr]">
-          <div className="kb-card p-5">
+        <div className="grid grid-cols-1 gap-3.5 lg:grid-cols-[1fr_1.4fr]">
+          <div className="kb-card p-3.5">
             <div className="kb-section-title mb-4">Aan de slag</div>
             <div className="flex flex-wrap gap-3">
               <Link href="/bibliotheek" className="kb-chip">
@@ -125,7 +125,7 @@ export default async function Startpagina() {
             </p>
           </div>
 
-          <div className="kb-card p-5">
+          <div className="kb-card p-3.5">
             <div className="kb-section-title mb-4">Recent bijgewerkt</div>
             {recenteArtikelen && recenteArtikelen.length > 0 ? (
               <ul className="divide-y divide-line">

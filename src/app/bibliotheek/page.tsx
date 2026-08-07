@@ -48,7 +48,7 @@ export default async function BibliotheekPagina({
 
   return (
     <KbShell naam={profiel?.display_name ?? user.email ?? undefined} rol={profiel?.role}>
-      <main className="kb-main grid grid-cols-1 gap-5 md:grid-cols-[240px_1fr]">
+      <main className="kb-main grid grid-cols-1 gap-3.5 md:grid-cols-[240px_1fr]">
         <div className="md:sticky md:top-[18px] md:self-start">
           <CategorieBoom
             categorieen={categorieen}

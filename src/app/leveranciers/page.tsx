@@ -32,7 +32,7 @@ export default async function LeveranciersPagina({
 
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
-      <main className="kb-main grid gap-5">
+      <main className="kb-main grid gap-3.5">
         <div>
           <h1 className="kb-page-title">Leveranciers</h1>
           <p className="mt-1.5 max-w-[720px] text-[13px] leading-relaxed text-muted">

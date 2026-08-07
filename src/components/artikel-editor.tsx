@@ -191,7 +191,7 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
 
   return (
     <div className="space-y-3.5">
-      <div className="kb-card space-y-3 p-5">
+      <div className="kb-card space-y-3 p-3.5">
         <div className="flex items-start justify-between gap-4">
           <input
             value={titel}
@@ -240,7 +240,7 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
           ))}
         </div>
 
-        <div className="p-5">
+        <div className="p-3.5">
           {tab === 'bewerken' && (
             <div className="space-y-2">
               <div className="flex flex-wrap items-center gap-2">
@@ -292,7 +292,7 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
           )}
 
           {tab === 'voorbeeld' && (
-            <div className="min-h-[520px] rounded-md border border-line p-5">
+            <div className="min-h-[520px] rounded-md border border-line p-3.5">
               {inhoud.trim() ? (
                 <ArtikelMarkdown>{inhoud}</ArtikelMarkdown>
               ) : (

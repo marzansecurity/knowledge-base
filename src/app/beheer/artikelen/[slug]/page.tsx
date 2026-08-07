@@ -34,7 +34,7 @@ export default async function ArtikelBewerkenPagina({
 
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
-      <main className="mx-auto max-w-4xl px-6 py-[18px]">
+      <main className="mx-auto max-w-4xl px-4 py-[18px]">
         <ArtikelEditor artikel={artikel} categorieen={categorieen} revisies={revisies} />
       </main>
     </KbShell>
