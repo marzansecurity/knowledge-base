@@ -32,8 +32,8 @@ export default async function ArtikelenBeheerPagina({
 
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
-      <main className="kb-main grid gap-3.5">
-        <div className="flex flex-wrap items-center justify-between gap-4">
+      <main className="kb-main grid gap-2.5">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap gap-2">
             {STATUSSEN.map((s) => {
               const actief = (status ?? 'alle') === s.waarde;
@@ -57,10 +57,10 @@ export default async function ArtikelenBeheerPagina({
           <table className="w-full border-collapse text-[14px]">
             <thead>
               <tr className="border-b border-line bg-page">
-                <th className="px-3.5 py-3 text-left text-[12px] font-semibold text-muted">Titel</th>
-                <th className="px-3.5 py-3 text-left text-[12px] font-semibold text-muted">Categorie</th>
-                <th className="px-3.5 py-3 text-left text-[12px] font-semibold text-muted">Status</th>
-                <th className="px-3.5 py-3 text-left text-[12px] font-semibold text-muted">
+                <th className="px-2.5 py-3 text-left text-[12px] font-semibold text-muted">Titel</th>
+                <th className="px-2.5 py-3 text-left text-[12px] font-semibold text-muted">Categorie</th>
+                <th className="px-2.5 py-3 text-left text-[12px] font-semibold text-muted">Status</th>
+                <th className="px-2.5 py-3 text-left text-[12px] font-semibold text-muted">
                   Laatst gewijzigd
                 </th>
               </tr>
@@ -68,18 +68,18 @@ export default async function ArtikelenBeheerPagina({
             <tbody>
               {(artikelen ?? []).map((a) => (
                 <tr key={a.id} className="border-b border-line last:border-0 hover:bg-page">
-                  <td className="px-3.5 py-3">
+                  <td className="px-2.5 py-3">
                     <Link href={`/beheer/artikelen/${a.slug}`} className="font-medium text-navy hover:underline">
                       {a.title}
                     </Link>
                   </td>
-                  <td className="px-3.5 py-3 text-ink-soft">
+                  <td className="px-2.5 py-3 text-ink-soft">
                     {(a.categories as unknown as { name: string } | null)?.name ?? '—'}
                   </td>
-                  <td className="px-3.5 py-3">
+                  <td className="px-2.5 py-3">
                     <StatusBadge status={a.status} />
                   </td>
-                  <td className="px-3.5 py-3 text-muted">
+                  <td className="px-2.5 py-3 text-muted">
                     {new Date(a.updated_at).toLocaleDateString('nl-NL', {
                       day: 'numeric',
                       month: 'short',

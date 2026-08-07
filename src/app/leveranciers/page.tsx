@@ -32,7 +32,7 @@ export default async function LeveranciersPagina({
 
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
-      <main className="kb-main grid gap-3.5">
+      <main className="kb-main grid gap-2.5">
         <div>
           <h1 className="kb-page-title">Leveranciers</h1>
           <p className="mt-1.5 max-w-[720px] text-[13px] leading-relaxed text-muted">
@@ -41,7 +41,7 @@ export default async function LeveranciersPagina({
           </p>
         </div>
 
-        <div className="kb-card grid gap-2.5 p-4">
+        <div className="kb-card grid gap-2.5 p-3">
           <MultiChipFilter
             label="Land"
             paramNaam="land"
@@ -58,7 +58,7 @@ export default async function LeveranciersPagina({
 
         {magBewerken && <NieuweLeverancierFormulier />}
 
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
           {leveranciers.map((s) =>
             magBewerken ? (
               <LeverancierBewerkKaart key={s.id} leverancier={s} />
@@ -108,7 +108,7 @@ function TypeChips({ types }: { types: SupplierType[] }) {
 
 function JaNee({ waar }: { waar: boolean }) {
   return (
-    <span className={`text-[13px] font-semibold ${waar ? 'text-[#1d5c46]' : 'text-muted'}`}>
+    <span className={`text-[12px] font-semibold ${waar ? 'text-[#1d5c46]' : 'text-muted'}`}>
       {waar ? 'Ja' : 'Nee'}
     </span>
   );
@@ -116,15 +116,15 @@ function JaNee({ waar }: { waar: boolean }) {
 
 function LeverancierKaart({ leverancier: s }: { leverancier: Supplier }) {
   return (
-    <div className="kb-card p-4">
+    <div className="kb-card p-2.5">
       <div className="flex flex-wrap items-start justify-between gap-2">
-        <div className="text-[15px] font-semibold text-navy">{s.name}</div>
+        <div className="text-[13px] font-semibold text-navy">{s.name}</div>
         <div className="flex flex-col items-end gap-1">
           <LandenChips countries={s.countries} />
           <TypeChips types={s.types} />
         </div>
       </div>
-      <div className="mt-2 grid grid-cols-3 gap-3 text-[13px]">
+      <div className="mt-1.5 grid grid-cols-3 gap-2 text-[12px]">
         <div>
           <div className="kb-label">Vervoerder</div>
           <div className="text-ink-soft">{s.carrier || '—'}</div>
@@ -138,57 +138,57 @@ function LeverancierKaart({ leverancier: s }: { leverancier: Supplier }) {
           <JaNee waar={s.tracking_automatic} />
         </div>
       </div>
-      {s.notes && <p className="mt-2 text-[13px] text-muted">{s.notes}</p>}
+      {s.notes && <p className="mt-1.5 text-[12px] text-muted">{s.notes}</p>}
     </div>
   );
 }
 
 function LeverancierBewerkKaart({ leverancier: s }: { leverancier: Supplier }) {
   return (
-    <form action={bewaarLeverancier.bind(null, s.id)} className="kb-card p-4">
-      <div className="flex flex-wrap items-start justify-between gap-3">
+    <form action={bewaarLeverancier.bind(null, s.id)} className="kb-card p-2.5">
+      <div className="flex flex-wrap items-start justify-between gap-2">
         <input name="name" defaultValue={s.name} required className="kb-input w-auto min-w-[160px] flex-1" />
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1.5">
           {COUNTRIES.map((c) => (
-            <label key={c} className="flex items-center gap-1 text-[12px] text-ink-soft">
-              <input type="checkbox" name={`country_${c}`} defaultChecked={s.countries.includes(c)} className="h-3.5 w-3.5" />
+            <label key={c} className="flex items-center gap-1 text-[11px] text-ink-soft">
+              <input type="checkbox" name={`country_${c}`} defaultChecked={s.countries.includes(c)} className="h-3 w-3" />
               {c}
             </label>
           ))}
         </div>
       </div>
 
-      <div className="mt-2 flex flex-wrap gap-3">
+      <div className="mt-1.5 flex flex-wrap gap-2">
         {SUPPLIER_TYPES.map((t) => (
-          <label key={t} className="flex items-center gap-1.5 text-[12px] text-ink-soft">
-            <input type="checkbox" name={`type_${t}`} defaultChecked={s.types.includes(t)} className="h-3.5 w-3.5" />
+          <label key={t} className="flex items-center gap-1 text-[11px] text-ink-soft">
+            <input type="checkbox" name={`type_${t}`} defaultChecked={s.types.includes(t)} className="h-3 w-3" />
             {SUPPLIER_TYPE_LABEL[t]}
           </label>
         ))}
       </div>
 
-      <div className="mt-2.5 grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+      <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-3">
         <div>
-          <label className="kb-label mb-1 block">Vervoerder</label>
+          <label className="kb-label mb-0.5 block">Vervoerder</label>
           <input name="carrier" defaultValue={s.carrier ?? ''} className="kb-input" placeholder="bv. DPD" />
         </div>
-        <label className="mt-5 flex items-center gap-1.5 text-[13px] text-ink-soft">
+        <label className="mt-4 flex items-center gap-1.5 text-[12px] text-ink-soft">
           <input type="checkbox" name="tracking_available" defaultChecked={s.tracking_available} className="h-3.5 w-3.5" />
           Tracking beschikbaar
         </label>
-        <label className="mt-5 flex items-center gap-1.5 text-[13px] text-ink-soft">
+        <label className="mt-4 flex items-center gap-1.5 text-[12px] text-ink-soft">
           <input type="checkbox" name="tracking_automatic" defaultChecked={s.tracking_automatic} className="h-3.5 w-3.5" />
           Automatisch bij ons binnen
         </label>
       </div>
 
-      <div className="mt-2.5">
-        <label className="kb-label mb-1 block">Opmerkingen</label>
+      <div className="mt-2">
+        <label className="kb-label mb-0.5 block">Opmerkingen</label>
         <input name="notes" defaultValue={s.notes ?? ''} className="kb-input" />
       </div>
 
-      <div className="mt-3 flex items-center justify-between border-t border-line pt-3">
-        <span className="text-[12px] text-muted">
+      <div className="mt-2 flex items-center justify-between border-t border-line pt-2">
+        <span className="text-[11px] text-muted">
           {s.reviewed_at
             ? `Laatst gecontroleerd: ${new Date(s.reviewed_at).toLocaleDateString('nl-NL', {
                 day: 'numeric',
@@ -197,7 +197,7 @@ function LeverancierBewerkKaart({ leverancier: s }: { leverancier: Supplier }) {
               })}`
             : 'Nog niet gecontroleerd'}
         </span>
-        <div className="flex gap-2">
+        <div className="flex gap-1.5">
           <button type="submit" className="kb-btn kb-btn-primary">
             Opslaan
           </button>
@@ -212,38 +212,38 @@ function LeverancierBewerkKaart({ leverancier: s }: { leverancier: Supplier }) {
 
 function NieuweLeverancierFormulier() {
   return (
-    <form action={maakLeverancier} className="kb-card p-4">
-      <div className="kb-section-title mb-2.5">Nieuwe leverancier toevoegen</div>
-      <div className="flex flex-wrap items-end gap-3">
+    <form action={maakLeverancier} className="kb-card p-2.5">
+      <div className="kb-section-title mb-2">Nieuwe leverancier toevoegen</div>
+      <div className="flex flex-wrap items-end gap-2">
         <div className="min-w-[180px] flex-1">
-          <label className="kb-label mb-1 block">Naam</label>
+          <label className="kb-label mb-0.5 block">Naam</label>
           <input name="name" required className="kb-input" placeholder="Leveranciersnaam" />
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-1.5">
           {COUNTRIES.map((c) => (
-            <label key={c} className="flex items-center gap-1 text-[12px] text-ink-soft">
-              <input type="checkbox" name={`country_${c}`} className="h-3.5 w-3.5" />
+            <label key={c} className="flex items-center gap-1 text-[11px] text-ink-soft">
+              <input type="checkbox" name={`country_${c}`} className="h-3 w-3" />
               {c}
             </label>
           ))}
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-1.5">
           {SUPPLIER_TYPES.map((t) => (
-            <label key={t} className="flex items-center gap-1 text-[12px] text-ink-soft">
-              <input type="checkbox" name={`type_${t}`} className="h-3.5 w-3.5" />
+            <label key={t} className="flex items-center gap-1 text-[11px] text-ink-soft">
+              <input type="checkbox" name={`type_${t}`} className="h-3 w-3" />
               {SUPPLIER_TYPE_LABEL[t]}
             </label>
           ))}
         </div>
         <div className="min-w-[140px]">
-          <label className="kb-label mb-1 block">Vervoerder</label>
+          <label className="kb-label mb-0.5 block">Vervoerder</label>
           <input name="carrier" className="kb-input" placeholder="bv. PostNL" />
         </div>
-        <label className="flex items-center gap-1.5 text-[13px] text-ink-soft">
+        <label className="flex items-center gap-1.5 text-[12px] text-ink-soft">
           <input type="checkbox" name="tracking_available" className="h-3.5 w-3.5" />
           Tracking
         </label>
-        <label className="flex items-center gap-1.5 text-[13px] text-ink-soft">
+        <label className="flex items-center gap-1.5 text-[12px] text-ink-soft">
           <input type="checkbox" name="tracking_automatic" className="h-3.5 w-3.5" />
           Automatisch
         </label>

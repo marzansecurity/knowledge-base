@@ -48,7 +48,7 @@ export default async function BibliotheekPagina({
 
   return (
     <KbShell naam={profiel?.display_name ?? user.email ?? undefined} rol={profiel?.role}>
-      <main className="kb-main grid grid-cols-1 gap-3.5 md:grid-cols-[240px_1fr]">
+      <main className="kb-main grid grid-cols-1 gap-2.5 md:grid-cols-[240px_1fr]">
         <div className="md:sticky md:top-[18px] md:self-start">
           <CategorieBoom
             categorieen={categorieen}
@@ -58,7 +58,7 @@ export default async function BibliotheekPagina({
         </div>
 
         <div className="space-y-4">
-          <div className="kb-card space-y-3 p-4">
+          <div className="kb-card space-y-3 p-3">
             <Zoekbalk basisPad="/bibliotheek" />
             <TagFilter tags={alleTags} basisPad="/bibliotheek" />
           </div>
@@ -77,7 +77,7 @@ export default async function BibliotheekPagina({
                 : 'Nog geen gepubliceerde artikelen in deze categorie.'}
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+            <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
               {artikelen.map((a) => (
                 <ArtikelKaart key={a.id} artikel={a} />
               ))}

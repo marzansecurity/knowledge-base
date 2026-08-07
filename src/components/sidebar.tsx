@@ -143,11 +143,11 @@ function NavLinks({
             key={href}
             href={href}
             onClick={onNavigeer}
-            className={`flex items-center gap-2.5 rounded-md px-2.5 py-2 text-[13px] font-medium transition-colors ${
+            className={`flex items-center gap-2 rounded-md px-2 py-[7px] text-[12px] font-medium transition-colors ${
               actief ? 'bg-orange text-white' : 'text-white/70 hover:bg-white/10 hover:text-white'
             }`}
           >
-            <Icon className="h-[17px] w-[17px] shrink-0" />
+            <Icon className="h-4 w-4 shrink-0" />
             {label}
           </Link>
         );
@@ -159,19 +159,19 @@ function NavLinks({
 function AccountVoetnoot({ naam, rol }: Props) {
   if (!naam) return null;
   return (
-    <div className="border-t border-white/10 px-3.5 py-3.5">
-      <div className="truncate text-[13px] font-semibold text-white">{naam}</div>
-      <div className="text-[11px] text-white/50">{rol ? ROLE_LABEL[rol] : ''}</div>
+    <div className="border-t border-white/10 px-3 py-3">
+      <div className="truncate text-[12px] font-semibold text-white">{naam}</div>
+      <div className="text-[10px] text-white/50">{rol ? ROLE_LABEL[rol] : ''}</div>
       <Link
         href="/account"
-        className="mt-2 block w-full rounded-md border border-white/15 px-2.5 py-1 text-center text-[11px] font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+        className="mt-1.5 block w-full rounded-md border border-white/15 px-2 py-[3px] text-center text-[10px] font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
       >
         Mijn account
       </Link>
-      <form action="/auth/signout" method="post" className="mt-1.5">
+      <form action="/auth/signout" method="post" className="mt-1">
         <button
           type="submit"
-          className="w-full rounded-md border border-white/15 px-2.5 py-1 text-[11px] font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+          className="w-full rounded-md border border-white/15 px-2 py-[3px] text-[10px] font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
         >
           Uitloggen
         </button>
@@ -188,7 +188,7 @@ export function Sidebar({ naam, rol }: Props) {
   return (
     <>
       {/* Mobiele topbalk: vervangt de vaste zijbalk op smalle schermen. */}
-      <div className="bg-navy-deep sticky top-0 z-40 flex items-center justify-between px-4 py-3 md:hidden">
+      <div className="bg-navy-deep sticky top-0 z-40 flex items-center justify-between px-3 py-3 md:hidden">
         <Link href="/" className="flex items-center gap-2.5">
           <span className="inline-flex w-fit rounded-md bg-white px-2 py-1.5 shadow-sm">
             <Image src="/marzan-logo.svg" alt="Marzan Security" width={132} height={52} className="h-5 w-auto" />
@@ -210,7 +210,7 @@ export function Sidebar({ naam, rol }: Props) {
         <div className="fixed inset-0 z-50 md:hidden">
           <div className="absolute inset-0 bg-black/40" onClick={() => setOpen(false)} />
           <aside className="bg-navy-deep absolute top-0 left-0 flex h-full w-[280px] max-w-[80vw] flex-col shadow-xl">
-            <div className="flex items-center justify-between px-3.5 py-4">
+            <div className="flex items-center justify-between px-2.5 py-3">
               <span className="inline-flex w-fit rounded-lg bg-white px-3 py-2 shadow-sm">
                 <Image src="/marzan-logo.svg" alt="Marzan Security" width={132} height={52} className="h-7 w-auto" />
               </span>
@@ -230,12 +230,12 @@ export function Sidebar({ naam, rol }: Props) {
       )}
 
       {/* Vaste zijbalk op middelgrote en grote schermen. */}
-      <aside className="bg-navy-deep sticky top-0 hidden h-screen w-[200px] shrink-0 flex-col md:flex">
-        <Link href="/" className="flex flex-col gap-2 px-4 py-4">
-          <span className="inline-flex w-fit rounded-md bg-white px-2.5 py-1.5 shadow-sm">
-            <Image src="/marzan-logo.svg" alt="Marzan Security" width={132} height={52} className="h-6 w-auto" priority />
+      <aside className="bg-navy-deep sticky top-0 hidden h-screen w-[176px] shrink-0 flex-col md:flex">
+        <Link href="/" className="flex flex-col gap-1.5 px-3 py-3">
+          <span className="inline-flex w-fit rounded-md bg-white px-2 py-1 shadow-sm">
+            <Image src="/marzan-logo.svg" alt="Marzan Security" width={132} height={52} className="h-5 w-auto" priority />
           </span>
-          <span className="text-[11px] font-bold tracking-[0.1em] text-white/70 uppercase">Kennisbank</span>
+          <span className="text-[10px] font-bold tracking-[0.08em] text-white/70 uppercase">Kennisbank</span>
         </Link>
 
         <NavLinks isBeheerder={magBeheerMenuZien} pathname={pathname} />

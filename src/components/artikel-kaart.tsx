@@ -23,7 +23,7 @@ export function ArtikelKaart({
   toonStatus?: boolean;
 }) {
   return (
-    <Link href={`/bibliotheek/${artikel.slug}`} className="kb-card block p-4 transition-shadow hover:shadow-[0_2px_10px_rgba(16,57,91,.12)]">
+    <Link href={`/bibliotheek/${artikel.slug}`} className="kb-card block p-3 transition-shadow hover:shadow-[0_2px_10px_rgba(16,57,91,.12)]">
       <div className="flex items-start justify-between gap-3">
         <h3 className="text-[16px] font-semibold text-navy">{artikel.title}</h3>
         {toonStatus && (

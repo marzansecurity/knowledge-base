@@ -122,7 +122,7 @@ export function AssistentChat({
 
   return (
     <div className="flex min-h-[75vh] flex-col">
-      <div className="kb-card flex-1 space-y-4 overflow-y-auto p-3.5">
+      <div className="kb-card flex-1 space-y-4 overflow-y-auto p-2.5">
         {berichten.length === 0 && (
           <div className="kb-empty mx-auto max-w-[560px]">
             Stel een vraag over een procedure. Het antwoord verwijst altijd naar het gebruikte artikel — en
@@ -136,10 +136,10 @@ export function AssistentChat({
             className={b.role === 'user' ? 'ml-auto max-w-[600px]' : 'max-w-[680px]'}
           >
             {b.role === 'user' ? (
-              <div className="rounded-lg bg-navy px-4 py-2.5 text-[13px] text-white">{b.content}</div>
+              <div className="rounded-lg bg-navy px-3 py-2.5 text-[13px] text-white">{b.content}</div>
             ) : (
               <div
-                className={`rounded-lg border p-4 ${
+                className={`rounded-lg border p-3 ${
                   b.escaleren ? 'border-amber bg-[#fffbf5]' : 'border-line bg-white'
                 }`}
               >
@@ -167,7 +167,7 @@ export function AssistentChat({
       </div>
 
       {fout && (
-        <p className="mt-3 rounded-md border border-[#f5c6c2] bg-[#fdf0ef] px-4 py-2.5 text-[13px] text-negative">
+        <p className="mt-3 rounded-md border border-[#f5c6c2] bg-[#fdf0ef] px-3 py-2.5 text-[13px] text-negative">
           {fout}
         </p>
       )}
