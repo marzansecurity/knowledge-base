@@ -43,8 +43,8 @@ export default async function ArtikelPagina({
 
   return (
     <KbShell naam={profiel?.display_name ?? user.email ?? undefined} rol={profiel?.role}>
-      <main className="kb-main grid grid-cols-1 gap-6 lg:grid-cols-[1fr_280px]">
-        <article className="kb-card p-5 sm:p-7 lg:p-9">
+      <main className="kb-main grid grid-cols-1 gap-5 lg:grid-cols-[1fr_260px]">
+        <article className="kb-card p-4 sm:p-6 lg:p-7">
           <nav className="mb-4 text-[13px] text-muted">
             <Link href="/bibliotheek" className="hover:text-navy">
               Bibliotheek
@@ -60,7 +60,7 @@ export default async function ArtikelPagina({
           </nav>
 
           <div className="flex items-start justify-between gap-3">
-            <h1 className="text-[28px] font-bold text-navy">{artikel.title}</h1>
+            <h1 className="text-[24px] font-bold text-navy">{artikel.title}</h1>
             {artikel.status !== 'published' && (
               <span className="shrink-0 rounded-full border border-amber bg-[#fffbf5] px-3 py-1 text-[13px] font-semibold whitespace-nowrap text-amber">
                 {STATUS_LABEL[artikel.status]}

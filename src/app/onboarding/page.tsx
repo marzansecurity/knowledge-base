@@ -31,18 +31,18 @@ export default async function OnboardingPagina() {
 
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
-      <main className="kb-main grid gap-6">
+      <main className="kb-main grid gap-5">
         <div className="flex flex-wrap items-start justify-between gap-6">
           <div>
             <h1 className="kb-page-title">Onboarding-checklist</h1>
-            <p className="mt-1.5 max-w-[640px] text-[15px] leading-relaxed text-muted">
+            <p className="mt-1.5 max-w-[640px] text-[13px] leading-relaxed text-muted">
               De procedures die voor jouw rol relevant zijn. Vink een artikel af zodra je het hebt gelezen —
               dat is alleen voor jouzelf, om je voortgang bij te houden.
             </p>
           </div>
 
-          <div className="kb-card w-full max-w-sm p-5">
-            <div className="flex items-center justify-between text-[14px]">
+          <div className="kb-card w-full max-w-sm p-4">
+            <div className="flex items-center justify-between text-[13px]">
               <span className="font-medium text-navy">Voortgang</span>
               <span className="text-muted">
                 {aantalGelezen} / {alleArtikelen.length} gelezen
@@ -59,11 +59,11 @@ export default async function OnboardingPagina() {
             const artikelen = artikelenPerCategorie[i];
             if (artikelen.length === 0) return null;
             return (
-              <div key={c.id} className="kb-card p-5">
-                <div className="kb-section-title mb-3">{c.name}</div>
+              <div key={c.id} className="kb-card p-4">
+                <div className="kb-section-title mb-2.5">{c.name}</div>
                 <ul className="divide-y divide-line">
                   {artikelen.map((a) => (
-                    <li key={a.id} className="flex items-center gap-3 py-2.5">
+                    <li key={a.id} className="flex items-center gap-2.5 py-2">
                       <GelezenCheckbox
                         articleId={a.id}
                         initieelGelezen={gelezenIds.has(a.id)}
@@ -71,7 +71,7 @@ export default async function OnboardingPagina() {
                       />
                       <Link
                         href={`/bibliotheek/${a.slug}`}
-                        className={`flex-1 text-[14px] ${
+                        className={`flex-1 text-[13px] ${
                           gelezenIds.has(a.id) ? 'text-muted line-through' : 'text-ink-soft hover:text-navy'
                         }`}
                       >

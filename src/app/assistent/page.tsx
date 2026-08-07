@@ -22,17 +22,17 @@ export default async function AssistentPagina({
 
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
-      <main className="kb-main grid grid-cols-1 gap-6 md:grid-cols-[280px_1fr]">
-        <aside className="kb-card p-4 md:sticky md:top-[18px] md:self-start">
-          <Link href="/assistent" className="kb-btn kb-btn-primary mb-3 w-full">
+      <main className="kb-main grid grid-cols-1 gap-5 md:grid-cols-[260px_1fr]">
+        <aside className="kb-card p-3.5 md:sticky md:top-[18px] md:self-start">
+          <Link href="/assistent" className="kb-btn kb-btn-primary mb-2.5 w-full">
             + Nieuw gesprek
           </Link>
-          <ul className="space-y-1">
+          <ul className="space-y-0.5">
             {gesprekken.map((g) => (
               <li key={g.id}>
                 <Link
                   href={`/assistent?gesprek=${g.id}`}
-                  className={`block truncate rounded-md px-3 py-2 text-[14px] transition-colors ${
+                  className={`block truncate rounded-md px-2.5 py-1.5 text-[13px] transition-colors ${
                     g.id === gesprek ? 'bg-navy text-white' : 'text-ink-soft hover:bg-page'
                   }`}
                 >
@@ -41,7 +41,7 @@ export default async function AssistentPagina({
               </li>
             ))}
             {gesprekken.length === 0 && (
-              <li className="px-3 py-2 text-[13px] text-muted">Nog geen gesprekken.</li>
+              <li className="px-2.5 py-1.5 text-[12px] text-muted">Nog geen gesprekken.</li>
             )}
           </ul>
         </aside>

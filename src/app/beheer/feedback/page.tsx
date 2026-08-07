@@ -18,10 +18,10 @@ export default async function FeedbackPagina() {
 
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
-      <main className="kb-main grid gap-6">
+      <main className="kb-main grid gap-5">
         <div>
           <h1 className="kb-page-title">Feedback op AI-antwoorden</h1>
-          <p className="mt-1.5 max-w-[720px] text-[15px] leading-relaxed text-muted">
+          <p className="mt-1.5 max-w-[720px] text-[13px] leading-relaxed text-muted">
             Antwoorden die een medewerker met 👎 heeft gemarkeerd. Anders dan een escalatie citeerde de
             assistent hier wél een artikel — maar dat artikel hielp niet. Vaak een signaal dat het artikel
             onduidelijk, onvolledig of verouderd is.
@@ -30,15 +30,15 @@ export default async function FeedbackPagina() {
 
         <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
           {antwoorden.map((a) => (
-            <div key={a.id} className="kb-card p-5">
+            <div key={a.id} className="kb-card p-4">
               <div className="flex flex-wrap items-start justify-between gap-2">
-                <div className="text-[16px] font-semibold text-navy">{a.vraag}</div>
-                <span className="shrink-0 text-[13px] text-muted">
+                <div className="text-[14px] font-semibold text-navy">{a.vraag}</div>
+                <span className="shrink-0 text-[12px] text-muted">
                   {a.gebruiker} · {new Date(a.created_at).toLocaleDateString('nl-NL', DATUM_OPTIES)}
                 </span>
               </div>
 
-              <div className="mt-3 rounded-md border border-line bg-page p-4 text-[14px]">
+              <div className="mt-3 rounded-md border border-line bg-page p-3.5 text-[13px]">
                 <ArtikelMarkdown>{a.antwoord}</ArtikelMarkdown>
               </div>
 

@@ -23,7 +23,7 @@ export default async function ExportPagina() {
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
       <main className="mx-auto max-w-2xl px-6 py-[18px]">
-        <div className="kb-card p-6">
+        <div className="kb-card p-5">
           <h1 className="text-[17px] font-bold text-navy">Export & back-up</h1>
           <p className="mt-2 text-[13px] leading-relaxed text-muted">
             Downloadt de volledige kennisbank als een zip-bestand: elk artikel als apart

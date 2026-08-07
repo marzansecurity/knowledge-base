@@ -74,7 +74,7 @@ export default async function BeheerPagina() {
 
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
-      <main className="kb-main grid gap-6">
+      <main className="kb-main grid gap-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h1 className="kb-page-title">Beheer</h1>
           <Link href="/beheer/artikelen/nieuw" className="kb-btn kb-btn-accent">
@@ -87,11 +87,11 @@ export default async function BeheerPagina() {
             <Link
               key={t.status}
               href={`/beheer/artikelen?status=${t.status}`}
-              className="kb-card relative overflow-hidden p-6 transition-shadow hover:shadow-[0_2px_10px_rgba(16,57,91,.12)]"
+              className="kb-card relative overflow-hidden p-5 transition-shadow hover:shadow-[0_2px_10px_rgba(16,57,91,.12)]"
             >
               <span className={`absolute top-0 left-0 h-full w-1.5 ${t.kleur}`} />
-              <div className="kb-label mb-2">{t.label}</div>
-              <div className="text-[34px] font-bold text-navy">{t.aantal}</div>
+              <div className="kb-label mb-1.5">{t.label}</div>
+              <div className="text-[24px] font-bold text-navy">{t.aantal}</div>
             </Link>
           ))}
         </div>
@@ -101,11 +101,11 @@ export default async function BeheerPagina() {
             <Link
               key={a.href}
               href={a.href}
-              className="kb-card relative overflow-hidden p-6 transition-shadow hover:shadow-[0_2px_10px_rgba(16,57,91,.12)]"
+              className="kb-card relative overflow-hidden p-5 transition-shadow hover:shadow-[0_2px_10px_rgba(16,57,91,.12)]"
             >
               <span className={`absolute top-0 left-0 h-full w-1.5 ${a.kleur}`} />
               <div className="flex items-start justify-between gap-2">
-                <div className="text-[17px] font-semibold text-navy">{a.titel}</div>
+                <div className="text-[15px] font-semibold text-navy">{a.titel}</div>
                 {!!a.badge && (
                   <span
                     className={`shrink-0 rounded-full px-2.5 py-0.5 text-[12px] font-bold text-white ${a.badgeKleur}`}
@@ -114,8 +114,8 @@ export default async function BeheerPagina() {
                   </span>
                 )}
               </div>
-              <p className="mt-2 text-[14px] leading-relaxed text-muted">{a.beschrijving}</p>
-              <span className="mt-4 inline-block text-[14px] font-medium text-navy">Bekijken →</span>
+              <p className="mt-1.5 text-[13px] leading-relaxed text-muted">{a.beschrijving}</p>
+              <span className="mt-3 inline-block text-[13px] font-medium text-navy">Bekijken →</span>
             </Link>
           ))}
         </div>
