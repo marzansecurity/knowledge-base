@@ -1,8 +1,9 @@
 import { Sidebar } from '@/components/sidebar';
+import type { UserRole } from '@/lib/types';
 
 type Props = {
   naam?: string;
-  rol?: string;
+  rol?: UserRole;
   children: React.ReactNode;
 };
 

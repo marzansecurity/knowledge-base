@@ -29,7 +29,8 @@ export default async function ArtikelPagina({
 
   // RLS staat readers alleen published toe, maar we controleren ook zelf
   // zodat een directe link naar een concept nooit per ongeluk zichtbaar is.
-  const magZien = artikel.status === 'published' || profiel?.role === 'admin';
+  const magBewerken = profiel?.role === 'admin' || profiel?.role === 'editor';
+  const magZien = artikel.status === 'published' || magBewerken;
   if (!magZien) notFound();
 
   const [tags, categorie] = await Promise.all([
@@ -79,7 +80,7 @@ export default async function ArtikelPagina({
                 })}
               </span>
             )}
-            {profiel?.role === 'admin' && (
+            {magBewerken && (
               <Link href={`/beheer/artikelen/${artikel.slug}`} className="kb-chip">
                 Bewerken
               </Link>

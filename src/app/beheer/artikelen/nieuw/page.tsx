@@ -1,9 +1,9 @@
 import { KbShell } from '@/components/kb-shell';
-import { vereisBeheerder } from '@/lib/auth';
+import { vereisRedacteurOfHoger } from '@/lib/auth';
 import { maakArtikel } from '@/app/beheer/artikelen/acties';
 
 export default async function NieuwArtikelPagina() {
-  const { profiel } = await vereisBeheerder();
+  const { profiel } = await vereisRedacteurOfHoger();
 
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>

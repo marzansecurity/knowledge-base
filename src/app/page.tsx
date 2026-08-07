@@ -19,6 +19,7 @@ export default async function Startpagina() {
     .single();
 
   const isBeheerder = profiel?.role === 'admin';
+  const magBeheren = isBeheerder || profiel?.role === 'editor';
 
   const [
     { count: aantalGepubliceerd },
@@ -28,7 +29,7 @@ export default async function Startpagina() {
     { data: recenteArtikelen },
   ] = await Promise.all([
     supabase.from('articles').select('id', { count: 'exact', head: true }).eq('status', 'published'),
-    isBeheerder
+    magBeheren
       ? supabase.from('articles').select('id', { count: 'exact', head: true }).eq('status', 'draft')
       : Promise.resolve({ count: 0 }),
     supabase.from('categories').select('id', { count: 'exact', head: true }),
@@ -49,7 +50,7 @@ export default async function Startpagina() {
       kleur: 'bg-teal',
       voetnoot: 'Naar de bibliotheek →',
     },
-    ...(isBeheerder
+    ...(magBeheren
       ? [
           {
             href: '/beheer/artikelen?status=draft',
@@ -107,7 +108,7 @@ export default async function Startpagina() {
               <Link href="/onboarding" className="kb-chip">
                 Onboarding
               </Link>
-              {isBeheerder && (
+              {magBeheren && (
                 <>
                   <Link href="/beheer" className="kb-chip">
                     Beheer

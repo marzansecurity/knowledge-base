@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { KbShell } from '@/components/kb-shell';
 import { StatusBadge } from '@/components/status-badge';
-import { vereisBeheerder } from '@/lib/auth';
+import { vereisRedacteurOfHoger } from '@/lib/auth';
 import type { ArticleStatus } from '@/lib/types';
 
 const STATUSSEN: { waarde: ArticleStatus | 'alle'; label: string }[] = [
@@ -17,7 +17,7 @@ export default async function ArtikelenBeheerPagina({
 }: {
   searchParams: Promise<{ status?: string; q?: string }>;
 }) {
-  const { supabase, profiel } = await vereisBeheerder();
+  const { supabase, profiel } = await vereisRedacteurOfHoger();
   const { status, q } = await searchParams;
 
   let query = supabase

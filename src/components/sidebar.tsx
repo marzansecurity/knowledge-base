@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, type ComponentType, type SVGProps } from 'react';
+import { ROLE_LABEL, type UserRole } from '@/lib/types';
 
 type IconProps = SVGProps<SVGSVGElement>;
 
@@ -109,7 +110,7 @@ function navItems(isBeheerder: boolean): NavItem[] {
 
 type Props = {
   naam?: string;
-  rol?: string;
+  rol?: UserRole;
 };
 
 function NavLinks({
@@ -148,7 +149,7 @@ function AccountVoetnoot({ naam, rol }: Props) {
   return (
     <div className="border-t border-white/10 px-4 py-4">
       <div className="truncate text-[14px] font-semibold text-white">{naam}</div>
-      <div className="text-[12px] text-white/50">{rol === 'admin' ? 'Beheerder' : 'Medewerker'}</div>
+      <div className="text-[12px] text-white/50">{rol ? ROLE_LABEL[rol] : ''}</div>
       <form action="/auth/signout" method="post" className="mt-2.5">
         <button
           type="submit"
@@ -163,7 +164,7 @@ function AccountVoetnoot({ naam, rol }: Props) {
 
 export function Sidebar({ naam, rol }: Props) {
   const pathname = usePathname();
-  const isBeheerder = rol === 'admin';
+  const magBeheerMenuZien = rol === 'admin' || rol === 'editor';
   const [open, setOpen] = useState(false);
 
   return (
@@ -204,7 +205,7 @@ export function Sidebar({ naam, rol }: Props) {
                 <IconClose className="h-5 w-5" />
               </button>
             </div>
-            <NavLinks isBeheerder={isBeheerder} pathname={pathname} onNavigeer={() => setOpen(false)} />
+            <NavLinks isBeheerder={magBeheerMenuZien} pathname={pathname} onNavigeer={() => setOpen(false)} />
             <AccountVoetnoot naam={naam} rol={rol} />
           </aside>
         </div>
@@ -219,7 +220,7 @@ export function Sidebar({ naam, rol }: Props) {
           <span className="text-[12px] font-bold tracking-[0.1em] text-white/70 uppercase">Kennisbank</span>
         </Link>
 
-        <NavLinks isBeheerder={isBeheerder} pathname={pathname} />
+        <NavLinks isBeheerder={magBeheerMenuZien} pathname={pathname} />
         <AccountVoetnoot naam={naam} rol={rol} />
       </aside>
     </>

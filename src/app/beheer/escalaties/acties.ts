@@ -1,11 +1,11 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { vereisBeheerder } from '@/lib/auth';
+import { vereisRedacteurOfHoger } from '@/lib/auth';
 
 /** Markeert een geëscaleerde vraag als afgehandeld, met optionele notitie (bv. link naar het nieuwe artikel). */
 export async function markeerAfgehandeld(messageId: string, formData: FormData): Promise<void> {
-  const { supabase, user } = await vereisBeheerder();
+  const { supabase, user } = await vereisRedacteurOfHoger();
 
   const notitie = String(formData.get('resolution_note') ?? '').trim() || null;
 
@@ -21,7 +21,7 @@ export async function markeerAfgehandeld(messageId: string, formData: FormData):
 
 /** Zet een afgehandelde escalatie terug naar open, voor het geval iets per ongeluk werd afgevinkt. */
 export async function heropenEscalatie(messageId: string): Promise<void> {
-  const { supabase } = await vereisBeheerder();
+  const { supabase } = await vereisRedacteurOfHoger();
 
   const { error } = await supabase
     .from('messages')

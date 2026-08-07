@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { KbShell } from '@/components/kb-shell';
 import { ArtikelMarkdown } from '@/lib/markdown';
 import { haalEscalaties } from '@/lib/data';
-import { vereisBeheerder } from '@/lib/auth';
+import { vereisRedacteurOfHoger } from '@/lib/auth';
 import { markeerAfgehandeld, heropenEscalatie } from './acties';
 
 const DATUM_OPTIES: Intl.DateTimeFormatOptions = {
@@ -18,7 +18,7 @@ export default async function EscalatiesPagina({
 }: {
   searchParams: Promise<{ status?: string }>;
 }) {
-  const { supabase, profiel } = await vereisBeheerder();
+  const { supabase, profiel } = await vereisRedacteurOfHoger();
   const { status } = await searchParams;
   const toonAlles = status === 'alle';
 

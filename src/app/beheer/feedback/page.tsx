@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { KbShell } from '@/components/kb-shell';
 import { ArtikelMarkdown } from '@/lib/markdown';
 import { haalNietNuttigeAntwoorden } from '@/lib/data';
-import { vereisBeheerder } from '@/lib/auth';
+import { vereisRedacteurOfHoger } from '@/lib/auth';
 
 const DATUM_OPTIES: Intl.DateTimeFormatOptions = {
   day: 'numeric',
@@ -13,7 +13,7 @@ const DATUM_OPTIES: Intl.DateTimeFormatOptions = {
 };
 
 export default async function FeedbackPagina() {
-  const { supabase, profiel } = await vereisBeheerder();
+  const { supabase, profiel } = await vereisRedacteurOfHoger();
   const antwoorden = await haalNietNuttigeAntwoorden(supabase);
 
   return (

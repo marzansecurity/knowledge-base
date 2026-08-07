@@ -1,6 +1,12 @@
 export type ArticleStatus = 'draft' | 'published' | 'outdated' | 'archived';
 export type ArticleSource = 'handmatig' | 'zoho-import';
-export type UserRole = 'reader' | 'admin';
+export type UserRole = 'reader' | 'editor' | 'admin';
+
+export const ROLE_LABEL: Record<UserRole, string> = {
+  reader: 'Medewerker',
+  editor: 'Redacteur',
+  admin: 'Beheerder',
+};
 
 export type Category = {
   id: string;

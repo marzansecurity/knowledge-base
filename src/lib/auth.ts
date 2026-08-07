@@ -24,3 +24,10 @@ export async function vereisBeheerder() {
   if (context.profiel?.role !== 'admin') redirect('/');
   return context;
 }
+
+/** Zoals vereisIngelogd, maar stuurt medewerkers (zonder redacteur/beheerder-rol) naar de startpagina. */
+export async function vereisRedacteurOfHoger() {
+  const context = await vereisIngelogd();
+  if (context.profiel?.role !== 'admin' && context.profiel?.role !== 'editor') redirect('/');
+  return context;
+}

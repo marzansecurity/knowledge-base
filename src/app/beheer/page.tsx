@@ -1,10 +1,11 @@
 import Link from 'next/link';
 import { KbShell } from '@/components/kb-shell';
-import { vereisBeheerder } from '@/lib/auth';
+import { vereisRedacteurOfHoger } from '@/lib/auth';
 import { telNietNuttigeAntwoorden, telOpenEscalaties } from '@/lib/data';
 
 export default async function BeheerPagina() {
-  const { supabase, profiel } = await vereisBeheerder();
+  const { supabase, profiel } = await vereisRedacteurOfHoger();
+  const isBeheerder = profiel?.role === 'admin';
 
   const [
     { count: draft },
@@ -54,22 +55,26 @@ export default async function BeheerPagina() {
       badge: nietNuttig,
       badgeKleur: 'bg-negative',
     },
-    {
-      href: '/beheer/gebruikers',
-      titel: 'Kennis-toegang per medewerker',
-      beschrijving: 'Bepaal welke categorieën een medewerker in de AI-context krijgt.',
-      kleur: 'bg-teal',
-      badge: null,
-      badgeKleur: '',
-    },
-    {
-      href: '/beheer/export',
-      titel: 'Export & back-up',
-      beschrijving: 'Download de volledige kennisbank als zip-bestand.',
-      kleur: 'bg-orange',
-      badge: null,
-      badgeKleur: '',
-    },
+    ...(isBeheerder
+      ? [
+          {
+            href: '/beheer/gebruikers',
+            titel: 'Gebruikers & kennis-toegang',
+            beschrijving: 'Nodig medewerkers uit en bepaal wat ze in de AI-context krijgen.',
+            kleur: 'bg-teal',
+            badge: null as number | null,
+            badgeKleur: '',
+          },
+          {
+            href: '/beheer/export',
+            titel: 'Export & back-up',
+            beschrijving: 'Download de volledige kennisbank als zip-bestand.',
+            kleur: 'bg-orange',
+            badge: null,
+            badgeKleur: '',
+          },
+        ]
+      : []),
   ];
 
   return (

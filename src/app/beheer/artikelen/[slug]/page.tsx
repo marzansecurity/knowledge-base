@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { KbShell } from '@/components/kb-shell';
 import { ArtikelEditor } from '@/components/artikel-editor';
-import { vereisBeheerder } from '@/lib/auth';
+import { vereisRedacteurOfHoger } from '@/lib/auth';
 import { haalArtikel, haalCategorieen } from '@/lib/data';
 
 export default async function ArtikelBewerkenPagina({
@@ -10,7 +10,7 @@ export default async function ArtikelBewerkenPagina({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const { supabase, profiel } = await vereisBeheerder();
+  const { supabase, profiel } = await vereisRedacteurOfHoger();
 
   const [artikel, categorieen] = await Promise.all([
     haalArtikel(supabase, slug),
