@@ -1,23 +1,33 @@
 import { KbShell } from '@/components/kb-shell';
-import { LandFilter } from '@/components/land-filter';
+import { MultiChipFilter } from '@/components/multi-chip-filter';
 import { vereisIngelogd } from '@/lib/auth';
 import { haalLeveranciers } from '@/lib/data';
-import { COUNTRIES, COUNTRY_LABEL, type Country, type Supplier } from '@/lib/types';
+import {
+  COUNTRIES,
+  COUNTRY_LABEL,
+  SUPPLIER_TYPES,
+  SUPPLIER_TYPE_LABEL,
+  type Country,
+  type Supplier,
+  type SupplierType,
+} from '@/lib/types';
 import { maakLeverancier, bewaarLeverancier, verwijderLeverancier } from './acties';
 
 export default async function LeveranciersPagina({
   searchParams,
 }: {
-  searchParams: Promise<{ land?: string }>;
+  searchParams: Promise<{ land?: string; type?: string }>;
 }) {
   const { supabase, profiel } = await vereisIngelogd();
   const magBewerken = profiel?.role === 'admin' || profiel?.role === 'editor';
 
-  const { land } = await searchParams;
+  const { land, type } = await searchParams;
   const geselecteerdeLanden = (land?.split(',').filter(Boolean) ?? []) as Country[];
+  const geselecteerdeTypes = (type?.split(',').filter(Boolean) ?? []) as SupplierType[];
 
   const leveranciers = await haalLeveranciers(supabase, {
     countries: geselecteerdeLanden.length > 0 ? geselecteerdeLanden : undefined,
+    types: geselecteerdeTypes.length > 0 ? geselecteerdeTypes : undefined,
   });
 
   return (
@@ -31,8 +41,19 @@ export default async function LeveranciersPagina({
           </p>
         </div>
 
-        <div className="kb-card p-4">
-          <LandFilter basisPad="/leveranciers" />
+        <div className="kb-card grid gap-2.5 p-4">
+          <MultiChipFilter
+            label="Land"
+            paramNaam="land"
+            basisPad="/leveranciers"
+            opties={COUNTRIES.map((c) => ({ waarde: c, label: COUNTRY_LABEL[c] }))}
+          />
+          <MultiChipFilter
+            label="Type"
+            paramNaam="type"
+            basisPad="/leveranciers"
+            opties={SUPPLIER_TYPES.map((t) => ({ waarde: t, label: SUPPLIER_TYPE_LABEL[t] }))}
+          />
         </div>
 
         {magBewerken && <NieuweLeverancierFormulier />}
@@ -48,7 +69,7 @@ export default async function LeveranciersPagina({
 
           {leveranciers.length === 0 && (
             <div className="kb-card kb-empty lg:col-span-2">
-              {geselecteerdeLanden.length > 0
+              {geselecteerdeLanden.length > 0 || geselecteerdeTypes.length > 0
                 ? 'Geen leveranciers gevonden voor dit filter.'
                 : 'Nog geen leveranciers toegevoegd.'}
             </div>
@@ -72,6 +93,19 @@ function LandenChips({ countries }: { countries: Country[] }) {
   );
 }
 
+function TypeChips({ types }: { types: SupplierType[] }) {
+  if (types.length === 0) return null;
+  return (
+    <div className="flex flex-wrap gap-1">
+      {types.map((t) => (
+        <span key={t} className="kb-chip border-navy-mid py-0.5 text-[12px] text-navy-mid">
+          {SUPPLIER_TYPE_LABEL[t]}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 function JaNee({ waar }: { waar: boolean }) {
   return (
     <span className={`text-[13px] font-semibold ${waar ? 'text-[#1d5c46]' : 'text-muted'}`}>
@@ -85,7 +119,10 @@ function LeverancierKaart({ leverancier: s }: { leverancier: Supplier }) {
     <div className="kb-card p-4">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div className="text-[15px] font-semibold text-navy">{s.name}</div>
-        <LandenChips countries={s.countries} />
+        <div className="flex flex-col items-end gap-1">
+          <LandenChips countries={s.countries} />
+          <TypeChips types={s.types} />
+        </div>
       </div>
       <div className="mt-2 grid grid-cols-3 gap-3 text-[13px]">
         <div>
@@ -111,7 +148,7 @@ function LeverancierBewerkKaart({ leverancier: s }: { leverancier: Supplier }) {
     <form action={bewaarLeverancier.bind(null, s.id)} className="kb-card p-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <input name="name" defaultValue={s.name} required className="kb-input w-auto min-w-[160px] flex-1" />
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {COUNTRIES.map((c) => (
             <label key={c} className="flex items-center gap-1 text-[12px] text-ink-soft">
               <input type="checkbox" name={`country_${c}`} defaultChecked={s.countries.includes(c)} className="h-3.5 w-3.5" />
@@ -119,6 +156,15 @@ function LeverancierBewerkKaart({ leverancier: s }: { leverancier: Supplier }) {
             </label>
           ))}
         </div>
+      </div>
+
+      <div className="mt-2 flex flex-wrap gap-3">
+        {SUPPLIER_TYPES.map((t) => (
+          <label key={t} className="flex items-center gap-1.5 text-[12px] text-ink-soft">
+            <input type="checkbox" name={`type_${t}`} defaultChecked={s.types.includes(t)} className="h-3.5 w-3.5" />
+            {SUPPLIER_TYPE_LABEL[t]}
+          </label>
+        ))}
       </div>
 
       <div className="mt-2.5 grid grid-cols-1 gap-2.5 sm:grid-cols-3">
@@ -178,6 +224,14 @@ function NieuweLeverancierFormulier() {
             <label key={c} className="flex items-center gap-1 text-[12px] text-ink-soft">
               <input type="checkbox" name={`country_${c}`} className="h-3.5 w-3.5" />
               {c}
+            </label>
+          ))}
+        </div>
+        <div className="flex gap-2">
+          {SUPPLIER_TYPES.map((t) => (
+            <label key={t} className="flex items-center gap-1 text-[12px] text-ink-soft">
+              <input type="checkbox" name={`type_${t}`} className="h-3.5 w-3.5" />
+              {SUPPLIER_TYPE_LABEL[t]}
             </label>
           ))}
         </div>

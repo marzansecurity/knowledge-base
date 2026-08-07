@@ -1,13 +1,14 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import type { ArticleDetail, ArticleSummary, Category, Country, Supplier, Tag } from '@/lib/types';
+import type { ArticleDetail, ArticleSummary, Category, Country, Supplier, SupplierType, Tag } from '@/lib/types';
 
-/** Haalt leveranciers op, eventueel gefilterd op land (NL/BE/UK, meerdere mag). */
+/** Haalt leveranciers op, eventueel gefilterd op land (NL/BE/UK) en/of type (fulfilment/dropshipment/installateur). */
 export async function haalLeveranciers(
   supabase: SupabaseClient,
-  filter: { countries?: Country[] } = {},
+  filter: { countries?: Country[]; types?: SupplierType[] } = {},
 ): Promise<Supplier[]> {
   let query = supabase.from('suppliers').select('*').order('name');
   if (filter.countries?.length) query = query.overlaps('countries', filter.countries);
+  if (filter.types?.length) query = query.overlaps('types', filter.types);
 
   const { data, error } = await query;
   if (error) throw error;

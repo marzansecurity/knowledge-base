@@ -2,28 +2,30 @@
 
 import { revalidatePath } from 'next/cache';
 import { vereisRedacteurOfHoger } from '@/lib/auth';
-import { COUNTRIES } from '@/lib/types';
+import { COUNTRIES, SUPPLIER_TYPES } from '@/lib/types';
 
 function leesVeldenUit(formData: FormData) {
   const name = String(formData.get('name') ?? '').trim();
   const countries = COUNTRIES.filter((c) => formData.get(`country_${c}`) === 'on');
+  const types = SUPPLIER_TYPES.filter((t) => formData.get(`type_${t}`) === 'on');
   const carrier = String(formData.get('carrier') ?? '').trim() || null;
   const trackingAvailable = formData.get('tracking_available') === 'on';
   const trackingAutomatic = formData.get('tracking_automatic') === 'on';
   const notes = String(formData.get('notes') ?? '').trim() || null;
-  return { name, countries, carrier, trackingAvailable, trackingAutomatic, notes };
+  return { name, countries, types, carrier, trackingAvailable, trackingAutomatic, notes };
 }
 
 /** Voegt een nieuwe leverancier toe. */
 export async function maakLeverancier(formData: FormData): Promise<void> {
   const { supabase, user } = await vereisRedacteurOfHoger();
 
-  const { name, countries, carrier, trackingAvailable, trackingAutomatic, notes } = leesVeldenUit(formData);
+  const { name, countries, types, carrier, trackingAvailable, trackingAutomatic, notes } = leesVeldenUit(formData);
   if (!name) throw new Error('Een naam is verplicht.');
 
   const { error } = await supabase.from('suppliers').insert({
     name,
     countries,
+    types,
     carrier,
     tracking_available: trackingAvailable,
     tracking_automatic: trackingAutomatic,
@@ -41,7 +43,7 @@ export async function maakLeverancier(formData: FormData): Promise<void> {
 export async function bewaarLeverancier(supplierId: string, formData: FormData): Promise<void> {
   const { supabase, user } = await vereisRedacteurOfHoger();
 
-  const { name, countries, carrier, trackingAvailable, trackingAutomatic, notes } = leesVeldenUit(formData);
+  const { name, countries, types, carrier, trackingAvailable, trackingAutomatic, notes } = leesVeldenUit(formData);
   if (!name) throw new Error('Een naam is verplicht.');
 
   const { error } = await supabase
@@ -49,6 +51,7 @@ export async function bewaarLeverancier(supplierId: string, formData: FormData):
     .update({
       name,
       countries,
+      types,
       carrier,
       tracking_available: trackingAvailable,
       tracking_automatic: trackingAutomatic,

@@ -70,10 +70,19 @@ export const COUNTRY_LABEL: Record<Country, string> = {
   UK: 'UK',
 };
 
+export type SupplierType = 'fulfilment' | 'dropshipment' | 'installateur';
+export const SUPPLIER_TYPES: SupplierType[] = ['fulfilment', 'dropshipment', 'installateur'];
+export const SUPPLIER_TYPE_LABEL: Record<SupplierType, string> = {
+  fulfilment: 'Fulfilment',
+  dropshipment: 'Drop Shipment',
+  installateur: 'Installateur',
+};
+
 export type Supplier = {
   id: string;
   name: string;
   countries: Country[];
+  types: SupplierType[];
   carrier: string | null;
   tracking_available: boolean;
   tracking_automatic: boolean;
