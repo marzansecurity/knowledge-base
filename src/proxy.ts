@@ -42,6 +42,18 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  if (user && !isPubliek) {
+    // Heeft de gebruiker 2FA ingesteld, maar deze sessie nog niet geverifieerd?
+    // Dan mag niets anders dan de verificatiepagina geladen worden.
+    const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+    if (aal?.nextLevel === 'aal2' && aal.currentLevel !== aal.nextLevel) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/login/verificeren';
+      url.searchParams.set('volgende', pad);
+      return NextResponse.redirect(url);
+    }
+  }
+
   if (user && pad === '/login') {
     const url = request.nextUrl.clone();
     url.pathname = '/';

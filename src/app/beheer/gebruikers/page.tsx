@@ -3,7 +3,7 @@ import { vereisBeheerder } from '@/lib/auth';
 import { haalCategorieen } from '@/lib/data';
 import { haalAlleCategorieToegang } from '@/lib/toegang';
 import { ROLE_LABEL, type UserRole } from '@/lib/types';
-import { UitnodigenFormulier } from './uitnodigen-formulier';
+import { AanmakenFormulier } from './aanmaken-formulier';
 import { bewaarGebruiker } from './acties';
 
 export default async function GebruikersBeheerPagina() {
@@ -28,13 +28,13 @@ export default async function GebruikersBeheerPagina() {
         <div>
           <h1 className="kb-page-title">Gebruikers &amp; kennis-toegang</h1>
           <p className="mt-1.5 max-w-[720px] text-[13px] leading-relaxed text-muted">
-            Nodig medewerkers uit en bepaal per medewerker de rol en welke categorieën ze in de
-            AI-assistent en de onboarding-checklist te zien krijgen. &ldquo;Start hier&rdquo; is altijd zichtbaar.
-            Vink bij kennis-toegang niets aan voor onbeperkte toegang.
+            Maak accounts aan met een tijdelijk wachtwoord en bepaal per medewerker de rol en welke
+            categorieën ze in de AI-assistent en de onboarding-checklist te zien krijgen. &ldquo;Start hier&rdquo;
+            is altijd zichtbaar. Vink bij kennis-toegang niets aan voor onbeperkte toegang.
           </p>
         </div>
 
-        <UitnodigenFormulier />
+        <AanmakenFormulier />
 
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
           {(profielen ?? []).map((p) => {

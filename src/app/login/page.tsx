@@ -32,6 +32,12 @@ function LoginFormulier() {
       return;
     }
 
+    const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+    if (aal?.nextLevel === 'aal2' && aal.currentLevel !== aal.nextLevel) {
+      router.replace(`/login/verificeren?volgende=${encodeURIComponent(volgende)}`);
+      return;
+    }
+
     router.replace(volgende);
     router.refresh();
   }

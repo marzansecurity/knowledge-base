@@ -150,7 +150,13 @@ function AccountVoetnoot({ naam, rol }: Props) {
     <div className="border-t border-white/10 px-4 py-4">
       <div className="truncate text-[14px] font-semibold text-white">{naam}</div>
       <div className="text-[12px] text-white/50">{rol ? ROLE_LABEL[rol] : ''}</div>
-      <form action="/auth/signout" method="post" className="mt-2.5">
+      <Link
+        href="/account"
+        className="mt-2.5 block w-full rounded-md border border-white/15 px-3 py-1.5 text-center text-[12px] font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+      >
+        Mijn account
+      </Link>
+      <form action="/auth/signout" method="post" className="mt-1.5">
         <button
           type="submit"
           className="w-full rounded-md border border-white/15 px-3 py-1.5 text-[12px] font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
