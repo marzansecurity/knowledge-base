@@ -61,6 +61,17 @@ function IconChecklist(props: IconProps) {
   );
 }
 
+function IconTruck(props: IconProps) {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <rect x="1.5" y="6" width="9" height="7" rx="1" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M10.5 8.5h3.5l2.5 2.5v2h-6v-4.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+      <circle cx="5" cy="14.5" r="1.5" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="14" cy="14.5" r="1.5" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
 function IconMenu(props: IconProps) {
   return (
     <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
@@ -102,6 +113,7 @@ function navItems(isBeheerder: boolean): NavItem[] {
   return [
     { href: '/', label: 'Dashboard', icon: IconDashboard, exact: true },
     { href: '/bibliotheek', label: 'Bibliotheek', icon: IconBook },
+    { href: '/leveranciers', label: 'Leveranciers', icon: IconTruck },
     { href: '/assistent', label: 'AI-assistent', icon: IconChat },
     { href: '/onboarding', label: 'Onboarding', icon: IconChecklist },
     ...(isBeheerder ? [{ href: '/beheer', label: 'Beheer', icon: IconSettings }] : []),

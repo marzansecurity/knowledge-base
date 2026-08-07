@@ -61,3 +61,23 @@ export const STATUS_LABEL: Record<ArticleStatus, string> = {
   outdated: 'Verouderd',
   archived: 'Gearchiveerd',
 };
+
+export type Country = 'NL' | 'BE' | 'UK';
+export const COUNTRIES: Country[] = ['NL', 'BE', 'UK'];
+export const COUNTRY_LABEL: Record<Country, string> = {
+  NL: 'Nederland',
+  BE: 'België',
+  UK: 'UK',
+};
+
+export type Supplier = {
+  id: string;
+  name: string;
+  countries: Country[];
+  carrier: string | null;
+  tracking_available: boolean;
+  tracking_automatic: boolean;
+  notes: string | null;
+  reviewed_at: string | null;
+  updated_at: string;
+};
