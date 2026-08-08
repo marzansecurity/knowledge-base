@@ -27,8 +27,8 @@ export default async function EscalatiesPagina({
 
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
-      <main className="kb-main grid gap-2.5">
-        <div className="flex flex-wrap items-center justify-between gap-3">
+      <main className="kb-main grid gap-3.5">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <h1 className="kb-page-title">Escalatie-inbox</h1>
             <p className="mt-1.5 max-w-[720px] text-[13px] leading-relaxed text-muted">
@@ -53,9 +53,9 @@ export default async function EscalatiesPagina({
           </div>
         )}
 
-        <div className="grid grid-cols-1 gap-2.5 xl:grid-cols-2">
+        <div className="grid grid-cols-1 gap-3.5 xl:grid-cols-2">
           {escalaties.map((e) => (
-            <div key={e.id} className="kb-card p-3">
+            <div key={e.id} className="kb-card p-4">
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div>
                   <div className="text-[14px] font-semibold text-navy">{e.vraag}</div>
@@ -70,7 +70,7 @@ export default async function EscalatiesPagina({
                 )}
               </div>
 
-              <div className="mt-3 rounded-md border border-line bg-page p-2.5 text-[13px]">
+              <div className="mt-3 rounded-md border border-line bg-page p-3.5 text-[13px]">
                 <ArtikelMarkdown>{e.antwoord}</ArtikelMarkdown>
               </div>
 

@@ -31,8 +31,8 @@ export default async function OnboardingPagina() {
 
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
-      <main className="kb-main grid gap-2.5">
-        <div className="flex flex-wrap items-start justify-between gap-3">
+      <main className="kb-main grid gap-3.5">
+        <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <h1 className="kb-page-title">Onboarding-checklist</h1>
             <p className="mt-1.5 max-w-[640px] text-[13px] leading-relaxed text-muted">
@@ -41,7 +41,7 @@ export default async function OnboardingPagina() {
             </p>
           </div>
 
-          <div className="kb-card w-full max-w-sm p-3">
+          <div className="kb-card w-full max-w-sm p-4">
             <div className="flex items-center justify-between text-[13px]">
               <span className="font-medium text-navy">Voortgang</span>
               <span className="text-muted">
@@ -54,12 +54,12 @@ export default async function OnboardingPagina() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-2.5 lg:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3.5 lg:grid-cols-2 xl:grid-cols-3">
           {topCategorieen.map((c, i) => {
             const artikelen = artikelenPerCategorie[i];
             if (artikelen.length === 0) return null;
             return (
-              <div key={c.id} className="kb-card p-3">
+              <div key={c.id} className="kb-card p-4">
                 <div className="kb-section-title mb-2.5">{c.name}</div>
                 <ul className="divide-y divide-line">
                   {artikelen.map((a) => (

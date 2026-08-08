@@ -79,7 +79,7 @@ export default async function BeheerPagina() {
 
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
-      <main className="kb-main grid gap-2.5">
+      <main className="kb-main grid gap-3.5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h1 className="kb-page-title">Beheer</h1>
           <Link href="/beheer/artikelen/nieuw" className="kb-btn kb-btn-accent">
@@ -87,12 +87,12 @@ export default async function BeheerPagina() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 gap-2.5 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
           {tegels.map((t) => (
             <Link
               key={t.status}
               href={`/beheer/artikelen?status=${t.status}`}
-              className="kb-card relative overflow-hidden p-2.5 transition-shadow hover:shadow-[0_2px_10px_rgba(16,57,91,.12)]"
+              className="kb-card relative overflow-hidden p-3.5 transition-shadow hover:shadow-[0_2px_10px_rgba(16,57,91,.12)]"
             >
               <span className={`absolute top-0 left-0 h-full w-1.5 ${t.kleur}`} />
               <div className="kb-label mb-1.5">{t.label}</div>
@@ -101,12 +101,12 @@ export default async function BeheerPagina() {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 gap-2.5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2 xl:grid-cols-3">
           {acties.map((a) => (
             <Link
               key={a.href}
               href={a.href}
-              className="kb-card relative overflow-hidden p-2.5 transition-shadow hover:shadow-[0_2px_10px_rgba(16,57,91,.12)]"
+              className="kb-card relative overflow-hidden p-3.5 transition-shadow hover:shadow-[0_2px_10px_rgba(16,57,91,.12)]"
             >
               <span className={`absolute top-0 left-0 h-full w-1.5 ${a.kleur}`} />
               <div className="flex items-start justify-between gap-2">

@@ -191,8 +191,8 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
 
   return (
     <div className="space-y-3.5">
-      <div className="kb-card space-y-3 p-2.5">
-        <div className="flex items-start justify-between gap-3">
+      <div className="kb-card space-y-3 p-3.5">
+        <div className="flex items-start justify-between gap-4">
           <input
             value={titel}
             onChange={(e) => setTitel(e.target.value)}
@@ -224,12 +224,12 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
       </div>
 
       <div className="kb-card p-0">
-        <div className="flex items-center gap-1 border-b border-line px-3 pt-3">
+        <div className="flex items-center gap-1 border-b border-line px-4 pt-3">
           {(['bewerken', 'voorbeeld', 'geschiedenis'] as const).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`rounded-t-md border border-b-0 px-3 py-2 text-[13px] font-semibold transition-colors ${
+              className={`rounded-t-md border border-b-0 px-4 py-2 text-[13px] font-semibold transition-colors ${
                 tab === t
                   ? 'border-line bg-white text-navy'
                   : 'border-transparent bg-transparent text-muted hover:text-navy'
@@ -240,7 +240,7 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
           ))}
         </div>
 
-        <div className="p-2.5">
+        <div className="p-3.5">
           {tab === 'bewerken' && (
             <div className="space-y-2">
               <div className="flex flex-wrap items-center gap-2">
@@ -279,7 +279,7 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
                 onPaste={opPlakken}
                 onDrop={opSlepen}
                 onDragOver={(e) => e.preventDefault()}
-                className="h-[520px] w-full resize-y rounded-md border border-line bg-page p-3 font-mono text-[13px] leading-relaxed text-ink outline-none focus:border-teal focus:bg-white"
+                className="h-[520px] w-full resize-y rounded-md border border-line bg-page p-4 font-mono text-[13px] leading-relaxed text-ink outline-none focus:border-teal focus:bg-white"
                 placeholder="# Titel&#10;&#10;Inhoud in Markdown… (plak of sleep een afbeelding hierin)"
                 spellCheck={false}
               />
@@ -292,7 +292,7 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
           )}
 
           {tab === 'voorbeeld' && (
-            <div className="min-h-[520px] rounded-md border border-line p-2.5">
+            <div className="min-h-[520px] rounded-md border border-line p-3.5">
               {inhoud.trim() ? (
                 <ArtikelMarkdown>{inhoud}</ArtikelMarkdown>
               ) : (
@@ -327,7 +327,7 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
         </div>
       </div>
 
-      <div className="kb-card flex flex-wrap items-center justify-between gap-3 p-3">
+      <div className="kb-card flex flex-wrap items-center justify-between gap-3 p-4">
         <div className="flex flex-wrap items-center gap-2">
           <input
             ref={wijzignotitieRef}

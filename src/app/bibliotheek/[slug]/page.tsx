@@ -44,8 +44,8 @@ export default async function ArtikelPagina({
 
   return (
     <KbShell naam={profiel?.display_name ?? user.email ?? undefined} rol={profiel?.role}>
-      <main className="kb-main grid grid-cols-1 gap-2.5 lg:grid-cols-[1fr_260px]">
-        <article className="kb-card p-3 sm:p-3 lg:p-5">
+      <main className="kb-main grid grid-cols-1 gap-3.5 lg:grid-cols-[1fr_260px]">
+        <article className="kb-card p-4 sm:p-4 lg:p-5">
           <nav className="mb-4 text-[13px] text-muted">
             <Link href="/bibliotheek" className="hover:text-navy">
               Bibliotheek
@@ -107,7 +107,7 @@ export default async function ArtikelPagina({
 
         {koppen.length > 0 && (
           <aside className="lg:sticky lg:top-[18px] lg:self-start">
-            <div className="kb-card p-2.5">
+            <div className="kb-card p-3.5">
               <div className="kb-section-title mb-3">Inhoudsopgave</div>
               <ul className="space-y-2 text-[13px]">
                 {koppen.map((k) => (

@@ -9,7 +9,7 @@ export default async function AccountPagina() {
 
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
-      <main className="kb-main grid max-w-[640px] gap-2.5">
+      <main className="kb-main grid max-w-[640px] gap-3.5">
         <div>
           <h1 className="kb-page-title">Mijn account</h1>
           <p className="mt-1.5 text-[13px] text-muted">
