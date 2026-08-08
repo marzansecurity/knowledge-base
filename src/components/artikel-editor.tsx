@@ -4,6 +4,9 @@ import { useRef, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArtikelMarkdown, CALLOUT_TYPES, type CalloutType } from '@/lib/markdown';
 import { StatusBadge } from '@/components/status-badge';
+import { useVertalingen } from '@/components/vertaling-provider';
+import { pad } from '@/lib/paden';
+import { TAAL_OPMAAK } from '@/lib/talen';
 import type { ArticleDetail, ArticleStatus, Category } from '@/lib/types';
 import {
   archiveerArtikel,
@@ -12,12 +15,13 @@ import {
   markeerGecontroleerd,
   uploadAfbeelding,
   wijzigStatus,
-} from '@/app/beheer/artikelen/acties';
+} from '@/app/[taal]/beheer/artikelen/acties';
 
-const CALLOUT_LABELS: Record<CalloutType, string> = {
-  TIP: '💡 Tip',
-  INFO: 'ℹ️ Info',
-  WARNING: '⚠️ Waarschuwing',
+/** De sleutel in t.editor waaronder het label van dit callout-type staat. */
+const CALLOUT_SLEUTEL: Record<CalloutType, 'calloutTip' | 'calloutInfo' | 'calloutWaarschuwing'> = {
+  TIP: 'calloutTip',
+  INFO: 'calloutInfo',
+  WARNING: 'calloutWaarschuwing',
 };
 
 type Revisie = {
@@ -34,21 +38,29 @@ type Props = {
   revisies: Revisie[];
 };
 
-const VOLGENDE_STATUS: Partial<Record<ArticleStatus, { naar: ArticleStatus; label: string; klasse: string }[]>> = {
-  draft: [{ naar: 'published', label: 'Publiceren', klasse: 'kb-btn-primary' }],
+/** Per status de vervolgstappen, met de sleutel in t.editor voor het knoplabel. */
+type Vervolgstap = {
+  naar: ArticleStatus;
+  sleutel: 'publiceren' | 'markeerVerouderd' | 'terugNaarConcept' | 'opnieuwPubliceren' | 'herstellenAlsConcept';
+  klasse: string;
+};
+
+const VOLGENDE_STATUS: Partial<Record<ArticleStatus, Vervolgstap[]>> = {
+  draft: [{ naar: 'published', sleutel: 'publiceren', klasse: 'kb-btn-primary' }],
   published: [
-    { naar: 'outdated', label: 'Markeer als verouderd', klasse: '' },
-    { naar: 'draft', label: 'Terug naar concept', klasse: '' },
+    { naar: 'outdated', sleutel: 'markeerVerouderd', klasse: '' },
+    { naar: 'draft', sleutel: 'terugNaarConcept', klasse: '' },
   ],
   outdated: [
-    { naar: 'published', label: 'Opnieuw publiceren', klasse: 'kb-btn-primary' },
-    { naar: 'draft', label: 'Terug naar concept', klasse: '' },
+    { naar: 'published', sleutel: 'opnieuwPubliceren', klasse: 'kb-btn-primary' },
+    { naar: 'draft', sleutel: 'terugNaarConcept', klasse: '' },
   ],
-  archived: [{ naar: 'draft', label: 'Herstellen als concept', klasse: '' }],
+  archived: [{ naar: 'draft', sleutel: 'herstellenAlsConcept', klasse: '' }],
 };
 
 export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
   const router = useRouter();
+  const { taal, berichten: t } = useVertalingen();
   const [tab, setTab] = useState<'bewerken' | 'voorbeeld' | 'geschiedenis'>('bewerken');
   const [titel, setTitel] = useState(artikel.title);
   const [samenvatting, setSamenvatting] = useState(artikel.summary ?? '');
@@ -83,12 +95,12 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
   }
 
   function voegCalloutIn(type: CalloutType) {
-    voegInBijCursor(`\n> [!${type}] Typ hier de tekst\n\n`);
+    voegInBijCursor(`\n> [!${type}] ${t.editor.calloutPlaceholder}\n\n`);
   }
 
   async function uploadEnVoegAfbeeldingIn(bestand: File) {
     if (!bestand.type.startsWith('image/')) {
-      setFout('Alleen afbeeldingen zijn toegestaan.');
+      setFout(t.editor.alleenAfbeeldingen);
       return;
     }
     setFout(null);
@@ -98,7 +110,7 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
     const resultaat = await uploadAfbeelding(formData);
     setUploadBezig(false);
     if (resultaat.fout || !resultaat.pad) {
-      setFout(resultaat.fout ?? 'Uploaden mislukt.');
+      setFout(resultaat.fout ?? t.editor.uploadenMislukt);
       return;
     }
     voegInBijCursor(`![${bestand.name}](${resultaat.pad})`);
@@ -142,7 +154,7 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
       const resultaat = await bewaarArtikel(artikel.id, formData);
       if (resultaat.fout) setFout(resultaat.fout);
       else {
-        setMelding('Opgeslagen.');
+        setMelding(t.editor.opgeslagen);
         if (wijzignotitieRef.current) wijzignotitieRef.current.value = '';
         router.refresh();
       }
@@ -154,7 +166,7 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
       const resultaat = await wijzigStatus(artikel.id, naar);
       if (resultaat.fout) setFout(resultaat.fout);
       else {
-        setMelding(naar === 'published' ? 'Gepubliceerd.' : 'Status bijgewerkt.');
+        setMelding(naar === 'published' ? t.editor.gepubliceerd : t.editor.statusBijgewerkt);
         router.refresh();
       }
     });
@@ -163,27 +175,27 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
   function markeerControle() {
     startTransitie(async () => {
       await markeerGecontroleerd(artikel.id);
-      setMelding('Gemarkeerd als vandaag gecontroleerd.');
+      setMelding(t.editor.gecontroleerdMelding);
       router.refresh();
     });
   }
 
   function archiveer() {
-    if (!confirm('Dit artikel archiveren? Het verdwijnt dan uit de bibliotheek maar blijft bewaard.')) return;
+    if (!confirm(t.editor.bevestigArchiveren)) return;
     startTransitie(async () => {
       const resultaat = await archiveerArtikel(artikel.id);
       if (resultaat.fout) setFout(resultaat.fout);
-      else router.push('/beheer/artikelen');
+      else router.push(pad(taal, '/beheer/artikelen'));
     });
   }
 
   function zetTerug(revisionId: string) {
-    if (!confirm('Deze versie terugzetten? De huidige inhoud wordt eerst als revisie bewaard.')) return;
+    if (!confirm(t.editor.bevestigTerugzetten)) return;
     startTransitie(async () => {
       const resultaat = await herstelRevisie(artikel.id, revisionId);
       if (resultaat.fout) setFout(resultaat.fout);
       else {
-        setMelding('Eerdere versie teruggezet.');
+        setMelding(t.editor.versieTeruggezet);
         router.refresh();
       }
     });
@@ -197,7 +209,7 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
             value={titel}
             onChange={(e) => setTitel(e.target.value)}
             className="w-full border-none bg-transparent text-[18px] font-bold text-navy outline-none"
-            placeholder="Titel van het artikel"
+            placeholder={t.editor.titelPlaceholder}
           />
           <StatusBadge status={artikel.status} />
         </div>
@@ -206,7 +218,7 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
           value={samenvatting}
           onChange={(e) => setSamenvatting(e.target.value)}
           className="kb-input"
-          placeholder="Korte samenvatting (verschijnt in de bibliotheekkaart en het AI-antwoord)"
+          placeholder={t.editor.samenvattingPlaceholder}
         />
 
         <select
@@ -214,7 +226,7 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
           onChange={(e) => setCategoryId(e.target.value)}
           className="kb-input max-w-xs"
         >
-          <option value="">Geen categorie</option>
+          <option value="">{t.editor.geenCategorie}</option>
           {categorieen.map((c) => (
             <option key={c.id} value={c.id}>
               {c.name}
@@ -225,17 +237,21 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
 
       <div className="kb-card p-0">
         <div className="flex items-center gap-1 border-b border-line px-4 pt-3">
-          {(['bewerken', 'voorbeeld', 'geschiedenis'] as const).map((t) => (
+          {(['bewerken', 'voorbeeld', 'geschiedenis'] as const).map((naam) => (
             <button
-              key={t}
-              onClick={() => setTab(t)}
+              key={naam}
+              onClick={() => setTab(naam)}
               className={`rounded-t-md border border-b-0 px-4 py-2 text-[13px] font-semibold transition-colors ${
-                tab === t
+                tab === naam
                   ? 'border-line bg-white text-navy'
                   : 'border-transparent bg-transparent text-muted hover:text-navy'
               }`}
             >
-              {t === 'bewerken' ? 'Bewerken' : t === 'voorbeeld' ? 'Voorbeeld' : `Geschiedenis (${revisies.length})`}
+              {naam === 'bewerken'
+                ? t.editor.tabBewerken
+                : naam === 'voorbeeld'
+                  ? t.editor.tabVoorbeeld
+                  : t.editor.tabGeschiedenis.replace('{aantal}', String(revisies.length))}
             </button>
           ))}
         </div>
@@ -257,7 +273,7 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
                   disabled={uploadBezig}
                   className="kb-btn"
                 >
-                  {uploadBezig ? 'Uploaden…' : '🖼️ Afbeelding'}
+                  {uploadBezig ? t.editor.uploaden : t.editor.afbeelding}
                 </button>
                 <span className="mx-1 h-5 w-px bg-line" />
                 {CALLOUT_TYPES.map((type) => (
@@ -267,7 +283,7 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
                     onClick={() => voegCalloutIn(type)}
                     className="kb-btn"
                   >
-                    {CALLOUT_LABELS[type]}
+                    {t.editor[CALLOUT_SLEUTEL[type]]}
                   </button>
                 ))}
               </div>
@@ -280,14 +296,10 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
                 onDrop={opSlepen}
                 onDragOver={(e) => e.preventDefault()}
                 className="h-[520px] w-full resize-y rounded-md border border-line bg-page p-4 font-mono text-[13px] leading-relaxed text-ink outline-none focus:border-teal focus:bg-white"
-                placeholder="# Titel&#10;&#10;Inhoud in Markdown… (plak of sleep een afbeelding hierin)"
+                placeholder={t.editor.inhoudPlaceholder}
                 spellCheck={false}
               />
-              <p className="text-[11px] text-muted">
-                Tip: plak of sleep een afbeelding rechtstreeks in het tekstvak. Gebruik de knoppen
-                hierboven voor een gekleurd highlight-vak (tip, info of waarschuwing), zoals in Zoho
-                Desk.
-              </p>
+              <p className="text-[11px] text-muted">{t.editor.inhoudTip}</p>
             </div>
           )}
 
@@ -296,14 +308,14 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
               {inhoud.trim() ? (
                 <ArtikelMarkdown>{inhoud}</ArtikelMarkdown>
               ) : (
-                <p className="kb-empty">Nog geen inhoud om te tonen.</p>
+                <p className="kb-empty">{t.editor.geenInhoud}</p>
               )}
             </div>
           )}
 
           {tab === 'geschiedenis' && (
             <ul className="space-y-2">
-              {revisies.length === 0 && <li className="kb-empty">Nog geen eerdere versies.</li>}
+              {revisies.length === 0 && <li className="kb-empty">{t.editor.geenVersies}</li>}
               {revisies.map((r) => (
                 <li
                   key={r.id}
@@ -312,13 +324,13 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
                   <div>
                     <div className="text-[13px] font-medium text-ink">{r.title}</div>
                     <div className="text-[11px] text-muted">
-                      {new Date(r.saved_at).toLocaleString('nl-NL')}
+                      {new Date(r.saved_at).toLocaleString(TAAL_OPMAAK[taal])}
                       {r.saved_by_naam && ` · ${r.saved_by_naam}`}
                       {r.change_note && ` · ${r.change_note}`}
                     </div>
                   </div>
                   <button onClick={() => zetTerug(r.id)} disabled={bezig} className="kb-btn">
-                    Terugzetten
+                    {t.editor.terugzetten}
                   </button>
                 </li>
               ))}
@@ -332,14 +344,14 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
           <input
             ref={wijzignotitieRef}
             type="text"
-            placeholder="Wijzignotitie (optioneel)"
+            placeholder={t.editor.wijzignotitiePlaceholder}
             className="kb-input w-56"
           />
           <button onClick={bewaar} disabled={bezig || !gewijzigd} className="kb-btn kb-btn-primary">
-            {bezig ? 'Bezig…' : 'Opslaan'}
+            {bezig ? t.algemeen.bezig : t.algemeen.opslaan}
           </button>
           <button onClick={markeerControle} disabled={bezig} className="kb-btn">
-            Markeer als gecontroleerd
+            {t.editor.markeerGecontroleerd}
           </button>
         </div>
 
@@ -351,7 +363,7 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
               disabled={bezig}
               className={`kb-btn ${optie.klasse}`}
             >
-              {optie.label}
+              {t.editor[optie.sleutel]}
             </button>
           ))}
           {artikel.status !== 'archived' && (
@@ -360,7 +372,7 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
               disabled={bezig}
               className="kb-btn border-negative text-negative hover:bg-[#fdf0ef]"
             >
-              Archiveren
+              {t.editor.archiveren}
             </button>
           )}
         </div>

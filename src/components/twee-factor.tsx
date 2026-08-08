@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { useVertalingen } from '@/components/vertaling-provider';
 
 type Factor = { id: string; status: string; friendly_name?: string | null };
 
 export function TweeFactor() {
+  const { berichten: t } = useVertalingen();
   const [factoren, setFactoren] = useState<Factor[] | null>(null);
   const [inschrijving, setInschrijving] = useState<{ factorId: string; qr: string; secret: string } | null>(null);
   const [code, setCode] = useState('');
@@ -56,7 +58,7 @@ export function TweeFactor() {
     }
     setInschrijving(null);
     setCode('');
-    setMelding({ tekst: 'Twee-factor-authenticatie is actief.', fout: false });
+    setMelding({ tekst: t.login.tweeFactor.ingeschakeld, fout: false });
     laadFactoren();
   }
 
@@ -70,7 +72,7 @@ export function TweeFactor() {
       setMelding({ tekst: error.message, fout: true });
       return;
     }
-    setMelding({ tekst: 'Twee-factor-authenticatie is uitgeschakeld.', fout: false });
+    setMelding({ tekst: t.login.tweeFactor.uitgeschakeld, fout: false });
     laadFactoren();
   }
 
@@ -78,34 +80,29 @@ export function TweeFactor() {
 
   return (
     <div className="kb-card p-5">
-      <div className="kb-section-title mb-3">Twee-factor-authenticatie</div>
+      <div className="kb-section-title mb-3">{t.login.tweeFactor.titel}</div>
 
-      {factoren === null && <p className="text-[13px] text-muted">Laden…</p>}
+      {factoren === null && <p className="text-[13px] text-muted">{t.login.tweeFactor.laden}</p>}
 
       {factoren !== null && !inschrijving && (
         <>
           {actieveFactor ? (
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className="text-[13px] text-[#1d5c46]">
-                ✓ Actief. Bij het inloggen wordt na je wachtwoord een code uit je authenticator-app gevraagd.
-              </p>
+              <p className="text-[13px] text-[#1d5c46]">{t.login.tweeFactor.actief}</p>
               <button
                 type="button"
                 onClick={() => schakelUit(actieveFactor.id)}
                 disabled={bezig}
                 className="kb-btn whitespace-nowrap"
               >
-                Uitschakelen
+                {t.login.tweeFactor.uitschakelen}
               </button>
             </div>
           ) : (
             <>
-              <p className="text-[13px] leading-relaxed text-muted">
-                Nog niet ingesteld. Met 2FA vraagt de kennisbank bij het inloggen een extra code uit een
-                authenticator-app (bv. Google Authenticator of 1Password), naast je wachtwoord.
-              </p>
+              <p className="text-[13px] leading-relaxed text-muted">{t.login.tweeFactor.nietIngesteld}</p>
               <button type="button" onClick={startInschrijving} disabled={bezig} className="kb-btn kb-btn-primary mt-3">
-                2FA instellen
+                {t.login.tweeFactor.instellen}
               </button>
             </>
           )}
@@ -114,9 +111,7 @@ export function TweeFactor() {
 
       {inschrijving && (
         <div>
-          <p className="text-[13px] leading-relaxed text-muted">
-            Scan deze QR-code met je authenticator-app, of voer de code handmatig in.
-          </p>
+          <p className="text-[13px] leading-relaxed text-muted">{t.login.tweeFactor.qrUitleg}</p>
           <div
             className="my-3 h-[180px] w-[180px] [&_svg]:h-full [&_svg]:w-full"
             dangerouslySetInnerHTML={{ __html: inschrijving.qr }}
@@ -127,7 +122,7 @@ export function TweeFactor() {
           <form onSubmit={bevestigInschrijving} className="flex flex-wrap items-end gap-3">
             <div className="min-w-[160px]">
               <label htmlFor="totp-code" className="kb-label mb-1.5 block">
-                6-cijferige code
+                {t.login.tweeFactor.codeLabel}
               </label>
               <input
                 id="totp-code"
@@ -142,7 +137,7 @@ export function TweeFactor() {
               />
             </div>
             <button type="submit" disabled={bezig} className="kb-btn kb-btn-primary whitespace-nowrap">
-              Bevestigen
+              {t.login.tweeFactor.bevestigen}
             </button>
             <button
               type="button"
@@ -152,7 +147,7 @@ export function TweeFactor() {
               }}
               className="kb-btn whitespace-nowrap"
             >
-              Annuleren
+              {t.algemeen.annuleren}
             </button>
           </form>
         </div>

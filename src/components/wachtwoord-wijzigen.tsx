@@ -2,8 +2,13 @@
 
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { useVertalingen } from '@/components/vertaling-provider';
+
+/** Het minimum dat Supabase en het formulier allebei afdwingen. */
+const MINIMUM_LENGTE = 8;
 
 export function WachtwoordWijzigen() {
+  const { berichten: t } = useVertalingen();
   const [wachtwoord, setWachtwoord] = useState('');
   const [bezig, setBezig] = useState(false);
   const [melding, setMelding] = useState<{ tekst: string; fout: boolean } | null>(null);
@@ -22,30 +27,30 @@ export function WachtwoordWijzigen() {
       return;
     }
     setWachtwoord('');
-    setMelding({ tekst: 'Wachtwoord bijgewerkt.', fout: false });
+    setMelding({ tekst: t.login.wachtwoordWijzigen.bijgewerkt, fout: false });
   }
 
   return (
     <div className="kb-card p-5">
-      <div className="kb-section-title mb-3">Mijn wachtwoord wijzigen</div>
+      <div className="kb-section-title mb-3">{t.login.wachtwoordWijzigen.titel}</div>
       <form onSubmit={verstuur} className="flex flex-wrap items-end gap-3">
         <div className="min-w-[220px] flex-1">
           <label htmlFor="nieuw-wachtwoord" className="kb-label mb-1.5 block">
-            Nieuw wachtwoord (min. 8 tekens)
+            {t.login.wachtwoordWijzigen.nieuwWachtwoord.replace('{aantal}', String(MINIMUM_LENGTE))}
           </label>
           <input
             id="nieuw-wachtwoord"
             type="password"
             autoComplete="new-password"
             required
-            minLength={8}
+            minLength={MINIMUM_LENGTE}
             value={wachtwoord}
             onChange={(e) => setWachtwoord(e.target.value)}
             className="kb-input"
           />
         </div>
         <button type="submit" disabled={bezig} className="kb-btn kb-btn-primary whitespace-nowrap">
-          {bezig ? 'Bezig…' : 'Wachtwoord opslaan'}
+          {bezig ? t.algemeen.bezig : t.login.wachtwoordWijzigen.opslaan}
         </button>
       </form>
 

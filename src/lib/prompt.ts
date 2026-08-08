@@ -1,10 +1,28 @@
-/** Vaste systeemregels voor de AI-assistent. Bevat geen artikelinhoud — dat komt apart mee, zie bouwKennisbank(). */
-export const SYSTEEMPROMPT_VAST = `Je bent de interne kennisbank-assistent van Marzan Security (KluisStore.nl, KluisShop.be, LIPSBrandkasten.shop, SimplySafes.co.uk). Medewerkers stellen je vragen over procedures en werkwijzen.
+import type { Taal } from '@/lib/talen';
+
+/** Hoe de doeltaal in de systeemprompt benoemd wordt. */
+const TAAL_IN_PROMPT: Record<Taal, string> = {
+  nl: 'het Nederlands',
+  en: 'het Engels',
+  fr: 'het Frans',
+};
+
+/**
+ * Vaste systeemregels voor de AI-assistent. Bevat geen artikelinhoud — dat komt
+ * apart mee, zie bouwKennisbank().
+ *
+ * De doeltaal is die van de gebruiker. Let op de tweede regel: een deel van de
+ * kennisbank kan nog Nederlandstalig zijn omdat de vertaling ontbreekt, maar het
+ * antwoord moet altijd in de taal van de gebruiker zijn.
+ */
+export function systeempromptVast(taal: Taal): string {
+  return `Je bent de interne kennisbank-assistent van Marzan Security (KluisStore.nl, KluisShop.be, LIPSBrandkasten.shop, SimplySafes.co.uk). Medewerkers stellen je vragen over procedures en werkwijzen.
 
 Hierna volgt de volledige, actuele kennisbank: alle gepubliceerde artikelen, elk met een uniek ARTIKEL-id (een UUID). Beantwoord vragen uitsluitend op basis van deze artikelen.
 
 Regels, zonder uitzondering:
-- Antwoord altijd in het Nederlands, in gewone taal.
+- Antwoord altijd in ${TAAL_IN_PROMPT[taal]}, in gewone taal.
+- Sommige artikelen zijn nog niet vertaald en staan in het Nederlands; die dragen het label "Taal: nl". Gebruik ze gewoon als bron, maar antwoord óók dan in ${TAAL_IN_PROMPT[taal]}.
 - Gebruik alleen informatie uit de meegeleverde artikelen. Vul nooit aan met eigen kennis, aannames, of wat "waarschijnlijk" klopt.
 - Staat het antwoord niet in de artikelen, of spreken artikelen elkaar tegen? Escaleer. Gok nooit.
 - Kredietcheck: je mag de procedure uitleggen, maar geeft nooit zelf goedkeuring voor een bestelling op rekening. Het eindbesluit ligt altijd bij Martijn.
@@ -15,6 +33,7 @@ Regels, zonder uitzondering:
 - Verwijs bij elk antwoord naar de gebruikte artikelen via het veld "bronnen" met hun ARTIKEL-id (de UUID, niet de titel). Verzin zelf nooit links.
 
 Antwoord uitsluitend als JSON volgens het gegeven schema.`;
+}
 
 /** Structured-output schema: dwingt een antwoord met machinaal controleerbare bronnen af. */
 export const ANTWOORD_SCHEMA = {
@@ -24,7 +43,7 @@ export const ANTWOORD_SCHEMA = {
     properties: {
       antwoord: {
         type: 'string',
-        description: 'Het antwoord in het Nederlands, in Markdown.',
+        description: 'Het antwoord in de taal van de gebruiker, in Markdown.',
       },
       bronnen: {
         type: 'array',
@@ -43,7 +62,15 @@ export const ANTWOORD_SCHEMA = {
   },
 } as const;
 
-export const ESCALATIE_TEKST = 'Dit staat niet in de kennisbank, escaleer naar Martijn.';
+/**
+ * Vaste escalatietekst per taal. Bewust niet door het model geformuleerd: dat
+ * zou er zelf een aanname in kunnen schrijven die niet uit de kennisbank komt.
+ */
+export const ESCALATIE_TEKST: Record<Taal, string> = {
+  nl: 'Dit staat niet in de kennisbank, escaleer naar Martijn.',
+  en: 'This is not in the knowledge base — escalate to Martijn.',
+  fr: "Cette information ne figure pas dans la base de connaissances — transmettez la question à Martijn.",
+};
 
 /**
  * Systeemprompt voor het genereren van artikel-voorstellen uit herhaalde escalaties.
@@ -94,6 +121,51 @@ export const VOORSTEL_SCHEMA = {
       },
     },
     required: ['voorstellen'],
+    additionalProperties: false,
+  },
+} as const;
+
+/**
+ * Systeemprompt voor het vertalen van een artikel vanuit het Nederlands.
+ *
+ * Het resultaat is nadrukkelijk een CONCEPT: de redacteur kijkt het na voordat
+ * het gepubliceerd wordt. Daarom staat de nadruk hier op trouw blijven aan het
+ * origineel — niets toevoegen, niets weglaten, geen procedures "verbeteren".
+ */
+export function vertaalSysteemprompt(doeltaal: Taal): string {
+  return `Je vertaalt een artikel uit de interne kennisbank van Marzan Security vanuit het Nederlands naar ${TAAL_IN_PROMPT[doeltaal]}.
+
+Regels, zonder uitzondering:
+- Vertaal getrouw. Voeg niets toe, laat niets weg, en herschrijf geen procedures — ook niet als je denkt dat het beter kan.
+- Behoud de Markdown-structuur exact: kopniveaus, lijsten, tabellen, vetgedrukte tekst, blokcitaten en de volgorde van alles.
+- Laat codeblokken, inline code, URL's in links en afbeeldingspaden (zoals /api/afbeelding/...) letterlijk staan. Vertaal wel de zichtbare linktekst.
+- Laat callout-markers als "> [!TIP]", "> [!INFO]" en "> [!WARNING]" letterlijk staan; vertaal alleen de tekst eronder.
+- Vertaal geen eigennamen: Marzan Security, Magento, Zoho, PON, KluisStore, KluisShop, LIPSBrandkasten, SimplySafes, en namen van personen, leveranciers en productmodellen.
+- Vaktermen uit de branche (kluis, brandkast, sleutelkluis) vertaal je naar de gangbare term in de doeltaal.
+- De slug is een URL-fragment: alleen kleine letters, cijfers en koppeltekens, geen accenten, en een vertaling van de titel.
+- Antwoord uitsluitend als JSON volgens het gegeven schema.`;
+}
+
+export const VERTAAL_SCHEMA = {
+  type: 'json_schema',
+  schema: {
+    type: 'object',
+    properties: {
+      titel: { type: 'string', description: 'De vertaalde titel.' },
+      samenvatting: {
+        type: 'string',
+        description: 'De vertaalde samenvatting. Leeg als het origineel er geen had.',
+      },
+      inhoud_markdown: {
+        type: 'string',
+        description: 'De vertaalde inhoud, met exact dezelfde Markdown-structuur als het origineel.',
+      },
+      slug: {
+        type: 'string',
+        description: 'URL-fragment in de doeltaal: kleine letters, cijfers en koppeltekens.',
+      },
+    },
+    required: ['titel', 'samenvatting', 'inhoud_markdown', 'slug'],
     additionalProperties: false,
   },
 } as const;
