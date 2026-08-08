@@ -49,7 +49,7 @@ function VerificatieFormulier() {
   }
 
   return (
-    <form onSubmit={verstuur} className="kb-card w-full max-w-sm p-5">
+    <form onSubmit={verstuur} className="kb-card w-full max-w-sm p-7">
       <h1 className="text-[17px] font-bold text-navy">Verificatiecode</h1>
       <p className="mt-0.5 text-[11px] text-muted">Vul de 6-cijferige code uit je authenticator-app in.</p>
 

@@ -29,42 +29,42 @@ body {
   background: var(--color-page);
   color: var(--color-ink);
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: 15px;
 }
 
 /* --- Herbruikbare componenten uit het designsysteem ---------------------- */
 
 @layer components {
   .kb-card {
-    @apply rounded-lg border border-[#eef0f4] bg-white shadow-[0_1px_4px_rgba(0,0,0,.06)];
+    @apply rounded-xl border border-[#eef0f4] bg-white shadow-[0_1px_4px_rgba(0,0,0,.06)];
   }
 
   /* Standaard main-container: volle breedte, consistente marge, op elke pagina. */
   .kb-main {
-    @apply w-full px-3.5 py-3.5 sm:px-4 sm:py-4 md:px-5 md:py-5 lg:px-6 lg:py-6;
+    @apply w-full px-4 py-4 sm:px-5 sm:py-5 md:px-7 md:py-7 lg:px-8 lg:py-8;
   }
 
   .kb-page-title {
-    @apply text-[19px] font-bold text-navy;
+    @apply text-[22px] font-bold text-navy;
   }
 
   .kb-label {
-    @apply text-[10px] font-bold uppercase tracking-[0.07em] text-muted;
+    @apply text-[11px] font-bold uppercase tracking-[0.08em] text-muted;
   }
 
   .kb-section-title {
-    @apply text-[12px] font-bold uppercase tracking-[0.06em] text-navy;
+    @apply text-[13px] font-bold uppercase tracking-[0.06em] text-navy;
   }
 
   .kb-input {
-    @apply w-full rounded-md border border-line bg-page px-3 py-2 text-[13px] text-ink-soft
+    @apply w-full rounded-md border border-line bg-page px-3.5 py-2.5 text-[14px] text-ink-soft
            outline-none transition-colors placeholder:text-muted
            focus:border-teal focus:bg-white;
   }
 
   .kb-btn {
-    @apply inline-flex items-center justify-center gap-1.5 rounded-md border border-line
-           bg-page px-3 py-1.5 text-[13px] font-medium text-[#4a5568]
+    @apply inline-flex items-center justify-center gap-2 rounded-md border border-line
+           bg-page px-3.5 py-2 text-[14px] font-medium text-[#4a5568]
            transition-colors hover:border-[#aab] hover:bg-[#e2e8f0]
            disabled:cursor-not-allowed disabled:opacity-50;
   }
@@ -79,8 +79,8 @@ body {
 
   /* Pill-chip, zoals de webshop-toggle in het dashboard. */
   .kb-chip {
-    @apply inline-flex items-center rounded-full border border-line bg-white px-3 py-[3px]
-           text-[12px] font-medium text-[#4a5568] transition-colors
+    @apply inline-flex items-center rounded-full border border-line bg-white px-3.5 py-1
+           text-[13px] font-medium text-[#4a5568] transition-colors
            hover:border-teal hover:bg-[#f0faf6];
   }
 
@@ -89,21 +89,21 @@ body {
   }
 
   .kb-empty {
-    @apply py-7 text-center text-[13px] text-[#aab];
+    @apply py-9 text-center text-[14px] text-[#aab];
   }
 
   /* Weergave van artikel-Markdown. */
   .kb-prose {
-    @apply max-w-none text-[14px] leading-relaxed text-ink-soft;
+    @apply max-w-none text-[15px] leading-relaxed text-ink-soft;
   }
   .kb-prose h1 {
-    @apply mt-0 mb-2.5 text-[21px] font-bold text-navy;
+    @apply mt-0 mb-3 text-[24px] font-bold text-navy;
   }
   .kb-prose h2 {
-    @apply mt-6 mb-2 scroll-mt-24 text-[17px] font-bold text-navy;
+    @apply mt-7 mb-2.5 scroll-mt-24 text-[19px] font-bold text-navy;
   }
   .kb-prose h3 {
-    @apply mt-4 mb-1.5 scroll-mt-24 text-[14px] font-bold tracking-[0.02em] text-navy uppercase;
+    @apply mt-5 mb-2 scroll-mt-24 text-[15px] font-bold tracking-[0.02em] text-navy uppercase;
   }
   .kb-prose p {
     @apply my-3;

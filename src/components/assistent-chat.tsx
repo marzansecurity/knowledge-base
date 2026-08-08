@@ -122,7 +122,7 @@ export function AssistentChat({
 
   return (
     <div className="flex min-h-[75vh] flex-col">
-      <div className="kb-card flex-1 space-y-4 overflow-y-auto p-3.5">
+      <div className="kb-card flex-1 space-y-4 overflow-y-auto p-5">
         {berichten.length === 0 && (
           <div className="kb-empty mx-auto max-w-[560px]">
             Stel een vraag over een procedure. Het antwoord verwijst altijd naar het gebruikte artikel — en

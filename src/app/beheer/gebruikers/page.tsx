@@ -24,7 +24,7 @@ export default async function GebruikersBeheerPagina() {
 
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
-      <main className="kb-main grid gap-3.5">
+      <main className="kb-main grid gap-5">
         <div>
           <h1 className="kb-page-title">Gebruikers &amp; kennis-toegang</h1>
           <p className="mt-1.5 max-w-[720px] text-[13px] leading-relaxed text-muted">
@@ -36,12 +36,12 @@ export default async function GebruikersBeheerPagina() {
 
         <AanmakenFormulier />
 
-        <div className="grid grid-cols-1 gap-3.5 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
           {(profielen ?? []).map((p) => {
             const huidigeToegang = toegangPerProfiel.get(p.user_id) ?? new Set<string>();
             const isZelf = p.user_id === user.id;
             return (
-              <form key={p.user_id} action={bewaarGebruiker.bind(null, p.user_id)} className="kb-card p-3.5">
+              <form key={p.user_id} action={bewaarGebruiker.bind(null, p.user_id)} className="kb-card p-5">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="text-[15px] font-semibold text-navy">
                     {p.display_name}

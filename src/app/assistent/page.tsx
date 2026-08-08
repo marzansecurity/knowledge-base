@@ -22,7 +22,7 @@ export default async function AssistentPagina({
 
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
-      <main className="kb-main grid grid-cols-1 gap-3.5 md:grid-cols-[260px_1fr]">
+      <main className="kb-main grid grid-cols-1 gap-5 md:grid-cols-[260px_1fr]">
         <aside className="kb-card p-3.5 md:sticky md:top-[18px] md:self-start">
           <Link href="/assistent" className="kb-btn kb-btn-primary mb-2.5 w-full">
             + Nieuw gesprek

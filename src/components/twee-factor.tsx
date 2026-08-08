@@ -77,7 +77,7 @@ export function TweeFactor() {
   const actieveFactor = factoren?.find((f) => f.status === 'verified');
 
   return (
-    <div className="kb-card p-3.5">
+    <div className="kb-card p-5">
       <div className="kb-section-title mb-3">Twee-factor-authenticatie</div>
 
       {factoren === null && <p className="text-[13px] text-muted">Laden…</p>}

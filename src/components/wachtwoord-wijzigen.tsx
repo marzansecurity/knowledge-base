@@ -26,7 +26,7 @@ export function WachtwoordWijzigen() {
   }
 
   return (
-    <div className="kb-card p-3.5">
+    <div className="kb-card p-5">
       <div className="kb-section-title mb-3">Mijn wachtwoord wijzigen</div>
       <form onSubmit={verstuur} className="flex flex-wrap items-end gap-3">
         <div className="min-w-[220px] flex-1">

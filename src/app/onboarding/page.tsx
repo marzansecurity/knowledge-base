@@ -31,8 +31,8 @@ export default async function OnboardingPagina() {
 
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
-      <main className="kb-main grid gap-3.5">
-        <div className="flex flex-wrap items-start justify-between gap-4">
+      <main className="kb-main grid gap-5">
+        <div className="flex flex-wrap items-start justify-between gap-6">
           <div>
             <h1 className="kb-page-title">Onboarding-checklist</h1>
             <p className="mt-1.5 max-w-[640px] text-[13px] leading-relaxed text-muted">
@@ -54,7 +54,7 @@ export default async function OnboardingPagina() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-3.5 lg:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-3">
           {topCategorieen.map((c, i) => {
             const artikelen = artikelenPerCategorie[i];
             if (artikelen.length === 0) return null;

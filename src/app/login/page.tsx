@@ -43,7 +43,7 @@ function LoginFormulier() {
   }
 
   return (
-    <form onSubmit={verstuur} className="kb-card w-full max-w-sm p-5">
+    <form onSubmit={verstuur} className="kb-card w-full max-w-sm p-7">
       <Image src="/marzan-logo.svg" alt="Marzan Security" width={132} height={52} className="mb-4 h-11 w-auto" priority />
       <h1 className="text-[17px] font-bold text-navy">Marzan Kennisbank</h1>
       <p className="mt-0.5 text-[11px] text-muted">Interne kennisbank · inloggen</p>

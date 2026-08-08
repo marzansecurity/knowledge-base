@@ -18,7 +18,7 @@ export default async function FeedbackPagina() {
 
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
-      <main className="kb-main grid gap-3.5">
+      <main className="kb-main grid gap-5">
         <div>
           <h1 className="kb-page-title">Feedback op AI-antwoorden</h1>
           <p className="mt-1.5 max-w-[720px] text-[13px] leading-relaxed text-muted">
@@ -28,7 +28,7 @@ export default async function FeedbackPagina() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-3.5 xl:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
           {antwoorden.map((a) => (
             <div key={a.id} className="kb-card p-4">
               <div className="flex flex-wrap items-start justify-between gap-2">

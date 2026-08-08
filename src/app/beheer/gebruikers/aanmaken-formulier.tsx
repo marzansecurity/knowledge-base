@@ -28,7 +28,7 @@ export function AanmakenFormulier() {
   }
 
   return (
-    <div className="kb-card p-3.5">
+    <div className="kb-card p-5">
       <div className="kb-section-title mb-3">Nieuw account aanmaken</div>
       <form ref={formRef} action={verstuur} className="flex flex-wrap items-end gap-3">
         <div className="min-w-[180px] flex-1">

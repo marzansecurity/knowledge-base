@@ -7,8 +7,8 @@ export default async function NieuwArtikelPagina() {
 
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
-      <main className="mx-auto max-w-lg px-4 py-[18px]">
-        <form action={maakArtikel} className="kb-card space-y-4 p-4">
+      <main className="mx-auto max-w-lg px-6 py-[18px]">
+        <form action={maakArtikel} className="kb-card space-y-4 p-6">
           <div>
             <label htmlFor="title" className="kb-label mb-1.5 block">
               Titel
