@@ -1,9 +1,11 @@
 'use client';
 
-import Link from 'next/link';
+import { TaalLink } from '@/components/taal-link';
+import { useVertalingen } from '@/components/vertaling-provider';
 import { useRef, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArtikelMarkdown } from '@/lib/markdown';
+import { pad } from '@/lib/paden';
 import type { Bericht, BerichtBron } from '@/lib/data';
 
 type WeergaveBericht = Partial<Bericht> & {
@@ -22,10 +24,11 @@ function FeedbackKnoppen({
   helpful?: boolean | null;
   onFeedback: (berichtId: string, helpful: boolean) => void;
 }) {
+  const { berichten: t } = useVertalingen();
   if (!berichtId) return null;
   return (
     <div className="mt-3 flex items-center gap-2 border-t border-line pt-3">
-      <span className="kb-label">Was dit nuttig?</span>
+      <span className="kb-label">{t.assistent.wasDitNuttig}</span>
       <button
         type="button"
         onClick={() => onFeedback(berichtId, true)}
@@ -57,6 +60,7 @@ export function AssistentChat({
   conversationId: string | null;
   initieleBerichten: Bericht[];
 }) {
+  const { taal, berichten: t } = useVertalingen();
   const router = useRouter();
   const [berichten, setBerichten] = useState<WeergaveBericht[]>(initieleBerichten);
   const [vraag, setVraag] = useState('');
@@ -83,7 +87,7 @@ export function AssistentChat({
           body: JSON.stringify({ vraag: tekst, conversationId: huidigId }),
         });
         const data = await res.json();
-        if (!res.ok) throw new Error(data.fout ?? 'Er ging iets mis.');
+        if (!res.ok) throw new Error(data.fout ?? t.assistent.foutAlgemeen);
 
         setBerichten((b) => [
           ...b,
@@ -99,12 +103,12 @@ export function AssistentChat({
 
         if (!huidigId) {
           setHuidigId(data.conversationId);
-          router.replace(`/assistent?gesprek=${data.conversationId}`, { scroll: false });
+          router.replace(`${pad(taal, '/assistent')}?gesprek=${data.conversationId}`, { scroll: false });
           router.refresh();
         }
         setTimeout(() => bodemRef.current?.scrollIntoView({ behavior: 'smooth' }), 50);
       } catch (e) {
-        setFout(e instanceof Error ? e.message : 'Onbekende fout.');
+        setFout(e instanceof Error ? e.message : t.assistent.foutOnbekend);
       }
     });
   }
@@ -124,10 +128,7 @@ export function AssistentChat({
     <div className="flex min-h-[75vh] flex-col">
       <div className="kb-card flex-1 space-y-4 overflow-y-auto p-5">
         {berichten.length === 0 && (
-          <div className="kb-empty mx-auto max-w-[560px]">
-            Stel een vraag over een procedure. Het antwoord verwijst altijd naar het gebruikte artikel — en
-            als het niet in de kennisbank staat, escaleert de assistent naar Martijn in plaats van te gokken.
-          </div>
+          <div className="kb-empty mx-auto max-w-[560px]">{t.assistent.introTekst}</div>
         )}
 
         {berichten.map((b, i) => (
@@ -146,11 +147,11 @@ export function AssistentChat({
                 <ArtikelMarkdown>{b.content}</ArtikelMarkdown>
                 {b.bronnen && b.bronnen.length > 0 && (
                   <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-line pt-3">
-                    <span className="kb-label">Bronnen:</span>
+                    <span className="kb-label">{t.assistent.bronnen}</span>
                     {b.bronnen.map((bron) => (
-                      <Link key={bron.slug} href={`/bibliotheek/${bron.slug}`} className="kb-chip">
+                      <TaalLink key={bron.slug} href={`/bibliotheek/${bron.slug}`} className="kb-chip">
                         {bron.title}
-                      </Link>
+                      </TaalLink>
                     ))}
                   </div>
                 )}
@@ -162,7 +163,7 @@ export function AssistentChat({
           </div>
         ))}
 
-        {bezig && <div className="kb-empty">Bezig met antwoorden…</div>}
+        {bezig && <div className="kb-empty">{t.assistent.bezigMetAntwoorden}</div>}
         <div ref={bodemRef} />
       </div>
 
@@ -176,12 +177,12 @@ export function AssistentChat({
         <input
           value={vraag}
           onChange={(e) => setVraag(e.target.value)}
-          placeholder="Stel je vraag…"
+          placeholder={t.assistent.vraagPlaceholder}
           className="kb-input"
           disabled={bezig}
         />
         <button type="submit" disabled={bezig || !vraag.trim()} className="kb-btn kb-btn-primary whitespace-nowrap">
-          Versturen
+          {t.assistent.versturen}
         </button>
       </form>
     </div>

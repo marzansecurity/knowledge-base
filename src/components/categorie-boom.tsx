@@ -1,4 +1,7 @@
-import Link from 'next/link';
+'use client';
+
+import { TaalLink } from '@/components/taal-link';
+import { useVertalingen } from '@/components/vertaling-provider';
 import type { Category } from '@/lib/types';
 import { bouwCategorieboom } from '@/lib/data';
 
@@ -10,20 +13,21 @@ type Props = {
 
 export function CategorieBoom({ categorieen, actieveSlug, aantalPerCategorie }: Props) {
   const boom = bouwCategorieboom(categorieen);
+  const { berichten: t } = useVertalingen();
 
   return (
     <nav className="kb-card p-3">
-      <div className="kb-label mb-2 px-2">Categorieën</div>
+      <div className="kb-label mb-2 px-2">{t.bibliotheek.categorieen}</div>
       <ul className="space-y-0.5">
         <li>
-          <Link
+          <TaalLink
             href="/bibliotheek"
             className={`flex items-center justify-between rounded-md px-2 py-1.5 text-[14px] transition-colors ${
               !actieveSlug ? 'bg-navy text-white' : 'text-ink-soft hover:bg-page'
             }`}
           >
-            Alle artikelen
-          </Link>
+            {t.bibliotheek.alleArtikelen}
+          </TaalLink>
         </li>
         {boom.map((c) => (
           <Knoop
@@ -57,7 +61,7 @@ function Knoop({
 
   return (
     <li>
-      <Link
+      <TaalLink
         href={`/bibliotheek?categorie=${categorie.slug}`}
         style={{ paddingLeft: `${8 + niveau * 14}px` }}
         className={`flex items-center justify-between rounded-md py-1.5 pr-2 text-[14px] transition-colors ${
@@ -68,7 +72,7 @@ function Knoop({
         {aantal > 0 && (
           <span className={`text-[12px] ${actief ? 'text-white/70' : 'text-muted'}`}>{aantal}</span>
         )}
-      </Link>
+      </TaalLink>
       {categorie.kinderen.length > 0 && (
         <ul>
           {categorie.kinderen.map((k) => (

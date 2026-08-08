@@ -1,9 +1,43 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
+import { isTaal, TAAL_COOKIE, TAAL_COOKIE_MAXAGE, type Taal } from '@/lib/talen';
+import { taalUitHeader } from '@/lib/paden';
 
-const PUBLIEKE_PADEN = ['/login', '/auth'];
+// Paden binnen een taalsegment die zonder sessie bereikbaar zijn.
+const PUBLIEKE_SUBPADEN = ['/login'];
+
+const COOKIE_OPTIES = {
+  path: '/',
+  maxAge: TAAL_COOKIE_MAXAGE,
+  sameSite: 'lax',
+} as const;
+
+/** Eerdere keuze wint van de browservoorkeur; anders het Nederlands. */
+function kiesTaal(request: NextRequest): Taal {
+  const uitCookie = request.cookies.get(TAAL_COOKIE)?.value;
+  if (isTaal(uitCookie)) return uitCookie;
+  return taalUitHeader(request.headers.get('accept-language'));
+}
 
 export async function proxy(request: NextRequest) {
+  const pad = request.nextUrl.pathname;
+
+  // 1. Taalprefix afdwingen, vóór alle auth-logica. Zonder geldig taalsegment
+  //    bestaat de route niet, dus doorsturen heeft altijd voorrang.
+  const eersteSegment = pad.split('/')[1];
+  if (!isTaal(eersteSegment)) {
+    const taal = kiesTaal(request);
+    const url = request.nextUrl.clone();
+    url.pathname = `/${taal}${pad === '/' ? '' : pad}`;
+    const omleiding = NextResponse.redirect(url);
+    omleiding.cookies.set(TAAL_COOKIE, taal, COOKIE_OPTIES);
+    return omleiding;
+  }
+
+  const taal = eersteSegment;
+  // Pad zonder taal, zodat de regels hieronder taal-onafhankelijk blijven.
+  const restPad = pad.slice(`/${taal}`.length) || '/';
+
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient(
@@ -32,13 +66,13 @@ export async function proxy(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const pad = request.nextUrl.pathname;
-  const isPubliek = PUBLIEKE_PADEN.some((p) => pad.startsWith(p));
+  const isPubliek = PUBLIEKE_SUBPADEN.some((p) => restPad === p || restPad.startsWith(`${p}/`));
 
   if (!user && !isPubliek) {
     const url = request.nextUrl.clone();
-    url.pathname = '/login';
-    url.searchParams.set('volgende', pad);
+    url.pathname = `/${taal}/login`;
+    // Taalloos bewaren: de loginpagina plakt de taal er zelf weer voor.
+    url.searchParams.set('volgende', restPad);
     return NextResponse.redirect(url);
   }
 
@@ -48,22 +82,31 @@ export async function proxy(request: NextRequest) {
     const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
     if (aal?.nextLevel === 'aal2' && aal.currentLevel !== aal.nextLevel) {
       const url = request.nextUrl.clone();
-      url.pathname = '/login/verificeren';
-      url.searchParams.set('volgende', pad);
+      url.pathname = `/${taal}/login/verificeren`;
+      url.searchParams.set('volgende', restPad);
       return NextResponse.redirect(url);
     }
   }
 
-  if (user && pad === '/login') {
+  if (user && restPad === '/login') {
     const url = request.nextUrl.clone();
-    url.pathname = '/';
+    url.pathname = `/${taal}`;
     url.search = '';
     return NextResponse.redirect(url);
+  }
+
+  // Taal uit de URL vastleggen, zodat een latere kale / meteen goed landt.
+  if (request.cookies.get(TAAL_COOKIE)?.value !== taal) {
+    response.cookies.set(TAAL_COOKIE, taal, COOKIE_OPTIES);
   }
 
   return response;
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
+  // api en auth moeten hier buiten blijven: anders zou stap 1 /api/assistent
+  // naar /nl/api/assistent sturen en volgt een 404.
+  matcher: [
+    '/((?!api|auth|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
 };

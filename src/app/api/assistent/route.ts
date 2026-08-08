@@ -3,7 +3,8 @@ import Anthropic from '@anthropic-ai/sdk';
 import { createClient } from '@/lib/supabase/server';
 import { bouwKennisbank } from '@/lib/kennisbank';
 import { haalToegankelijkeCategorieIds } from '@/lib/toegang';
-import { ANTWOORD_SCHEMA, ESCALATIE_TEKST, SYSTEEMPROMPT_VAST } from '@/lib/prompt';
+import { ANTWOORD_SCHEMA, ESCALATIE_TEKST, systeempromptVast } from '@/lib/prompt';
+import { isTaal, STANDAARD_TAAL, type Taal } from '@/lib/talen';
 
 type ModelAntwoord = {
   antwoord: string;
@@ -28,6 +29,11 @@ export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
   const vraag = String(body?.vraag ?? '').trim();
   if (!vraag) return NextResponse.json({ fout: 'Geen vraag opgegeven.' }, { status: 400 });
+
+  // De client kent zijn taal uit het routesegment en stuurt hem mee. Het body-veld
+  // is `any`, dus eerst naar string dwingen voordat isTaal kan versmallen.
+  const taalUitBody = String(body?.taal ?? '');
+  const taal: Taal = isTaal(taalUitBody) ? taalUitBody : STANDAARD_TAAL;
 
   let conversationId: string | undefined = body?.conversationId || undefined;
 
@@ -75,7 +81,7 @@ export async function POST(request: Request) {
     }
   }
 
-  const kennisbank = await bouwKennisbank(supabase, { toegestaneCategorieIds });
+  const kennisbank = await bouwKennisbank(supabase, { taal, toegestaneCategorieIds });
 
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
@@ -85,7 +91,7 @@ export async function POST(request: Request) {
       model: process.env.ANTHROPIC_MODEL!,
       max_tokens: 4096,
       system: [
-        { type: 'text', text: SYSTEEMPROMPT_VAST },
+        { type: 'text', text: systeempromptVast(taal) },
         {
           type: 'text',
           text: `KENNISBANK — ${kennisbank.aantalArtikelen} gepubliceerde artikelen:\n\n${kennisbank.systeemblok}`,
@@ -121,7 +127,7 @@ export async function POST(request: Request) {
   // het model formuleert zijn eigen escalatiebericht niet, want dat kan zelf weer
   // een aanname bevatten die niet uit de kennisbank komt (bijv. "vraag het aan HR").
   const moetEscaleren = escaleren || geldigeBronnen.length === 0;
-  const antwoord = moetEscaleren ? ESCALATIE_TEKST : (geparsed!.antwoord ?? ESCALATIE_TEKST);
+  const antwoord = moetEscaleren ? ESCALATIE_TEKST[taal] : (geparsed!.antwoord ?? ESCALATIE_TEKST[taal]);
   const bronnenDetails = moetEscaleren ? [] : geldigeBronnen.map((id) => kennisbank.artikelen.get(id)!);
 
   const { data: opgeslagenBericht, error: berichtFout } = await supabase

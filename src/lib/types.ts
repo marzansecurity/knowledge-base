@@ -1,12 +1,14 @@
+import type { Taal } from '@/lib/talen';
+
+// De weergavenamen van deze types staan in src/berichten/*.json onder "labels".
+// Servercomponenten halen ze op met haalVertalingen(taal), clientcomponenten
+// met useVertalingen(). Zo blijft er één plek per taal in plaats van losse
+// labelmaps door de code heen.
+
 export type ArticleStatus = 'draft' | 'published' | 'outdated' | 'archived';
 export type ArticleSource = 'handmatig' | 'zoho-import';
 export type UserRole = 'reader' | 'editor' | 'admin';
-
-export const ROLE_LABEL: Record<UserRole, string> = {
-  reader: 'Medewerker',
-  editor: 'Redacteur',
-  admin: 'Beheerder',
-};
+export const USER_ROLES: UserRole[] = ['reader', 'editor', 'admin'];
 
 export type Category = {
   id: string;
@@ -19,7 +21,10 @@ export type Category = {
 
 export type Tag = {
   id: string;
+  /** De taalneutrale sleutel; hierop wordt gefilterd, ook in filter-URL's. */
   name: string;
+  /** De weergavenaam in de huidige taal; valt terug op `name`. */
+  label: string;
 };
 
 export type ArticleSummary = {
@@ -30,6 +35,23 @@ export type ArticleSummary = {
   status: ArticleStatus;
   category_id: string | null;
   reviewed_at: string | null;
+  updated_at: string;
+  /** De taal waarin dit artikel getoond wordt. */
+  vertaling_taal: Taal;
+  /** True als er geen vertaling was en dit de Nederlandse versie is. */
+  is_terugval: boolean;
+};
+
+/** Eén taalversie van een artikel, zoals opgeslagen in article_translations. */
+export type ArticleTranslation = {
+  article_id: string;
+  locale: Taal;
+  slug: string;
+  title: string;
+  summary: string | null;
+  content_markdown: string;
+  review_state: 'concept' | 'nagekeken';
+  stale: boolean;
   updated_at: string;
 };
 
@@ -55,28 +77,13 @@ export type ArticleRevision = {
   change_note: string | null;
 };
 
-export const STATUS_LABEL: Record<ArticleStatus, string> = {
-  draft: 'Concept',
-  published: 'Gepubliceerd',
-  outdated: 'Verouderd',
-  archived: 'Gearchiveerd',
-};
+export const ARTICLE_STATUSES: ArticleStatus[] = ['draft', 'published', 'outdated', 'archived'];
 
 export type Country = 'NL' | 'BE' | 'UK';
 export const COUNTRIES: Country[] = ['NL', 'BE', 'UK'];
-export const COUNTRY_LABEL: Record<Country, string> = {
-  NL: 'Nederland',
-  BE: 'België',
-  UK: 'UK',
-};
 
 export type SupplierType = 'fulfilment' | 'dropshipment' | 'installateur';
 export const SUPPLIER_TYPES: SupplierType[] = ['fulfilment', 'dropshipment', 'installateur'];
-export const SUPPLIER_TYPE_LABEL: Record<SupplierType, string> = {
-  fulfilment: 'Fulfilment',
-  dropshipment: 'Drop Shipment',
-  installateur: 'Installateur',
-};
 
 export type Supplier = {
   id: string;

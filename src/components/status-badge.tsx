@@ -1,5 +1,7 @@
+'use client';
+
+import { useVertalingen } from '@/components/vertaling-provider';
 import type { ArticleStatus } from '@/lib/types';
-import { STATUS_LABEL } from '@/lib/types';
 
 const STIJL: Record<ArticleStatus, string> = {
   draft: 'border-amber text-amber bg-[#fffbf5]',
@@ -9,11 +11,13 @@ const STIJL: Record<ArticleStatus, string> = {
 };
 
 export function StatusBadge({ status }: { status: ArticleStatus }) {
+  const { berichten: t } = useVertalingen();
+
   return (
     <span
       className={`inline-block shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-semibold whitespace-nowrap ${STIJL[status]}`}
     >
-      {STATUS_LABEL[status]}
+      {t.labels.status[status]}
     </span>
   );
 }

@@ -1,16 +1,19 @@
 'use client';
 
-import Link from 'next/link';
+import { TaalLink } from '@/components/taal-link';
 import { useSearchParams } from 'next/navigation';
 
 /** Generieke, los-combineerbare chip-filter op een query-parameter (bv. land of type). */
 export function MultiChipFilter({
   label,
+  wisLabel,
   paramNaam,
   opties,
   basisPad,
 }: {
   label: string;
+  /** Tekst van de knop die het filter leegmaakt. */
+  wisLabel: string;
   paramNaam: string;
   opties: { waarde: string; label: string }[];
   basisPad: string;
@@ -38,14 +41,14 @@ export function MultiChipFilter({
     <div className="flex flex-wrap items-center gap-1.5">
       <span className="kb-label">{label}:</span>
       {opties.map((o) => (
-        <Link key={o.waarde} href={hrefVoor(o.waarde)} className={`kb-chip ${actief.has(o.waarde) ? 'kb-chip-active' : ''}`}>
+        <TaalLink key={o.waarde} href={hrefVoor(o.waarde)} className={`kb-chip ${actief.has(o.waarde) ? 'kb-chip-active' : ''}`}>
           {o.label}
-        </Link>
+        </TaalLink>
       ))}
       {actief.size > 0 && (
-        <Link href={hrefZonderFilter()} className="kb-chip border-negative text-negative hover:bg-[#fdf0ef]">
-          Wissen
-        </Link>
+        <TaalLink href={hrefZonderFilter()} className="kb-chip border-negative text-negative hover:bg-[#fdf0ef]">
+          {wisLabel}
+        </TaalLink>
       )}
     </div>
   );

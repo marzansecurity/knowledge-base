@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
+import { useVertalingen } from '@/components/vertaling-provider';
 
 export function GelezenCheckbox({
   articleId,
@@ -13,10 +14,12 @@ export function GelezenCheckbox({
 }) {
   const [gelezen, setGelezen] = useState(initieelGelezen);
   const [, startTransitie] = useTransition();
+  const { berichten: t } = useVertalingen();
 
   return (
     <input
       type="checkbox"
+      aria-label={t.onboarding.markeerGelezen}
       checked={gelezen}
       onChange={(e) => {
         const nieuw = e.target.checked;
