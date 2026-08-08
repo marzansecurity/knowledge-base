@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { KbShell } from '@/components/kb-shell';
 import { vereisRedacteurOfHoger } from '@/lib/auth';
-import { telNietNuttigeAntwoorden, telOpenEscalaties } from '@/lib/data';
+import { telNietNuttigeAntwoorden, telOpenArtikelVoorstellen, telOpenEscalaties } from '@/lib/data';
 
 export default async function BeheerPagina() {
   const { supabase, profiel } = await vereisRedacteurOfHoger();
@@ -14,6 +14,7 @@ export default async function BeheerPagina() {
     { count: archived },
     openEscalaties,
     nietNuttig,
+    openVoorstellen,
   ] = await Promise.all([
     supabase.from('articles').select('id', { count: 'exact', head: true }).eq('status', 'draft'),
     supabase.from('articles').select('id', { count: 'exact', head: true }).eq('status', 'published'),
@@ -21,6 +22,7 @@ export default async function BeheerPagina() {
     supabase.from('articles').select('id', { count: 'exact', head: true }).eq('status', 'archived'),
     telOpenEscalaties(supabase),
     telNietNuttigeAntwoorden(supabase),
+    telOpenArtikelVoorstellen(supabase),
   ]);
 
   const tegels = [
@@ -54,6 +56,14 @@ export default async function BeheerPagina() {
       kleur: 'bg-negative',
       badge: nietNuttig,
       badgeKleur: 'bg-negative',
+    },
+    {
+      href: '/beheer/voorstellen',
+      titel: 'Artikel-voorstellen',
+      beschrijving: 'Door de AI herkende patronen in herhaalde escalaties.',
+      kleur: 'bg-blue-light',
+      badge: openVoorstellen,
+      badgeKleur: 'bg-blue-light',
     },
     ...(isBeheerder
       ? [

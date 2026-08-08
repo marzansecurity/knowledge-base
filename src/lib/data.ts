@@ -310,3 +310,57 @@ export async function haalGelezenArtikelIds(
   if (error) throw error;
   return new Set((data ?? []).map((r) => r.article_id as string));
 }
+
+export type ArtikelVoorstel = {
+  id: string;
+  title: string;
+  summary: string | null;
+  content_markdown: string;
+  status: 'open' | 'aangemaakt' | 'afgewezen';
+  created_at: string;
+  bronVragen: string[];
+};
+
+/** Door de AI gegenereerde artikel-voorstellen op basis van herhaalde escalaties. */
+export async function haalArtikelVoorstellen(
+  supabase: SupabaseClient,
+  filter: { alleenOpen?: boolean } = {},
+): Promise<ArtikelVoorstel[]> {
+  let query = supabase
+    .from('article_proposals')
+    .select('id, title, summary, content_markdown, status, source_message_ids, created_at')
+    .order('created_at', { ascending: false });
+  if (filter.alleenOpen) query = query.eq('status', 'open');
+
+  const { data, error } = await query;
+  if (error) throw error;
+
+  const alleMessageIds = [...new Set((data ?? []).flatMap((v) => v.source_message_ids ?? []))];
+  let vraagPerId = new Map<string, string>();
+  if (alleMessageIds.length > 0) {
+    const { data: berichten } = await supabase
+      .from('messages')
+      .select('id, origin_question')
+      .in('id', alleMessageIds);
+    vraagPerId = new Map((berichten ?? []).map((b) => [b.id, b.origin_question ?? '(vraag onbekend)']));
+  }
+
+  return (data ?? []).map((v) => ({
+    id: v.id,
+    title: v.title,
+    summary: v.summary,
+    content_markdown: v.content_markdown,
+    status: v.status,
+    created_at: v.created_at,
+    bronVragen: (v.source_message_ids ?? []).map((id: string) => vraagPerId.get(id) ?? '(vraag onbekend)'),
+  }));
+}
+
+export async function telOpenArtikelVoorstellen(supabase: SupabaseClient): Promise<number> {
+  const { count, error } = await supabase
+    .from('article_proposals')
+    .select('id', { count: 'exact', head: true })
+    .eq('status', 'open');
+  if (error) throw error;
+  return count ?? 0;
+}

@@ -44,6 +44,9 @@ export default async function EscalatiesPagina({
             <Link href="/beheer/escalaties?status=alle" className={`kb-chip ${toonAlles ? 'kb-chip-active' : ''}`}>
               Alle
             </Link>
+            <Link href="/beheer/voorstellen" className="kb-chip border-navy-mid text-navy-mid">
+              Artikel-voorstellen →
+            </Link>
           </div>
         </div>
 
