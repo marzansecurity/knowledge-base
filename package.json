@@ -12,7 +12,9 @@
     "zoho:ophalen": "node --env-file=.env.local scripts/zoho-ophalen.mjs",
     "mapping": "node scripts/maak-mapping.mjs",
     "import:droogloop": "node --env-file=.env.local scripts/importeer.mjs --droogloop",
-    "import": "node --env-file=.env.local scripts/importeer.mjs"
+    "import": "node --env-file=.env.local scripts/importeer.mjs",
+    "import:gespreksroutes:droogloop": "node --env-file=.env.local scripts/importeer-gespreksroutes.mjs --droogloop",
+    "import:gespreksroutes": "node --env-file=.env.local scripts/importeer-gespreksroutes.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.115.0",
