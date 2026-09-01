@@ -7,7 +7,6 @@ type: gespreksroute
 volgorde: 13
 ---
 
-**Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**
 "Kan ik korting krijgen?" is drie verschillende vragen. Achterhaal eerst welke het is; de routes lopen daarna volledig uiteen.
 
 ---

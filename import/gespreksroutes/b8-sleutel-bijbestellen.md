@@ -7,7 +7,6 @@ type: gespreksroute
 volgorde: 11
 ---
 
-**Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**
 De kern van dit onderwerp in één regel: **KluisStore.nl verkoopt geen losse sleutels, en dupliceren vereist altijd de originele sleutel.** Op nummer bestellen kan niet. Dit artikel legt uit hoe je dat brengt en welke route je aanbiedt.
 
 ---

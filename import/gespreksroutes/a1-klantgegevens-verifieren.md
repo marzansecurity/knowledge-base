@@ -8,7 +8,6 @@ volgorde: 1
 verplicht: ja
 ---
 
-**Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**
 Bijna elk klantgesprek begint hier: je moet weten over welke bestelling het gaat voordat je iets kunt zeggen of beloven. Dit artikel legt uit hoe je dat doet en waar de grenzen liggen. Alle andere gespreksroutes verwijzen hiernaar.
 
 ---

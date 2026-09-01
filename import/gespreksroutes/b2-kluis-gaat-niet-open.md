@@ -7,7 +7,6 @@ type: gespreksroute
 volgorde: 5
 ---
 
-**Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**
 Dit is de meestgemelde storing. Reageer altijd eerst begripvol: iemand staat voor een kluis die niet opengaat en heeft daar meestal iets in liggen dat nu nodig is. De route hangt op één vraag: is de kluis bij ons gekocht?
 
 ---

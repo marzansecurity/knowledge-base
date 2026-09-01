@@ -6,7 +6,6 @@ type: gespreksroute
 volgorde: 10
 ---
 
-**Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**
 Een klant wil een leverdatum doorgeven, een afleverinstructie meegeven of een opmerking voor de bezorger achterlaten. De route hangt af van één vraag: is er al besteld?
 
 > [!WARNING]

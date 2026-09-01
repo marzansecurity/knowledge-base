@@ -6,7 +6,6 @@ type: gespreksroute
 volgorde: 16
 ---
 
-**Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**
 Een bezoek aan de showroom is **uitsluitend op afspraak** mogelijk. Zeg dat meteen. Daarna bepaal je of het bezoek zinvol is — niet elke vraag verdient een rit naar Breda.
 
 ---

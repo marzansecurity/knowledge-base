@@ -8,7 +8,6 @@ volgorde: 3
 verplicht: ja
 ---
 
-**Geldig voor: KluisStore.nl — alle webshops**
 Dit is de vakkennis die je nodig hebt om een klant te kunnen adviseren. De gespreksvolgorde staat in Productadvies — uitvraag en advies bij kluiskeuze; hier staat *waarom* die vragen gesteld worden.
 
 ---

@@ -7,7 +7,6 @@ type: gespreksroute
 volgorde: 8
 ---
 
-**Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**
 "Waar blijft mijn bestelling?" De status staat in Magento, maar die naam zegt de klant niets. Dit artikel geeft per status de omschrijving die je wél gebruikt, en de regels voor wanneer een ontbrekende track & trace reden is om te escaleren.
 
 > [!WARNING]

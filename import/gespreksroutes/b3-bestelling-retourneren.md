@@ -7,7 +7,6 @@ type: gespreksroute
 volgorde: 6
 ---
 
-**Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**
 Een retourverzoek gaat nooit automatisch. Een medewerker beoordeelt het, en dat kost tijd. Zeg dat expliciet tegen de klant, zodat er geen verkeerde verwachting ontstaat.
 
 > [!WARNING]

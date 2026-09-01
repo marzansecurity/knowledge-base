@@ -7,7 +7,6 @@ type: gespreksroute
 volgorde: 12
 ---
 
-**Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**
 Deze route geldt in vier situaties: de klant vraagt om een medewerker, de klant is boos of gefrustreerd, de klant begrijpt het antwoord niet of is het er niet mee eens, of je komt er na twee pogingen zelf niet uit.
 
 ---

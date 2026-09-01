@@ -6,7 +6,6 @@ type: gespreksroute
 volgorde: 4
 ---
 
-**Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**
 Dit is de meestgestelde vraag die we krijgen: *"welke kluis heb ik nodig?"* De uitvraag is bewust kort gehouden — elke vraag die je overslaat omdat je het antwoord al weet, is winst. De vakkennis achter deze vragen staat in Kluis kiezen: certificering, brandklassen en waardeberging.
 
 ---

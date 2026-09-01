@@ -6,7 +6,6 @@ type: gespreksroute
 volgorde: 15
 ---
 
-**Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**
 Beide kan: anoniem aankopen én contant betalen. De route is kort, maar er zit één subtiliteit in die je goed moet doen.
 
 ---

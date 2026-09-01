@@ -7,7 +7,6 @@ type: gespreksroute
 volgorde: 9
 ---
 
-**Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**
 Wijzigen of annuleren kan alleen zolang de bestelling nog niet verzonden is. De aanwezigheid van een track & trace is daarvoor de harde grens.
 
 ---

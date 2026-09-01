@@ -26,8 +26,9 @@ import { createClient } from '@supabase/supabase-js';
 
 const MAPPEN = [
   {
+    // De routes gelden voor alle webshops (bevestigd 1 sept 2026): landen leeg = overal.
     map: path.join(process.cwd(), 'import', 'gespreksroutes'),
-    standaard: { type: 'gespreksroute', landen: ['NL'], kanaal: 'klantcontact' },
+    standaard: { type: 'gespreksroute', landen: [], kanaal: 'klantcontact' },
   },
   {
     map: path.join(process.cwd(), 'import', 'artikelen'),

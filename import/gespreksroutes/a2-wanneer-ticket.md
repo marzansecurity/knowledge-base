@@ -8,7 +8,6 @@ volgorde: 2
 verplicht: ja
 ---
 
-**Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**
 Niet elk gesprek hoeft een ticket op te leveren. Te veel tickets vervuilen de wachtrij; te weinig betekent dat een klant blijft wachten op iets wat niemand oppakt. Dit artikel geeft de regels, plus een overzicht van alle gespreksroutes.
 
 ---

@@ -7,7 +7,6 @@ type: gespreksroute
 volgorde: 14
 ---
 
-**Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**
 "Kan ik op rekening betalen?" Het antwoord verschilt volledig tussen zakelijk en particulier. Vraag dat dus als eerste.
 
 ---

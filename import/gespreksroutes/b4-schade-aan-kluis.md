@@ -7,7 +7,6 @@ type: gespreksroute
 volgorde: 7
 ---
 
-**Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**
 Een klant meldt schade, een beschadigde verpakking, een verbroken verzegeling of een ontbrekend artikel. Snel melden is belangrijk: dan kunnen we het nog met de vervoerder oplossen. Dit artikel beschrijft welke situatie je voor je hebt, wat je zelf kunt afhandelen en wat je moet vastleggen.
 
 > [!WARNING]
