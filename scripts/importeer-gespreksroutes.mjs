@@ -247,5 +247,5 @@ for (const artikel of artikelen) {
 
 console.log(
   `\n${DROOGLOOP ? 'Droogloop: ' : ''}${nieuw} nieuw, ${bijgewerkt} bijgewerkt.` +
-    `${DROOGLOOP ? ' Niets weggeschreven.' : ' Alles staat op concept.'}\n`,
+    `${DROOGLOOP ? ' Niets weggeschreven.' : ' Nieuwe artikelen staan op concept; bestaande houden hun status.'}\n`,
 );

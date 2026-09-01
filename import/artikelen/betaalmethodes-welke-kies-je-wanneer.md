@@ -51,6 +51,16 @@ Dit artikel gaat over de vier methodes die **jij** in de backend kunt kiezen.
 
 ## De vier methodes in de backend
 
+De labels hangen af van de taal van de backend. Dit artikel gebruikt de Engelse namen;
+zo heten ze per taal:
+
+| Engels (UK-backend) | Nederlands (NL-backend) |
+|---|---|
+| Online partner | Online partner |
+| Payment Link | Betaallink |
+| Bank Transfer | Bankoverschrijving (vooruitbetaling) |
+| Pay by Invoice | Op rekening |
+
 ### 1. Online partner
 
 **Wat het is:** de restcategorie. "One size fits all" — als geen van de andere drie past,
@@ -65,7 +75,7 @@ niemand achteraan.
 
 ---
 
-### 2. Payment Link
+### 2. Payment Link (NL: Betaallink)
 
 **Wat het is:** de klant krijgt een bestelbevestiging met daarin een link waarmee hij de
 betaling zelf start.
@@ -89,7 +99,7 @@ al geregeld.
 
 ---
 
-### 3. Bank Transfer
+### 3. Bank Transfer (NL: Bankoverschrijving — vooruitbetaling)
 
 **Wat het is:** een gewone handmatige overschrijving van de rekening van de klant naar de onze.
 
@@ -112,7 +122,7 @@ weten: die factuur komt pas ná verzending of levering.
 
 ---
 
-### 4. Pay by Invoice (op rekening)
+### 4. Pay by Invoice (NL: Op rekening)
 
 **Wat het is:** de klant krijgt een factuur die hij achteraf betaalt. Hierachter zit wél
 een automatisch herinneringssysteem.
@@ -140,8 +150,9 @@ ingesteld voordat de order wordt ingevoerd**. Kom je zoiets tegen: eerst bij Mar
 **Particulieren:** doen we in principe niet, maar het komt voor. Bijvoorbeeld als een
 klant zijn kluis al besteld heeft en er alsnog een installatie bij wil. Dat kun je dan
 niet goed via een betaallink oplossen (zie punt 2: mislukte betalingen verdwijnen gewoon),
-terwijl Pay by Invoice het bedrag wél bewaakt. Er zit risico aan, dus ook hier: **check
-bij Martijn hoe en wat.**
+terwijl Pay by Invoice het bedrag wél bewaakt. Wordt een particulier toegelaten, dan geldt
+ook daar de standaard betaaltermijn van 14 dagen — in alle webshops, ook in het VK. Er zit
+risico aan, dus ook hier: **check bij Martijn hoe en wat.**
 
 **De belangrijkste valkuil:** bij het aanmaken van de factuur moet je kiezen voor
 **"Geen betaling verwerken" / onbetaald**. Zet je hem op betaald, dan start het
@@ -218,13 +229,9 @@ eindstation voor de financiële administratie. Als klantenservice hoef je daar n
 
 ## Nog te controleren door Martijn
 
-1. **Particulieren UK:** de SimplySafes-pagina zegt expliciet dat er géén accounts voor
-   particulieren zijn. Geldt de NL-uitzondering (installatie achteraf op rekening) dan niet
-   voor het VK?
-2. **Exacte labels:** kloppen de vier benamingen letterlijk met wat er in de backend staat?
-3. **Voorkant NL/BE:** de klantenservicepagina's van KluisStore, KluisShop en LIPS zijn niet
+1. **Voorkant NL/BE:** de klantenservicepagina's van KluisStore, KluisShop en LIPS zijn niet
    automatisch uitleesbaar. Wil je dat de lijst per shop in dit artikel komt, dan moet je die
-   tekst aanleveren.
+   tekst aanleveren — of we laten de links hierboven het werk doen, die blijven vanzelf actueel.
 
 
 ---
