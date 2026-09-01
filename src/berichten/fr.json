@@ -51,6 +51,18 @@
       "concept": "Brouillon",
       "nagekeken": "Vérifié",
       "verouderd": "Obsolète"
+    },
+    "artikeltype": {
+      "gespreksroute": "Parcours de conversation",
+      "procedure": "Procédure",
+      "naslag": "Référence",
+      "producttraining": "Formation produit"
+    },
+    "kanaal": {
+      "klantcontact": "Contact client",
+      "backoffice": "Back-office",
+      "technisch": "Technique",
+      "alle": "Tous les canaux"
     }
   },
   "dashboard": {
@@ -81,7 +93,9 @@
   "artikel": {
     "laatstGecontroleerd": "Dernière vérification :",
     "bewerken": "Modifier",
-    "inhoudsopgave": "Sommaire"
+    "inhoudsopgave": "Sommaire",
+    "geldigVoor": "S'applique à :",
+    "overal": "tous les pays"
   },
   "onboarding": {
     "titel": "Checklist d'intégration",
@@ -89,7 +103,11 @@
     "voortgang": "Progression",
     "gelezenVanTotaal": "{gelezen} / {totaal} lus",
     "geenToegang": "Aucun article n'est encore disponible pour vos accès. Demandez à Martijn de configurer vos accès à la base de connaissances.",
-    "markeerGelezen": "Marquer comme lu"
+    "markeerGelezen": "Marquer comme lu",
+    "leerpadTitel": "Parcours d'apprentissage — commencez ici",
+    "leerpadUitleg": "Parcourez ces articles dans l'ordre. D'abord les fondamentaux (vérification, quand créer un ticket, transmettre), puis les questions concrètes des clients.",
+    "verplichtLabel": "Obligatoire",
+    "verplichtVoortgang": "Obligatoires : {gelezen} / {totaal} lus"
   },
   "login": {
     "titel": "Base de connaissances Marzan",
@@ -181,11 +199,15 @@
       "gebruikersTekst": "Invitez des collaborateurs et définissez ce qu'ils reçoivent dans le contexte de l'IA.",
       "exportTitel": "Export et sauvegarde",
       "exportTekst": "Téléchargez l'intégralité de la base de connaissances en fichier zip.",
-      "bekijken": "Consulter →"
+      "bekijken": "Consulter →",
+      "reviewVerlopenTitel": "Révision dépassée",
+      "reviewVerlopenTekst": "Articles publiés dont la date de révision est dépassée. Vérifiez le contenu et marquez comme vérifié, ou marquez comme obsolète.",
+      "geenEigenaar": "Sans propriétaire"
     },
     "artikelen": {
       "nieuwArtikel": "+ Nouvel article",
       "kolomTitel": "Titre",
+      "kolomType": "Type",
       "kolomCategorie": "Catégorie",
       "kolomStatus": "Statut",
       "kolomGewijzigd": "Dernière modification",
@@ -193,6 +215,9 @@
       "nieuw": {
         "titelLabel": "Titre",
         "titelPlaceholder": "Par exemple : Retour d'une commande",
+        "typeLabel": "Type d'article",
+        "typePlaceholder": "Choisissez un type…",
+        "typeToelichting": "Le type détermine le modèle : parcours de conversation (le client dit X → que demandez-vous), procédure (étapes dans un système), référence (options et quand choisir laquelle) ou formation produit (expertise nécessaire pour conseiller).",
         "aanmaken": "Créer l'article en brouillon",
         "toelichting": "Vous arriverez ensuite directement dans l'éditeur. La publication se fait séparément, dès que le contenu est prêt."
       }
@@ -201,6 +226,8 @@
       "titel": "Boîte des escalades",
       "inleiding": "Questions auxquelles l'assistant IA n'a pas pu répondre avec certitude sur la base des connaissances. Chaque escalade ouverte est une lacune dans la base de connaissances : intégrez la question dans un article, puis cochez-la.",
       "filterOpen": "Ouvertes",
+      "filterWeek": "Nouvelles cette semaine",
+      "aantalKeer": "posée {aantal} fois",
       "naarVoorstellen": "Propositions d'articles →",
       "openAantalEen": "{aantal} escalade ouverte",
       "openAantalMeer": "{aantal} escalades ouvertes",
@@ -268,6 +295,13 @@
   "editor": {
     "titelPlaceholder": "Titre de l'article",
     "samenvattingPlaceholder": "Bref résumé (apparaît sur la fiche de la bibliothèque et dans la réponse de l'IA)",
+    "categorieLabel": "Catégorie",
+    "typeLabel": "Type",
+    "kanaalLabel": "Canal",
+    "landenLabel": "S'applique au(x) pays",
+    "landenToelichting": "Aucun pays coché = s'applique partout. Ordre du parcours vide = ne fait pas partie du parcours d'intégration.",
+    "leerpadLabel": "Ordre du parcours",
+    "verplichtLabel": "Obligatoire à l'intégration",
     "geenCategorie": "Aucune catégorie",
     "tabBewerken": "Modifier",
     "tabVoorbeeld": "Aperçu",

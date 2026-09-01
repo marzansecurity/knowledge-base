@@ -8,7 +8,16 @@ import { createAdminClient } from '@/lib/supabase/admin';
 import { huidigeTaal } from '@/lib/taal-server';
 import { pad } from '@/lib/paden';
 import { STANDAARD_TAAL, type Taal } from '@/lib/talen';
-import type { ArticleStatus, ArticleTranslation } from '@/lib/types';
+import {
+  ARTICLE_CHANNELS,
+  ARTICLE_TYPES,
+  COUNTRIES,
+  type ArticleChannel,
+  type ArticleStatus,
+  type ArticleTranslation,
+  type ArticleType,
+  type Country,
+} from '@/lib/types';
 
 // Revalideren gebeurt op het routepatroon in plaats van op een concreet pad:
 // één aanroep dekt dan alle talen tegelijk.
@@ -19,6 +28,21 @@ const ROUTE_BIBLIOTHEEK = '/[taal]/bibliotheek';
 
 const AFBEELDING_BUCKET = 'artikel-afbeeldingen';
 const MAX_AFBEELDING_BYTES = 5 * 1024 * 1024;
+
+/**
+ * Reviewtermijn bij publicatie, in maanden (briefing A5). Kennis met de tag
+ * "magento" veroudert het snelst en krijgt de korte termijn. De termijnen zelf
+ * zijn nog te bevestigen — pas ze hier aan, dit is de enige plek.
+ */
+const REVIEW_TERMIJN = { standaard: 12, magento: 6 } as const;
+
+function isArticleType(waarde: string): waarde is ArticleType {
+  return (ARTICLE_TYPES as string[]).includes(waarde);
+}
+
+function isChannel(waarde: string): waarde is ArticleChannel {
+  return (ARTICLE_CHANNELS as string[]).includes(waarde);
+}
 
 function maakSlug(titel: string) {
   return (
@@ -41,6 +65,11 @@ export async function maakArtikel(formData: FormData): Promise<void> {
   const titel = String(formData.get('title') ?? '').trim();
   if (!titel) throw new Error('Een titel is verplicht.');
 
+  // Werkafspraak (AGENTS.md): een nieuw artikel krijgt altijd een type en een
+  // eigenaar. Het type bepaalt het sjabloon, de eigenaar is aanspreekbaar bij review.
+  const typeWaarde = String(formData.get('type') ?? '');
+  if (!isArticleType(typeWaarde)) throw new Error('Kies een artikeltype.');
+
   const basisSlug = maakSlug(titel);
   let slug = basisSlug;
   for (let i = 2; i < 50; i += 1) {
@@ -54,7 +83,9 @@ export async function maakArtikel(formData: FormData): Promise<void> {
     slug,
     content_markdown: '',
     status: 'draft',
+    type: typeWaarde,
     source: 'handmatig',
+    owner_id: user.id,
     created_by: user.id,
     updated_by: user.id,
   });
@@ -73,7 +104,22 @@ export async function bewaarArtikel(articleId: string, formData: FormData): Prom
   const categoryId = String(formData.get('category_id') ?? '') || null;
   const wijzignotitie = String(formData.get('change_note') ?? '').trim() || null;
 
+  const typeWaarde = String(formData.get('type') ?? '');
+  const kanaalWaarde = String(formData.get('channel') ?? '');
+  const landen = formData
+    .getAll('countries')
+    .map(String)
+    .filter((l): l is Country => (COUNTRIES as string[]).includes(l));
+  const padVolgordeRuw = String(formData.get('path_order') ?? '').trim();
+  const padVolgorde = padVolgordeRuw ? Number.parseInt(padVolgordeRuw, 10) : null;
+  const verplicht = formData.get('required_reading') === 'on';
+
   if (!titel) return { fout: 'Een titel is verplicht.' };
+  if (!isArticleType(typeWaarde)) return { fout: 'Kies een artikeltype.' };
+  if (!isChannel(kanaalWaarde)) return { fout: 'Kies een kanaal.' };
+  if (padVolgorde !== null && !Number.isFinite(padVolgorde)) {
+    return { fout: 'De leerpad-volgorde moet een getal zijn.' };
+  }
 
   const { data: huidig, error: leesFout } = await supabase
     .from('articles')
@@ -100,6 +146,11 @@ export async function bewaarArtikel(articleId: string, formData: FormData): Prom
       summary: samenvatting,
       content_markdown: inhoud,
       category_id: categoryId,
+      type: typeWaarde,
+      channel: kanaalWaarde,
+      countries: landen,
+      path_order: padVolgorde,
+      required_reading: verplicht,
       updated_by: user.id,
     })
     .eq('id', articleId);
@@ -117,7 +168,22 @@ export async function wijzigStatus(articleId: string, status: ArticleStatus): Pr
   const { supabase, user } = await vereisRedacteurOfHoger();
 
   const veranderingen: Record<string, unknown> = { status, updated_by: user.id };
-  if (status === 'published') veranderingen.published_at = new Date().toISOString();
+  if (status === 'published') {
+    veranderingen.published_at = new Date().toISOString();
+
+    // Reviewdatum meegeven (briefing A5): kennis veroudert, dus elk gepubliceerd
+    // artikel komt na een vaste termijn terug op het beheer-dashboard.
+    const { data: magentoTag } = await supabase
+      .from('article_tags')
+      .select('article_id, tags!inner(name)')
+      .eq('article_id', articleId)
+      .eq('tags.name', 'magento')
+      .maybeSingle();
+    const maanden = magentoTag ? REVIEW_TERMIJN.magento : REVIEW_TERMIJN.standaard;
+    const due = new Date();
+    due.setMonth(due.getMonth() + maanden);
+    veranderingen.review_due_at = due.toISOString();
+  }
 
   const { data, error } = await supabase
     .from('articles')
@@ -134,12 +200,23 @@ export async function wijzigStatus(articleId: string, status: ArticleStatus): Pr
   return { slug: data?.slug };
 }
 
-/** Markeert een artikel als vandaag gecontroleerd. */
+/** Markeert een artikel als vandaag gecontroleerd en schuift de reviewdatum door. */
 export async function markeerGecontroleerd(articleId: string): Promise<OpslaanResultaat> {
   const { supabase } = await vereisRedacteurOfHoger();
+
+  const { data: magentoTag } = await supabase
+    .from('article_tags')
+    .select('article_id, tags!inner(name)')
+    .eq('article_id', articleId)
+    .eq('tags.name', 'magento')
+    .maybeSingle();
+  const maanden = magentoTag ? REVIEW_TERMIJN.magento : REVIEW_TERMIJN.standaard;
+  const due = new Date();
+  due.setMonth(due.getMonth() + maanden);
+
   const { error } = await supabase
     .from('articles')
-    .update({ reviewed_at: new Date().toISOString() })
+    .update({ reviewed_at: new Date().toISOString(), review_due_at: due.toISOString() })
     .eq('id', articleId);
   if (error) return { fout: error.message };
   revalidatePath(ROUTE_ARTIKELEN_BEHEER, 'page');

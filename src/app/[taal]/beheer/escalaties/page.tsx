@@ -24,10 +24,25 @@ export default async function EscalatiesPagina({
   if (!isTaal(taal)) notFound();
   const t = await haalVertalingen(taal);
   const { supabase, profiel } = await vereisRedacteurOfHoger();
-  const { status } = await searchParams;
+  const { status, periode } = await searchParams;
   const toonAlles = status === 'alle';
+  const alleenDezeWeek = periode === 'week';
 
-  const escalaties = await haalEscalaties(supabase, { alleenOpen: !toonAlles });
+  const escalaties = await haalEscalaties(supabase, {
+    alleenOpen: !toonAlles,
+    sindsDagen: alleenDezeWeek ? 7 : undefined,
+  });
+
+  // De inbox is een prioriteitenlijst (briefing C3): open escalaties op aantal
+  // vergelijkbare vragen, dan pas op datum. De "alles"-weergave blijft chronologisch.
+  if (!toonAlles) {
+    escalaties.sort(
+      (a, b) =>
+        b.aantal_vergelijkbaar - a.aantal_vergelijkbaar ||
+        b.created_at.localeCompare(a.created_at),
+    );
+  }
+
   const openAantal = escalaties.filter((e) => !e.resolved_at).length;
 
   return (
@@ -41,8 +56,17 @@ export default async function EscalatiesPagina({
             </p>
           </div>
           <div className="flex gap-2">
-            <TaalLink href="/beheer/escalaties" className={`kb-chip ${!toonAlles ? 'kb-chip-active' : ''}`}>
+            <TaalLink
+              href="/beheer/escalaties"
+              className={`kb-chip ${!toonAlles && !alleenDezeWeek ? 'kb-chip-active' : ''}`}
+            >
               {t.beheer.escalaties.filterOpen}
+            </TaalLink>
+            <TaalLink
+              href="/beheer/escalaties?periode=week"
+              className={`kb-chip ${!toonAlles && alleenDezeWeek ? 'kb-chip-active' : ''}`}
+            >
+              {t.beheer.escalaties.filterWeek}
             </TaalLink>
             <TaalLink href="/beheer/escalaties?status=alle" className={`kb-chip ${toonAlles ? 'kb-chip-active' : ''}`}>
               {t.algemeen.alles}
@@ -73,13 +97,23 @@ export default async function EscalatiesPagina({
                     {new Date(e.created_at).toLocaleDateString(TAAL_OPMAAK[taal], DATUM_OPTIES)}
                   </div>
                 </div>
-                {e.resolved_at ? (
-                  <span className="kb-chip bg-teal text-white">{t.beheer.escalaties.afgehandeld}</span>
-                ) : (
-                  <span className="kb-chip border-amber bg-[#fffbf5] text-amber">
-                    {t.beheer.escalaties.statusOpen}
-                  </span>
-                )}
+                <div className="flex shrink-0 items-center gap-2">
+                  {!e.resolved_at && e.aantal_vergelijkbaar > 1 && (
+                    <span className="kb-chip border-negative bg-[#fdf0ef] font-semibold text-negative">
+                      {t.beheer.escalaties.aantalKeer.replace(
+                        '{aantal}',
+                        String(e.aantal_vergelijkbaar),
+                      )}
+                    </span>
+                  )}
+                  {e.resolved_at ? (
+                    <span className="kb-chip bg-teal text-white">{t.beheer.escalaties.afgehandeld}</span>
+                  ) : (
+                    <span className="kb-chip border-amber bg-[#fffbf5] text-amber">
+                      {t.beheer.escalaties.statusOpen}
+                    </span>
+                  )}
+                </div>
               </div>
 
               <div className="mt-3 rounded-md border border-line bg-page p-3.5 text-[13px]">

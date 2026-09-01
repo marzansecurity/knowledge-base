@@ -122,7 +122,11 @@ export async function maakArtikelVanVoorstel(proposalId: string): Promise<void> 
       summary: voorstel.summary,
       content_markdown: voorstel.content_markdown,
       status: 'draft',
+      // Voorstellen ontstaan uit vragen ("hoe zit dit?"), dus naslag is de beste
+      // aanname — de redacteur past het type aan in de editor als het anders ligt.
+      type: 'naslag',
       source: 'handmatig',
+      owner_id: user.id,
       created_by: user.id,
       updated_by: user.id,
     })

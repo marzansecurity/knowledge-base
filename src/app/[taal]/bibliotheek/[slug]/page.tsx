@@ -75,7 +75,17 @@ export default async function ArtikelPagina({ params }: PageProps<'/[taal]/bibli
             )}
           </div>
 
+          {/* De prozaregel "Geldig voor" komt uit de velden (briefing A4), niet uit de tekst. */}
           <div className="mt-3 flex flex-wrap items-center gap-3 text-[13px] text-muted">
+            <span className="font-medium text-ink-soft">{t.labels.artikeltype[artikel.type]}</span>
+            <span>
+              {t.artikel.geldigVoor}{' '}
+              {artikel.countries.length > 0
+                ? artikel.countries.map((land) => t.labels.land[land]).join(', ')
+                : t.artikel.overal}
+              {' · '}
+              {t.labels.kanaal[artikel.channel]}
+            </span>
             {artikel.reviewed_at && (
               <span>
                 {t.artikel.laatstGecontroleerd}{' '}

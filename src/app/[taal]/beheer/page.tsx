@@ -1,9 +1,14 @@
 import { TaalLink } from '@/components/taal-link';
 import { KbShell } from '@/components/kb-shell';
 import { vereisRedacteurOfHoger } from '@/lib/auth';
-import { telNietNuttigeAntwoorden, telOpenArtikelVoorstellen, telOpenEscalaties } from '@/lib/data';
+import {
+  haalReviewVerlopen,
+  telNietNuttigeAntwoorden,
+  telOpenArtikelVoorstellen,
+  telOpenEscalaties,
+} from '@/lib/data';
 import { notFound } from 'next/navigation';
-import { isTaal } from '@/lib/talen';
+import { TAAL_OPMAAK, isTaal } from '@/lib/talen';
 import { haalVertalingen } from '@/lib/vertalingen';
 
 export default async function BeheerPagina({ params }: PageProps<'/[taal]/beheer'>) {
@@ -22,6 +27,7 @@ export default async function BeheerPagina({ params }: PageProps<'/[taal]/beheer
     openEscalaties,
     nietNuttig,
     openVoorstellen,
+    reviewVerlopen,
   ] = await Promise.all([
     supabase.from('articles').select('id', { count: 'exact', head: true }).eq('status', 'draft'),
     supabase.from('articles').select('id', { count: 'exact', head: true }).eq('status', 'published'),
@@ -30,6 +36,7 @@ export default async function BeheerPagina({ params }: PageProps<'/[taal]/beheer
     telOpenEscalaties(supabase),
     telNietNuttigeAntwoorden(supabase),
     telOpenArtikelVoorstellen(supabase),
+    haalReviewVerlopen(supabase),
   ]);
 
   const tegels = [
@@ -117,6 +124,40 @@ export default async function BeheerPagina({ params }: PageProps<'/[taal]/beheer
             </TaalLink>
           ))}
         </div>
+
+        {reviewVerlopen.length > 0 && (
+          <div className="kb-card p-5">
+            <div className="flex items-center justify-between gap-2">
+              <div className="kb-section-title">{t.beheer.overzicht.reviewVerlopenTitel}</div>
+              <span className="rounded-full bg-orange px-2.5 py-0.5 text-[12px] font-bold text-white">
+                {reviewVerlopen.length}
+              </span>
+            </div>
+            <p className="mt-1.5 text-[13px] leading-relaxed text-muted">
+              {t.beheer.overzicht.reviewVerlopenTekst}
+            </p>
+            <ul className="mt-3 divide-y divide-line">
+              {reviewVerlopen.map((a) => (
+                <li key={a.id} className="flex flex-wrap items-center justify-between gap-2 py-2">
+                  <TaalLink
+                    href={`/beheer/artikelen/${a.slug}`}
+                    className="text-[13px] font-medium text-navy hover:underline"
+                  >
+                    {a.title}
+                  </TaalLink>
+                  <span className="text-[12px] text-muted">
+                    {a.eigenaar ?? t.beheer.overzicht.geenEigenaar} ·{' '}
+                    {new Date(a.review_due_at).toLocaleDateString(TAAL_OPMAAK[taal], {
+                      day: 'numeric',
+                      month: 'short',
+                      year: 'numeric',
+                    })}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
           {acties.map((a) => (

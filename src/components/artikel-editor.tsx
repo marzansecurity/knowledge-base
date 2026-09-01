@@ -7,7 +7,17 @@ import { StatusBadge } from '@/components/status-badge';
 import { useVertalingen } from '@/components/vertaling-provider';
 import { pad } from '@/lib/paden';
 import { TAAL_OPMAAK } from '@/lib/talen';
-import type { ArticleDetail, ArticleStatus, Category } from '@/lib/types';
+import {
+  ARTICLE_CHANNELS,
+  ARTICLE_TYPES,
+  COUNTRIES,
+  type ArticleChannel,
+  type ArticleDetail,
+  type ArticleStatus,
+  type ArticleType,
+  type Category,
+  type Country,
+} from '@/lib/types';
 import {
   archiveerArtikel,
   bewaarArtikel,
@@ -66,6 +76,13 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
   const [samenvatting, setSamenvatting] = useState(artikel.summary ?? '');
   const [inhoud, setInhoud] = useState(artikel.content_markdown);
   const [categoryId, setCategoryId] = useState(artikel.category_id ?? '');
+  const [type, setType] = useState<ArticleType>(artikel.type);
+  const [kanaal, setKanaal] = useState<ArticleChannel>(artikel.channel);
+  const [landen, setLanden] = useState<Country[]>(artikel.countries ?? []);
+  const [padVolgorde, setPadVolgorde] = useState(
+    artikel.path_order === null ? '' : String(artikel.path_order),
+  );
+  const [verplicht, setVerplicht] = useState(artikel.required_reading);
   const [melding, setMelding] = useState<string | null>(null);
   const [fout, setFout] = useState<string | null>(null);
   const [uploadBezig, setUploadBezig] = useState(false);
@@ -74,7 +91,16 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
   const inhoudRef = useRef<HTMLTextAreaElement>(null);
   const bestandInputRef = useRef<HTMLInputElement>(null);
 
-  const gewijzigd = titel !== artikel.title || inhoud !== artikel.content_markdown;
+  const gewijzigd =
+    titel !== artikel.title ||
+    inhoud !== artikel.content_markdown ||
+    samenvatting !== (artikel.summary ?? '') ||
+    categoryId !== (artikel.category_id ?? '') ||
+    type !== artikel.type ||
+    kanaal !== artikel.channel ||
+    landen.join(',') !== (artikel.countries ?? []).join(',') ||
+    padVolgorde !== (artikel.path_order === null ? '' : String(artikel.path_order)) ||
+    verplicht !== artikel.required_reading;
 
   /** Voegt tekst in op de cursorpositie van het tekstvak (of vervangt de selectie). */
   function voegInBijCursor(tekst: string) {
@@ -148,6 +174,11 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
     formData.set('summary', samenvatting);
     formData.set('content_markdown', inhoud);
     formData.set('category_id', categoryId);
+    formData.set('type', type);
+    formData.set('channel', kanaal);
+    for (const land of landen) formData.append('countries', land);
+    formData.set('path_order', padVolgorde);
+    if (verplicht) formData.set('required_reading', 'on');
     formData.set('change_note', wijzignotitieRef.current?.value ?? '');
 
     startTransitie(async () => {
@@ -221,18 +252,95 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
           placeholder={t.editor.samenvattingPlaceholder}
         />
 
-        <select
-          value={categoryId}
-          onChange={(e) => setCategoryId(e.target.value)}
-          className="kb-input max-w-xs"
-        >
-          <option value="">{t.editor.geenCategorie}</option>
-          {categorieen.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name}
-            </option>
-          ))}
-        </select>
+        <div className="flex flex-wrap items-end gap-3">
+          <label className="grid gap-1">
+            <span className="kb-label">{t.editor.categorieLabel}</span>
+            <select
+              value={categoryId}
+              onChange={(e) => setCategoryId(e.target.value)}
+              className="kb-input w-52"
+            >
+              <option value="">{t.editor.geenCategorie}</option>
+              {categorieen.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="grid gap-1">
+            <span className="kb-label">{t.editor.typeLabel}</span>
+            <select
+              value={type}
+              onChange={(e) => setType(e.target.value as ArticleType)}
+              className="kb-input w-44"
+            >
+              {ARTICLE_TYPES.map((waarde) => (
+                <option key={waarde} value={waarde}>
+                  {t.labels.artikeltype[waarde]}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="grid gap-1">
+            <span className="kb-label">{t.editor.kanaalLabel}</span>
+            <select
+              value={kanaal}
+              onChange={(e) => setKanaal(e.target.value as ArticleChannel)}
+              className="kb-input w-40"
+            >
+              {ARTICLE_CHANNELS.map((waarde) => (
+                <option key={waarde} value={waarde}>
+                  {t.labels.kanaal[waarde]}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <div className="grid gap-1">
+            <span className="kb-label">{t.editor.landenLabel}</span>
+            <div className="flex h-[34px] items-center gap-3">
+              {COUNTRIES.map((land) => (
+                <label key={land} className="flex items-center gap-1.5 text-[13px] text-ink-soft">
+                  <input
+                    type="checkbox"
+                    checked={landen.includes(land)}
+                    onChange={(e) =>
+                      setLanden((huidig) =>
+                        e.target.checked ? [...huidig, land] : huidig.filter((l) => l !== land),
+                      )
+                    }
+                  />
+                  {t.labels.land[land]}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <label className="grid gap-1">
+            <span className="kb-label">{t.editor.leerpadLabel}</span>
+            <input
+              type="number"
+              min={1}
+              value={padVolgorde}
+              onChange={(e) => setPadVolgorde(e.target.value)}
+              className="kb-input w-24"
+              placeholder="—"
+            />
+          </label>
+
+          <label className="flex h-[34px] items-center gap-1.5 text-[13px] text-ink-soft">
+            <input
+              type="checkbox"
+              checked={verplicht}
+              onChange={(e) => setVerplicht(e.target.checked)}
+            />
+            {t.editor.verplichtLabel}
+          </label>
+        </div>
+        <p className="text-[11px] text-muted">{t.editor.landenToelichting}</p>
       </div>
 
       <div className="kb-card p-0">

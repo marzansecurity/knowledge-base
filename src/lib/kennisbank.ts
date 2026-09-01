@@ -26,6 +26,9 @@ type Rij = {
   content_markdown: string;
   articles: {
     category_id: string | null;
+    type: string;
+    countries: string[];
+    channel: string;
     categories: { name: string } | null;
     article_tags: { tags: { name: string } | null }[] | null;
   } | null;
@@ -56,7 +59,7 @@ export async function bouwKennisbank(
   const { data, error } = await supabase
     .from('article_translations')
     .select(
-      'article_id, locale, slug, title, content_markdown, articles!inner(category_id, status, categories(name), article_tags(tags(name)))',
+      'article_id, locale, slug, title, content_markdown, articles!inner(category_id, status, type, countries, channel, categories(name), article_tags(tags(name)))',
     )
     .eq('articles.status', 'published')
     .in('locale', talen)
@@ -98,6 +101,11 @@ export async function bouwKennisbank(
       taal: rij.locale,
     });
 
+    // De scope als data (briefing A4), zodat het model niet hoeft af te leiden
+    // uit de lopende tekst voor welke webshop of welk kanaal iets geldt.
+    const landen = rij.articles?.countries ?? [];
+    const geldigVoor = `${landen.length > 0 ? landen.join('/') : 'alle landen'} · ${rij.articles?.channel ?? 'alle'}`;
+
     delen.push(
       [
         `### ARTIKEL ${rij.article_id}`,
@@ -105,6 +113,8 @@ export async function bouwKennisbank(
         // Alleen vermelden als het artikel níét in de gevraagde taal is; anders
         // is het ruis in de prompt.
         rij.locale !== taal ? `Taal: ${rij.locale}` : null,
+        rij.articles?.type ? `Type: ${rij.articles.type}` : null,
+        `Geldig voor: ${geldigVoor}`,
         categorie ? `Categorie: ${categorie}` : null,
         tags.length ? `Tags: ${tags.join(', ')}` : null,
         '',

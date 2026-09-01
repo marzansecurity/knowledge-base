@@ -51,6 +51,18 @@
       "concept": "Concept",
       "nagekeken": "Nagekeken",
       "verouderd": "Verouderd"
+    },
+    "artikeltype": {
+      "gespreksroute": "Gespreksroute",
+      "procedure": "Procedure",
+      "naslag": "Naslag",
+      "producttraining": "Producttraining"
+    },
+    "kanaal": {
+      "klantcontact": "Klantcontact",
+      "backoffice": "Backoffice",
+      "technisch": "Technisch",
+      "alle": "Alle kanalen"
     }
   },
   "dashboard": {
@@ -81,7 +93,9 @@
   "artikel": {
     "laatstGecontroleerd": "Laatst gecontroleerd:",
     "bewerken": "Bewerken",
-    "inhoudsopgave": "Inhoudsopgave"
+    "inhoudsopgave": "Inhoudsopgave",
+    "geldigVoor": "Geldig voor:",
+    "overal": "alle landen"
   },
   "onboarding": {
     "titel": "Onboarding-checklist",
@@ -89,7 +103,11 @@
     "voortgang": "Voortgang",
     "gelezenVanTotaal": "{gelezen} / {totaal} gelezen",
     "geenToegang": "Nog geen artikelen beschikbaar voor jouw toegang. Vraag Martijn om je kennis-toegang in te stellen.",
-    "markeerGelezen": "Markeer als gelezen"
+    "markeerGelezen": "Markeer als gelezen",
+    "leerpadTitel": "Leerpad — begin hier",
+    "leerpadUitleg": "Werk deze artikelen in volgorde door. Eerst het fundament (verifiëren, wanneer een ticket, doorzetten), daarna de concrete klantvragen.",
+    "verplichtLabel": "Verplicht",
+    "verplichtVoortgang": "Verplicht: {gelezen} / {totaal} gelezen"
   },
   "login": {
     "titel": "Marzan Kennisbank",
@@ -181,11 +199,15 @@
       "gebruikersTekst": "Nodig medewerkers uit en bepaal wat ze in de AI-context krijgen.",
       "exportTitel": "Export & back-up",
       "exportTekst": "Download de volledige kennisbank als zip-bestand.",
-      "bekijken": "Bekijken →"
+      "bekijken": "Bekijken →",
+      "reviewVerlopenTitel": "Review verlopen",
+      "reviewVerlopenTekst": "Gepubliceerde artikelen waarvan de reviewdatum is verstreken. Controleer de inhoud en markeer als gecontroleerd, of markeer als verouderd.",
+      "geenEigenaar": "Geen eigenaar"
     },
     "artikelen": {
       "nieuwArtikel": "+ Nieuw artikel",
       "kolomTitel": "Titel",
+      "kolomType": "Type",
       "kolomCategorie": "Categorie",
       "kolomStatus": "Status",
       "kolomGewijzigd": "Laatst gewijzigd",
@@ -193,6 +215,9 @@
       "nieuw": {
         "titelLabel": "Titel",
         "titelPlaceholder": "Bijvoorbeeld: Retourneren van een bestelling",
+        "typeLabel": "Type artikel",
+        "typePlaceholder": "Kies een type…",
+        "typeToelichting": "Het type bepaalt het sjabloon: gespreksroute (klant zegt X → wat vraag je), procedure (stappen in een systeem), naslag (opties en wanneer je welke kiest) of producttraining (vakkennis om te adviseren).",
         "aanmaken": "Artikel aanmaken als concept",
         "toelichting": "Je komt hierna direct in de editor terecht. Publiceren doe je apart, zodra de inhoud klaar is."
       }
@@ -201,6 +226,8 @@
       "titel": "Escalatie-inbox",
       "inleiding": "Vragen die de AI-assistent niet met zekerheid uit de kennisbank kon beantwoorden. Elke openstaande escalatie is een gat in de kennisbank — verwerk de vraag in een artikel en vink hem daarna af.",
       "filterOpen": "Open",
+      "filterWeek": "Deze week nieuw",
+      "aantalKeer": "{aantal}× gesteld",
       "naarVoorstellen": "Artikel-voorstellen →",
       "openAantalEen": "{aantal} openstaande escalatie",
       "openAantalMeer": "{aantal} openstaande escalaties",
@@ -268,6 +295,13 @@
   "editor": {
     "titelPlaceholder": "Titel van het artikel",
     "samenvattingPlaceholder": "Korte samenvatting (verschijnt in de bibliotheekkaart en het AI-antwoord)",
+    "categorieLabel": "Categorie",
+    "typeLabel": "Type",
+    "kanaalLabel": "Kanaal",
+    "landenLabel": "Geldig voor land(en)",
+    "landenToelichting": "Niets aangevinkt bij landen = geldt overal. Leerpad-volgorde leeg = staat niet in het onboarding-leerpad.",
+    "leerpadLabel": "Leerpad-volgorde",
+    "verplichtLabel": "Verplicht bij onboarding",
     "geenCategorie": "Geen categorie",
     "tabBewerken": "Bewerken",
     "tabVoorbeeld": "Voorbeeld",

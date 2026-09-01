@@ -51,6 +51,18 @@
       "concept": "Draft",
       "nagekeken": "Reviewed",
       "verouderd": "Out of date"
+    },
+    "artikeltype": {
+      "gespreksroute": "Conversation route",
+      "procedure": "Procedure",
+      "naslag": "Reference",
+      "producttraining": "Product training"
+    },
+    "kanaal": {
+      "klantcontact": "Customer contact",
+      "backoffice": "Back office",
+      "technisch": "Technical",
+      "alle": "All channels"
     }
   },
   "dashboard": {
@@ -81,7 +93,9 @@
   "artikel": {
     "laatstGecontroleerd": "Last reviewed:",
     "bewerken": "Edit",
-    "inhoudsopgave": "Contents"
+    "inhoudsopgave": "Contents",
+    "geldigVoor": "Applies to:",
+    "overal": "all countries"
   },
   "onboarding": {
     "titel": "Onboarding checklist",
@@ -89,7 +103,11 @@
     "voortgang": "Progress",
     "gelezenVanTotaal": "{gelezen} / {totaal} read",
     "geenToegang": "No articles are available for your access level yet. Ask Martijn to set up your knowledge access.",
-    "markeerGelezen": "Mark as read"
+    "markeerGelezen": "Mark as read",
+    "leerpadTitel": "Learning path — start here",
+    "leerpadUitleg": "Work through these articles in order. The foundations first (verifying, when to create a ticket, escalating), then the concrete customer questions.",
+    "verplichtLabel": "Required",
+    "verplichtVoortgang": "Required: {gelezen} / {totaal} read"
   },
   "login": {
     "titel": "Marzan Knowledge Base",
@@ -181,11 +199,15 @@
       "gebruikersTekst": "Invite colleagues and decide what they get in the AI context.",
       "exportTitel": "Export & backup",
       "exportTekst": "Download the entire knowledge base as a zip file.",
-      "bekijken": "View →"
+      "bekijken": "View →",
+      "reviewVerlopenTitel": "Review overdue",
+      "reviewVerlopenTekst": "Published articles whose review date has passed. Check the content and mark as reviewed, or mark as out of date.",
+      "geenEigenaar": "No owner"
     },
     "artikelen": {
       "nieuwArtikel": "+ New article",
       "kolomTitel": "Title",
+      "kolomType": "Type",
       "kolomCategorie": "Category",
       "kolomStatus": "Status",
       "kolomGewijzigd": "Last modified",
@@ -193,6 +215,9 @@
       "nieuw": {
         "titelLabel": "Title",
         "titelPlaceholder": "For example: Returning an order",
+        "typeLabel": "Article type",
+        "typePlaceholder": "Choose a type…",
+        "typeToelichting": "The type determines the template: conversation route (customer says X → what do you ask), procedure (steps in a system), reference (options and when to pick which) or product training (expertise needed to advise).",
         "aanmaken": "Create article as draft",
         "toelichting": "You will go straight to the editor next. Publishing is a separate step, once the content is ready."
       }
@@ -201,6 +226,8 @@
       "titel": "Escalation inbox",
       "inleiding": "Questions the AI assistant could not answer with confidence from the knowledge base. Every open escalation is a gap in the knowledge base — work the question into an article and then tick it off.",
       "filterOpen": "Open",
+      "filterWeek": "New this week",
+      "aantalKeer": "asked {aantal}×",
       "naarVoorstellen": "Article proposals →",
       "openAantalEen": "{aantal} open escalation",
       "openAantalMeer": "{aantal} open escalations",
@@ -268,6 +295,13 @@
   "editor": {
     "titelPlaceholder": "Title of the article",
     "samenvattingPlaceholder": "Short summary (appears on the library card and in the AI answer)",
+    "categorieLabel": "Category",
+    "typeLabel": "Type",
+    "kanaalLabel": "Channel",
+    "landenLabel": "Applies to country/countries",
+    "landenToelichting": "Nothing ticked under countries = applies everywhere. Learning-path order left empty = not part of the onboarding path.",
+    "leerpadLabel": "Learning-path order",
+    "verplichtLabel": "Required for onboarding",
     "geenCategorie": "No category",
     "tabBewerken": "Edit",
     "tabVoorbeeld": "Preview",

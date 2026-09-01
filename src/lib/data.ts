@@ -113,6 +113,8 @@ type VertalingRij = {
     category_id: string | null;
     reviewed_at: string | null;
     updated_at: string;
+    path_order: number | null;
+    required_reading: boolean;
   } | null;
 };
 
@@ -158,7 +160,9 @@ export async function haalArtikelen(
 
   let query = supabase
     .from('article_translations')
-    .select('article_id, locale, slug, title, summary, articles!inner(status, category_id, reviewed_at, updated_at)')
+    .select(
+      'article_id, locale, slug, title, summary, articles!inner(status, category_id, reviewed_at, updated_at, path_order, required_reading)',
+    )
     .in('locale', talenMetTerugval(taal))
     .in('articles.status', statussen);
 
@@ -187,6 +191,8 @@ export async function haalArtikelen(
       category_id: r.articles!.category_id,
       reviewed_at: r.articles!.reviewed_at,
       updated_at: r.articles!.updated_at,
+      path_order: r.articles!.path_order,
+      required_reading: r.articles!.required_reading,
       vertaling_taal: r.locale,
       is_terugval: r.locale !== taal,
     }))
@@ -422,12 +428,21 @@ export type Escalatie = {
   created_at: string;
   resolved_at: string | null;
   resolution_note: string | null;
+  /**
+   * Hoeveel open escalaties een vergelijkbare vraag hebben, inclusief deze zelf
+   * (dus minimaal 1). Alleen berekend voor open escalaties; anders 1.
+   */
+  aantal_vergelijkbaar: number;
 };
 
-/** Alle geëscaleerde AI-antwoorden, nieuwste eerst. Basis voor de escalatie-inbox in beheer. */
+/**
+ * Alle geëscaleerde AI-antwoorden. Open escalaties krijgen hun frequentie mee
+ * (briefing C3): hoe vaak een vergelijkbare vraag terugkomt, zodat de inbox op
+ * aantal kan sorteren in plaats van chronologisch.
+ */
 export async function haalEscalaties(
   supabase: SupabaseClient,
-  filter: { alleenOpen?: boolean } = {},
+  filter: { alleenOpen?: boolean; sindsDagen?: number } = {},
 ): Promise<Escalatie[]> {
   let query = supabase
     .from('messages')
@@ -438,9 +453,21 @@ export async function haalEscalaties(
     .order('created_at', { ascending: false });
 
   if (filter.alleenOpen) query = query.is('resolved_at', null);
+  if (filter.sindsDagen) {
+    const sinds = new Date();
+    sinds.setDate(sinds.getDate() - filter.sindsDagen);
+    query = query.gte('created_at', sinds.toISOString());
+  }
 
-  const { data, error } = await query;
+  const [{ data, error }, { data: frequenties }] = await Promise.all([
+    query,
+    supabase.rpc('escalatie_frequenties'),
+  ]);
   if (error) throw error;
+
+  const aantalPerId = new Map(
+    ((frequenties ?? []) as { message_id: string; aantal: number }[]).map((f) => [f.message_id, f.aantal]),
+  );
 
   return (data ?? []).map((m) => {
     const gesprek = m.conversations as unknown as {
@@ -455,8 +482,40 @@ export async function haalEscalaties(
       created_at: m.created_at,
       resolved_at: m.resolved_at,
       resolution_note: m.resolution_note,
+      aantal_vergelijkbaar: aantalPerId.get(m.id) ?? 1,
     };
   });
+}
+
+export type ReviewVerlopenArtikel = {
+  id: string;
+  slug: string;
+  title: string;
+  review_due_at: string;
+  eigenaar: string | null;
+};
+
+/**
+ * Gepubliceerde artikelen waarvan de reviewdatum is verstreken (briefing A5),
+ * met de eigenaar erbij — die is aanspreekbaar voor de inhoud.
+ */
+export async function haalReviewVerlopen(supabase: SupabaseClient): Promise<ReviewVerlopenArtikel[]> {
+  const { data, error } = await supabase
+    .from('articles')
+    .select('id, slug, title, review_due_at, profiles!articles_owner_id_fkey(display_name)')
+    .eq('status', 'published')
+    .not('review_due_at', 'is', null)
+    .lt('review_due_at', new Date().toISOString())
+    .order('review_due_at');
+  if (error) throw error;
+
+  return (data ?? []).map((a) => ({
+    id: a.id,
+    slug: a.slug,
+    title: a.title,
+    review_due_at: a.review_due_at,
+    eigenaar: (a.profiles as unknown as { display_name: string } | null)?.display_name ?? null,
+  }));
 }
 
 export async function telOpenEscalaties(supabase: SupabaseClient): Promise<number> {

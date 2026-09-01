@@ -7,6 +7,13 @@ import type { Taal } from '@/lib/talen';
 
 export type ArticleStatus = 'draft' | 'published' | 'outdated' | 'archived';
 export type ArticleSource = 'handmatig' | 'zoho-import';
+
+/** Het type bepaalt het sjabloon van een artikel — zie AGENTS.md. */
+export type ArticleType = 'gespreksroute' | 'procedure' | 'naslag' | 'producttraining';
+export const ARTICLE_TYPES: ArticleType[] = ['gespreksroute', 'procedure', 'naslag', 'producttraining'];
+
+export type ArticleChannel = 'klantcontact' | 'backoffice' | 'technisch' | 'alle';
+export const ARTICLE_CHANNELS: ArticleChannel[] = ['klantcontact', 'backoffice', 'technisch', 'alle'];
 export type UserRole = 'reader' | 'editor' | 'admin';
 export const USER_ROLES: UserRole[] = ['reader', 'editor', 'admin'];
 
@@ -40,6 +47,10 @@ export type ArticleSummary = {
   vertaling_taal: Taal;
   /** True als er geen vertaling was en dit de Nederlandse versie is. */
   is_terugval: boolean;
+  // Leerpadvelden: alleen gevuld op de lijstquery-route; zoekresultaten via
+  // zoek_artikelen() geven ze niet mee.
+  path_order?: number | null;
+  required_reading?: boolean;
 };
 
 /** Eén taalversie van een artikel, zoals opgeslagen in article_translations. */
@@ -57,6 +68,13 @@ export type ArticleTranslation = {
 
 export type ArticleDetail = ArticleSummary & {
   content_markdown: string;
+  type: ArticleType;
+  /** Leeg = geldt overal. Zelfde waarden als suppliers.countries. */
+  countries: Country[];
+  channel: ArticleChannel;
+  /** Plek in het onboarding-leerpad; null = staat niet in het pad. */
+  path_order: number | null;
+  required_reading: boolean;
   source: ArticleSource;
   source_article_id: string | null;
   owner_id: string | null;
