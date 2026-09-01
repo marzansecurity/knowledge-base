@@ -213,19 +213,24 @@ for (const artikel of artikelen) {
     channel: artikel.kanaal,
     path_order: artikel.volgorde,
     required_reading: artikel.verplicht,
-    // Concept: de redactie kijkt elk artikel na voordat het gepubliceerd wordt.
-    status: 'draft',
     source: 'handmatig',
   };
 
   let artikelId;
   if (bestaand) {
+    // De status blijft bij bijwerken onaangeroerd: een al gepubliceerd artikel
+    // mag door een herimport niet terugvallen naar concept.
     const { error } = await supabase.from('articles').update(velden).eq('id', bestaand.id);
     if (error) throw error;
     artikelId = bestaand.id;
     bijgewerkt += 1;
   } else {
-    const { data, error } = await supabase.from('articles').insert(velden).select('id').single();
+    // Concept: de redactie kijkt elk nieuw artikel na voordat het gepubliceerd wordt.
+    const { data, error } = await supabase
+      .from('articles')
+      .insert({ ...velden, status: 'draft' })
+      .select('id')
+      .single();
     if (error) throw error;
     artikelId = data.id;
     nieuw += 1;

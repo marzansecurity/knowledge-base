@@ -128,10 +128,10 @@ dus wanneer de dropshipment verstuurd wordt, of wanneer er bij een installatie g
 | 32 dagen | 2e herinnering |
 | 38 dagen | Aanmaning |
 
-De standaard betaaltermijn is 14 dagen. Een langere betaaltermijn kan, maar alleen voor
-bedrijven, alleen als dat **vooraf** is overeengekomen (bijvoorbeeld als onderdeel van een
-onderhandeling of offerte), en het moet **apart worden ingesteld voordat de order wordt
-ingevoerd**. Kom je zoiets tegen: eerst bij Martijn checken.
+De standaard betaaltermijn is 14 dagen — voor alle webshops, ook in het VK. Een langere
+betaaltermijn kan, maar alleen voor bedrijven, alleen als dat **vooraf** is overeengekomen
+(bijvoorbeeld als onderdeel van een onderhandeling of offerte), en het moet **apart worden
+ingesteld voordat de order wordt ingevoerd**. Kom je zoiets tegen: eerst bij Martijn checken.
 
 **Kies dit als:**
 - het een **zakelijke** klant is die op rekening mag kopen (zie: op-rekening-check), of
@@ -218,14 +218,11 @@ eindstation voor de financiële administratie. Als klantenservice hoef je daar n
 
 ## Nog te controleren door Martijn
 
-1. **Betaaltermijn UK:** de SimplySafes-pagina vermeldt 30 dagen ("strictly 30 days") en
-   voor overheidsorganisaties een 30-dagen-account op basis van een ondertekende purchase
-   order. Hierboven staat 14 dagen als standaard. Welke geldt waar?
-2. **Particulieren UK:** de SimplySafes-pagina zegt expliciet dat er géén accounts voor
+1. **Particulieren UK:** de SimplySafes-pagina zegt expliciet dat er géén accounts voor
    particulieren zijn. Geldt de NL-uitzondering (installatie achteraf op rekening) dan niet
    voor het VK?
-3. **Exacte labels:** kloppen de vier benamingen letterlijk met wat er in de backend staat?
-4. **Voorkant NL/BE:** de klantenservicepagina's van KluisStore, KluisShop en LIPS zijn niet
+2. **Exacte labels:** kloppen de vier benamingen letterlijk met wat er in de backend staat?
+3. **Voorkant NL/BE:** de klantenservicepagina's van KluisStore, KluisShop en LIPS zijn niet
    automatisch uitleesbaar. Wil je dat de lijst per shop in dit artikel komt, dan moet je die
    tekst aanleveren.
 

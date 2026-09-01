@@ -30,11 +30,10 @@ const AFBEELDING_BUCKET = 'artikel-afbeeldingen';
 const MAX_AFBEELDING_BYTES = 5 * 1024 * 1024;
 
 /**
- * Reviewtermijn bij publicatie, in maanden (briefing A5). Kennis met de tag
- * "magento" veroudert het snelst en krijgt de korte termijn. De termijnen zelf
- * zijn nog te bevestigen — pas ze hier aan, dit is de enige plek.
+ * Reviewtermijn bij publicatie, in maanden (briefing A5, bevestigd 1 sept 2026):
+ * 6 maanden voor alles. Pas het hier aan, dit is de enige plek.
  */
-const REVIEW_TERMIJN = { standaard: 12, magento: 6 } as const;
+const REVIEW_TERMIJN_MAANDEN = 6;
 
 function isArticleType(waarde: string): waarde is ArticleType {
   return (ARTICLE_TYPES as string[]).includes(waarde);
@@ -173,15 +172,8 @@ export async function wijzigStatus(articleId: string, status: ArticleStatus): Pr
 
     // Reviewdatum meegeven (briefing A5): kennis veroudert, dus elk gepubliceerd
     // artikel komt na een vaste termijn terug op het beheer-dashboard.
-    const { data: magentoTag } = await supabase
-      .from('article_tags')
-      .select('article_id, tags!inner(name)')
-      .eq('article_id', articleId)
-      .eq('tags.name', 'magento')
-      .maybeSingle();
-    const maanden = magentoTag ? REVIEW_TERMIJN.magento : REVIEW_TERMIJN.standaard;
     const due = new Date();
-    due.setMonth(due.getMonth() + maanden);
+    due.setMonth(due.getMonth() + REVIEW_TERMIJN_MAANDEN);
     veranderingen.review_due_at = due.toISOString();
   }
 
@@ -204,15 +196,8 @@ export async function wijzigStatus(articleId: string, status: ArticleStatus): Pr
 export async function markeerGecontroleerd(articleId: string): Promise<OpslaanResultaat> {
   const { supabase } = await vereisRedacteurOfHoger();
 
-  const { data: magentoTag } = await supabase
-    .from('article_tags')
-    .select('article_id, tags!inner(name)')
-    .eq('article_id', articleId)
-    .eq('tags.name', 'magento')
-    .maybeSingle();
-  const maanden = magentoTag ? REVIEW_TERMIJN.magento : REVIEW_TERMIJN.standaard;
   const due = new Date();
-  due.setMonth(due.getMonth() + maanden);
+  due.setMonth(due.getMonth() + REVIEW_TERMIJN_MAANDEN);
 
   const { error } = await supabase
     .from('articles')
