@@ -227,13 +227,4 @@ eindstation voor de financiële administratie. Als klantenservice hoef je daar n
 
 ---
 
-## Nog te controleren door Martijn
-
-1. **Voorkant NL/BE:** de klantenservicepagina's van KluisStore, KluisShop en LIPS zijn niet
-   automatisch uitleesbaar. Wil je dat de lijst per shop in dit artikel komt, dan moet je die
-   tekst aanleveren — of we laten de links hierboven het werk doen, die blijven vanzelf actueel.
-
-
----
-
 _Gerelateerde artikelen: Order wijzigen naar nieuwe order | Op rekening check_
