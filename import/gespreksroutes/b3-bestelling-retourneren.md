@@ -1,8 +1,10 @@
 ---
 titel: Bestelling retourneren — gespreksroute
 categorie: retour-klachten
-tags: gespreksroute, b2b
+tags: b2b
 samenvatting: De retourroute, met het onderscheid tussen particulier en zakelijk. Zakelijke klanten hebben geen herroepingsrecht en betalen 15% restocking fee — dat moet je vooraf melden.
+type: gespreksroute
+volgorde: 6
 ---
 
 **Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**

@@ -1,8 +1,9 @@
 ---
 titel: Productadvies — uitvraag en advies bij kluiskeuze
 categorie: verkoop-productadvies
-tags: gespreksroute
 samenvatting: De uitvraagroute bij productadvies: wat je uit de opening al kunt halen, welke vragen in welke volgorde, wanneer je zelf adviseert en wanneer je naar een specialist escaleert.
+type: gespreksroute
+volgorde: 4
 ---
 
 **Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**

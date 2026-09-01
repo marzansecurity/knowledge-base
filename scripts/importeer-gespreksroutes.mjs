@@ -1,12 +1,18 @@
 /**
- * Importeert de gespreksroute-artikelen uit import/gespreksroutes/*.md.
+ * Importeert handgeschreven Markdown-artikelen uit twee mappen:
  *
- * Deze artikelen zijn gedestilleerd uit de AI-flows van Daan (de assistent van
- * You Should Ask). De bot-mechaniek — connector-aanroepen, department-ID's,
- * buttonteksten — is er bewust uitgehaald: dit zijn artikelen voor mensen.
+ *   import/gespreksroutes/*.md  — gedestilleerd uit de AI-flows van Daan (de
+ *                                 assistent van You Should Ask); standaardtype
+ *                                 "gespreksroute", scope NL/klantcontact
+ *   import/artikelen/*.md       — overige handgeschreven artikelen (naslag,
+ *                                 procedures, producttraining) uit de
+ *                                 schrijfroute; het type staat in de kop
  *
- * Elk bestand begint met een kop tussen `---`-regels:
- *   titel, categorie (slug), tags (komma-gescheiden), samenvatting
+ * Elk bestand begint met een kop tussen `---`-regels. Verplicht: titel,
+ * categorie (slug), samenvatting. Optioneel: tags (komma-gescheiden), type
+ * (gespreksroute/procedure/naslag/producttraining), landen (nl,be,uk of
+ * "alle" voor overal geldig), kanaal (klantcontact/backoffice/technisch/alle),
+ * volgorde (plek in het onboarding-leerpad), verplicht (ja/nee).
  *
  * Idempotent: bij een tweede run wordt op slug bijgewerkt in plaats van
  * gedupliceerd. De nl-rij in article_translations wordt door de databasetrigger
@@ -18,7 +24,21 @@ import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { createClient } from '@supabase/supabase-js';
 
-const MAP = path.join(process.cwd(), 'import', 'gespreksroutes');
+const MAPPEN = [
+  {
+    map: path.join(process.cwd(), 'import', 'gespreksroutes'),
+    standaard: { type: 'gespreksroute', landen: ['NL'], kanaal: 'klantcontact' },
+  },
+  {
+    map: path.join(process.cwd(), 'import', 'artikelen'),
+    standaard: { type: null, landen: [], kanaal: 'alle' },
+  },
+];
+
+const TYPES = ['gespreksroute', 'procedure', 'naslag', 'producttraining'];
+const KANALEN = ['klantcontact', 'backoffice', 'technisch', 'alle'];
+const LANDEN = ['NL', 'BE', 'UK'];
+
 const DROOGLOOP = process.argv.includes('--droogloop');
 
 const supabase = createClient(
@@ -40,8 +60,8 @@ function maakSlug(titel) {
   );
 }
 
-/** Splitst de kop van de inhoud. Bewust geen YAML-parser: vier vaste velden. */
-function leesBestand(ruw) {
+/** Splitst de kop van de inhoud. Bewust geen YAML-parser: vaste, platte velden. */
+function leesBestand(ruw, standaard) {
   const match = ruw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
   if (!match) throw new Error('geen kop tussen --- gevonden');
 
@@ -56,14 +76,49 @@ function leesBestand(ruw) {
     if (!kop[veld]) throw new Error(`veld "${veld}" ontbreekt in de kop`);
   }
 
+  const type = kop.type ?? standaard.type;
+  if (!TYPES.includes(type)) {
+    throw new Error(`veld "type" moet één van ${TYPES.join('/')} zijn (nu: "${type ?? 'leeg'}")`);
+  }
+
+  // "alle" of "overal" betekent: geldt overal — leeg array in de database.
+  let landen = standaard.landen;
+  if (kop.landen) {
+    const ruweLanden = kop.landen.split(',').map((l) => l.trim().toUpperCase()).filter(Boolean);
+    landen = ruweLanden.some((l) => l === 'ALLE' || l === 'OVERAL') ? [] : ruweLanden;
+    for (const land of landen) {
+      if (!LANDEN.includes(land)) throw new Error(`onbekend land "${land}" (nl, be, uk of alle)`);
+    }
+  }
+
+  const kanaal = kop.kanaal ?? standaard.kanaal;
+  if (!KANALEN.includes(kanaal)) {
+    throw new Error(`veld "kanaal" moet één van ${KANALEN.join('/')} zijn (nu: "${kanaal}")`);
+  }
+
+  let volgorde = null;
+  if (kop.volgorde) {
+    volgorde = Number.parseInt(kop.volgorde, 10);
+    if (!Number.isFinite(volgorde)) throw new Error(`veld "volgorde" is geen getal: "${kop.volgorde}"`);
+  }
+
+  const verplicht = ['ja', 'true', '1'].includes((kop.verplicht ?? '').toLowerCase());
+
   return {
     titel: kop.titel,
     categorieSlug: kop.categorie,
     samenvatting: kop.samenvatting,
+    type,
+    landen,
+    kanaal,
+    volgorde,
+    verplicht,
     tags: (kop.tags ?? '')
       .split(',')
       .map((t) => t.trim())
-      .filter(Boolean),
+      .filter(Boolean)
+      // De tag "gespreksroute" is vervangen door het type-veld (briefing A1).
+      .filter((t) => t !== 'gespreksroute'),
     inhoud: match[2].trim(),
   };
 }
@@ -76,28 +131,36 @@ const { data: categorieen, error: categorieFout } = await supabase
 if (categorieFout) throw categorieFout;
 const categorieIdPerSlug = new Map(categorieen.map((c) => [c.slug, c.id]));
 
-const bestanden = (await readdir(MAP)).filter((b) => b.endsWith('.md')).sort();
-console.log(`\n${bestanden.length} bestanden in import/gespreksroutes\n`);
-
 const artikelen = [];
-for (const bestand of bestanden) {
+for (const { map, standaard } of MAPPEN) {
+  let bestanden = [];
   try {
-    const artikel = leesBestand(await readFile(path.join(MAP, bestand), 'utf8'));
-    if (!categorieIdPerSlug.has(artikel.categorieSlug)) {
-      throw new Error(`onbekende categorie "${artikel.categorieSlug}"`);
+    bestanden = (await readdir(map)).filter((b) => b.endsWith('.md')).sort();
+  } catch {
+    continue; // Map bestaat (nog) niet — geen fout, gewoon niets te doen.
+  }
+  console.log(`\n${bestanden.length} bestanden in ${path.relative(process.cwd(), map)}`);
+
+  for (const bestand of bestanden) {
+    try {
+      const artikel = leesBestand(await readFile(path.join(map, bestand), 'utf8'), standaard);
+      if (!categorieIdPerSlug.has(artikel.categorieSlug)) {
+        throw new Error(`onbekende categorie "${artikel.categorieSlug}"`);
+      }
+      artikelen.push({ bestand, ...artikel, slug: maakSlug(artikel.titel) });
+    } catch (fout) {
+      console.error(`  FOUT  ${bestand}: ${fout.message}`);
+      process.exitCode = 1;
     }
-    artikelen.push({ bestand, ...artikel, slug: maakSlug(artikel.titel) });
-  } catch (fout) {
-    console.error(`  FOUT  ${bestand}: ${fout.message}`);
-    process.exitCode = 1;
   }
 }
 if (process.exitCode === 1) {
   console.error('\nAfgebroken — geen enkel artikel weggeschreven.\n');
   process.exit(1);
 }
+console.log('');
 
-// Tags die nog niet bestaan aanmaken, zodat filteren op "gespreksroute" werkt.
+// Tags die nog niet bestaan aanmaken, zodat filteren erop werkt.
 const gevraagdeTags = [...new Set(artikelen.flatMap((a) => a.tags))];
 const { data: bestaandeTags, error: tagFout } = await supabase
   .from('tags')
@@ -131,7 +194,7 @@ for (const artikel of artikelen) {
     .maybeSingle();
 
   const label = bestaand ? 'bijwerken' : 'nieuw    ';
-  console.log(`  ${label}  ${artikel.slug}`);
+  console.log(`  ${label}  [${artikel.type}] ${artikel.slug}`);
 
   if (DROOGLOOP) {
     if (bestaand) bijgewerkt += 1;
@@ -145,6 +208,11 @@ for (const artikel of artikelen) {
     summary: artikel.samenvatting,
     content_markdown: artikel.inhoud,
     category_id: categorieIdPerSlug.get(artikel.categorieSlug),
+    type: artikel.type,
+    countries: artikel.landen,
+    channel: artikel.kanaal,
+    path_order: artikel.volgorde,
+    required_reading: artikel.verplicht,
     // Concept: de redactie kijkt elk artikel na voordat het gepubliceerd wordt.
     status: 'draft',
     source: 'handmatig',

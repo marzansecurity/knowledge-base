@@ -1,8 +1,10 @@
 ---
 titel: Kluis gaat niet open — gespreksroute
 categorie: kluisproblemen
-tags: gespreksroute, escalatie-verplicht
+tags: escalatie-verplicht
 samenvatting: De meestvoorkomende storingsmelding. Hoe je vaststelt of de kluis bij ons gekocht is, welke eerste hulp je geeft per slottype, en waarom dat verschil bepaalt hoe ver je helpt.
+type: gespreksroute
+volgorde: 5
 ---
 
 **Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**

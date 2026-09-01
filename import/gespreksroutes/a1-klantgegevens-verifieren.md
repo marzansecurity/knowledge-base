@@ -1,8 +1,11 @@
 ---
 titel: Klantgegevens verifiëren bij het opzoeken van een order
 categorie: start-hier
-tags: gespreksroute, magento
+tags: magento
 samenvatting: Hoe je een order opzoekt in Magento, welke gegevens je daarvoor nodig hebt, en welke privacyregels gelden. Basis voor alle gespreksroutes.
+type: gespreksroute
+volgorde: 1
+verplicht: ja
 ---
 
 **Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**

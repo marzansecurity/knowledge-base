@@ -1,8 +1,10 @@
 ---
 titel: Korting en staffelprijzen — gespreksroute
 categorie: verkoop-productadvies
-tags: gespreksroute, b2b
+tags: b2b
 samenvatting: Drie kortingsvragen met drie verschillende routes: staffelkorting, elders goedkoper gezien, en wederverkoperskorting. Bij een prijsvergelijking zijn drie gegevens verplicht.
+type: gespreksroute
+volgorde: 13
 ---
 
 **Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**

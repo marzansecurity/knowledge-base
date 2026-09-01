@@ -1,8 +1,10 @@
 ---
 titel: Status van bestelling — gespreksroute
 categorie: orderverwerking
-tags: gespreksroute, magento
+tags: magento
 samenvatting: Hoe je een orderstatus uit Magento vertaalt naar klanttaal, en wanneer een ontbrekende track & trace wel of niet reden is om te escaleren.
+type: gespreksroute
+volgorde: 8
 ---
 
 **Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**

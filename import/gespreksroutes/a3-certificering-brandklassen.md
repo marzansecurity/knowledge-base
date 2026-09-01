@@ -1,8 +1,11 @@
 ---
 titel: Kluis kiezen: certificering, brandklassen en waardeberging
 categorie: verkoop-productadvies
-tags: gespreksroute
 samenvatting: De vakkennis achter productadvies. Wat bepaalt de certificeringsklasse, wat betekenen de brandwerendheidsklassen, waarom DIN 4102 misleidend is, en waarom digitale media een datakluis nodig hebben.
+type: producttraining
+landen: alle
+volgorde: 3
+verplicht: ja
 ---
 
 **Geldig voor: KluisStore.nl — alle webshops**

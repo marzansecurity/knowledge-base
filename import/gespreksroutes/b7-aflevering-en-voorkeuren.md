@@ -1,8 +1,9 @@
 ---
 titel: Aflevering en bezorgvoorkeuren doorgeven — gespreksroute
 categorie: verzending-magazijnen
-tags: gespreksroute
 samenvatting: Een leverdatum, afleverinstructie of opmerking voor de bezorger doorgeven. Bij een bestelling die nog geplaatst moet worden met een gewenste datum: laat de klantenservice de order plaatsen.
+type: gespreksroute
+volgorde: 10
 ---
 
 **Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**

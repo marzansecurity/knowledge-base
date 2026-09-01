@@ -1,8 +1,10 @@
 ---
 titel: Bestelling wijzigen of annuleren — gespreksroute
 categorie: orderverwerking
-tags: gespreksroute, magento
+tags: magento
 samenvatting: Of wijzigen nog kan hangt op één ding: is er al een track & trace? Dit artikel geeft beide routes, inclusief het weigeren van een zending aan de deur.
+type: gespreksroute
+volgorde: 9
 ---
 
 **Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**

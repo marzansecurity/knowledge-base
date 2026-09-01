@@ -1,8 +1,11 @@
 ---
 titel: Wanneer maak je een ticket aan — en wanneer niet
 categorie: start-hier
-tags: gespreksroute, escalatie-verplicht
+tags: escalatie-verplicht
 samenvatting: Overzicht van alle gespreksroutes, plus de regels voor escaleren: wanneer je een ticket aanmaakt, wanneer juist niet, en welke gegevens er minimaal in moeten.
+type: gespreksroute
+volgorde: 2
+verplicht: ja
 ---
 
 **Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**

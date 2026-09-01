@@ -1,8 +1,9 @@
 ---
 titel: Bezoek showroom — gespreksroute
 categorie: verkoop-productadvies
-tags: gespreksroute
 samenvatting: De showroom is uitsluitend op afspraak. Een particulier met een product onder €1.500 verwijs je naar de webshop; alle zakelijke aanvragen kwalificeren wel.
+type: gespreksroute
+volgorde: 16
 ---
 
 **Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**

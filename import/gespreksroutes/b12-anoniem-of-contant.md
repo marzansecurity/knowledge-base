@@ -1,8 +1,9 @@
 ---
 titel: Anoniem of contant aankopen — gespreksroute
 categorie: verkoop-productadvies
-tags: gespreksroute
 samenvatting: Anoniem aankopen én contant betalen kan, bij afhalen in Breda. Let op het verschil: bij een vraag over contant betalen noem je anoniem aankopen niet uit jezelf.
+type: gespreksroute
+volgorde: 15
 ---
 
 **Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**

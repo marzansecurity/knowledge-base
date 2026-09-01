@@ -1,8 +1,10 @@
 ---
 titel: Zakelijk aankopen en op rekening betalen — gespreksroute
 categorie: b2b-accounts
-tags: gespreksroute, b2b, kredietcheck
+tags: b2b, kredietcheck
 samenvatting: Hoe zakelijk bestellen werkt en wat je uitlegt over op rekening betalen. Voor particulieren is op rekening niet standaard beschikbaar, maar wel per geval te bekijken.
+type: gespreksroute
+volgorde: 14
 ---
 
 **Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**

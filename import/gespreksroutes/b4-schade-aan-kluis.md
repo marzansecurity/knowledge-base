@@ -1,8 +1,10 @@
 ---
 titel: Schade aan kluis — gespreksroute
 categorie: retour-klachten
-tags: gespreksroute, escalatie-verplicht
+tags: escalatie-verplicht
 samenvatting: Transportschade, verbroken verzegeling, ongelakte onderkant of een ontbrekend artikel. Drie van die vier meldingen zijn meestal geen schade — dit artikel legt uit hoe je ze onderscheidt.
+type: gespreksroute
+volgorde: 7
 ---
 
 **Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**

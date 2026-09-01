@@ -1,8 +1,10 @@
 ---
 titel: Medewerker spreken — gespreksroute bij escalatie
 categorie: start-hier
-tags: gespreksroute, escalatie-verplicht
+tags: escalatie-verplicht
 samenvatting: Wat je doet als een klant een medewerker wil spreken, boos is, of als je er zelf niet uitkomt. Inclusief de regel voor wie je wel en niet doorzet.
+type: gespreksroute
+volgorde: 12
 ---
 
 **Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**

@@ -1,8 +1,10 @@
 ---
 titel: Sleutel bijbestellen of dupliceren — gespreksroute
 categorie: kluisproblemen
-tags: gespreksroute, sleutels
+tags: sleutels
 samenvatting: Losse kluissleutels bestaan niet — dupliceren vereist altijd het origineel. Vooraf meebestellen kan alleen bij De Raat en Nauta. Deze route legt uit wat je wel en niet aanbiedt.
+type: gespreksroute
+volgorde: 11
 ---
 
 **Geldig voor: KluisStore.nl — klantcontact (chat, telefoon, e-mail)**
