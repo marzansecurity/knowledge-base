@@ -3,6 +3,12 @@
 
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices. Middleware heet hier `proxy` (`src/proxy.ts`).
 
+# Waarom deze kennisbank bestaat
+
+Martijn geeft elke nieuwe medewerker persoonlijk dezelfde uitleg over systemen, werkwijze en procedures. Die uitleg wordt hier één keer vastgelegd, zó dat iemand er zelf in kan opzoeken hoe iets werkt — "in zijn hoofd kruipen". De kennisbank rust op drie pijlers: procedures en werkwijzes (inclusief leveranciers en hun manuals), systemen, en producttrainingen.
+
+Daaruit volgt de norm waaraan elk artikel voldoet: **het neemt de lezer aan de hand** — doe dit, doe dat, klik hier, klik daar — precies zoals Martijn het mondeling doet. De vorige kennisbank was platte tekst en las daardoor moeilijk weg; dat is exact wat hier niet mag terugkomen. Een artikel dat klopt maar niet begeleidt, is nog niet af.
+
 # Artikelen: de vier typen en hun sjabloon
 
 Elk artikel heeft een `type` (enum op `articles`) en een `owner_id` — allebei verplicht bij het aanmaken van een nieuw artikel, ook vanuit scripts en AI-voorstellen. Het type bepaalt het sjabloon; afwijken mag, maar dan bewust.
@@ -18,6 +24,7 @@ In het kort · wanneer heb je dit nodig · de opties (per optie: wat het is | ki
 
 **producttraining** — vakkennis om te kunnen adviseren.
 In het kort · waarom dit uitmaakt voor de klant · de basis (klantenservice) · verdieping (monteurs/gevorderden) · hoe adviseer je ("als de klant X zegt, dan meestal Y, tenzij Z") · veelgemaakte fouten · gerelateerde artikelen. Gelaagd binnen één artikel, niet gesplitst per doelgroep.
+Onderwerpen: normen, kluiskeuze, sloten, sleutels, installatieservice — alles wat nodig is om inhoudelijk te adviseren, technisch én niet-technisch. **Geen commercie:** kortingen, marges, inkoopprijzen en onderhandelingsruimte horen hier niet in. Advies wel, de commerciële afweging niet.
 
 Verdere regels:
 
