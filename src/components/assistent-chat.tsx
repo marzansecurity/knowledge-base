@@ -13,7 +13,51 @@ type WeergaveBericht = Partial<Bericht> & {
   content: string;
   bronnen?: BerichtBron[];
   escaleren?: boolean;
+  /** Het model vroeg om ontbrekende informatie in plaats van te antwoorden. */
+  verduidelijking?: boolean;
+  /** Bij een escalatie: artikelen die er het dichtst bij komen, als leessuggestie. */
+  dichtbij?: BerichtBron[];
 };
+
+/** Eén server-sent event uit /api/assistent. */
+type Gebeurtenis = { event: string; data: Record<string, unknown> };
+
+/**
+ * Leest de SSE-stroom uit en levert de gebeurtenissen één voor één op. De
+ * voortgang komt binnen terwijl het model nadenkt; het antwoord zelf pas als het
+ * gecontroleerd is.
+ */
+async function* leesGebeurtenissen(body: ReadableStream<Uint8Array>): AsyncGenerator<Gebeurtenis> {
+  const lezer = body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+
+  while (true) {
+    const { value, done } = await lezer.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+
+    let grens = buffer.indexOf('\n\n');
+    while (grens !== -1) {
+      const blok = buffer.slice(0, grens);
+      buffer = buffer.slice(grens + 2);
+      grens = buffer.indexOf('\n\n');
+
+      let event = 'message';
+      let ruweData = '';
+      for (const regel of blok.split('\n')) {
+        if (regel.startsWith('event: ')) event = regel.slice(7).trim();
+        else if (regel.startsWith('data: ')) ruweData += regel.slice(6);
+      }
+      if (!ruweData) continue;
+      try {
+        yield { event, data: JSON.parse(ruweData) };
+      } catch {
+        // Een half aangekomen blok overslaan is beter dan de stroom afbreken.
+      }
+    }
+  }
+}
 
 function FeedbackKnoppen({
   berichtId,
@@ -67,6 +111,7 @@ export function AssistentChat({
   const [huidigId, setHuidigId] = useState(conversationId);
   const [bezig, startTransitie] = useTransition();
   const [fout, setFout] = useState<string | null>(null);
+  const [voortgang, setVoortgang] = useState<string | null>(null);
   const bodemRef = useRef<HTMLDivElement>(null);
 
   function verstuur(e: React.FormEvent) {
@@ -75,6 +120,7 @@ export function AssistentChat({
     if (!tekst || bezig) return;
 
     setFout(null);
+    setVoortgang(null);
     setVraag('');
     setBerichten((b) => [...b, { role: 'user', content: tekst }]);
     setTimeout(() => bodemRef.current?.scrollIntoView({ behavior: 'smooth' }), 50);
@@ -84,31 +130,58 @@ export function AssistentChat({
         const res = await fetch('/api/assistent', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ vraag: tekst, conversationId: huidigId }),
+          // De taal moet mee: zonder dit veld valt de server terug op het
+          // Nederlands en krijgt een Engelse of Franse medewerker een
+          // Nederlands antwoord.
+          body: JSON.stringify({ vraag: tekst, conversationId: huidigId, taal }),
         });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.fout ?? t.assistent.foutAlgemeen);
+        if (!res.body) throw new Error(t.assistent.foutAlgemeen);
 
-        setBerichten((b) => [
-          ...b,
-          {
-            id: data.berichtId,
-            role: 'assistant',
-            content: data.antwoord,
-            bronnen: data.bronnen,
-            escaleren: data.escaleren,
-            helpful: null,
-          },
-        ]);
+        let gesprekId = huidigId;
 
-        if (!huidigId) {
-          setHuidigId(data.conversationId);
-          router.replace(`${pad(taal, '/assistent')}?gesprek=${data.conversationId}`, { scroll: false });
+        for await (const { event, data } of leesGebeurtenissen(res.body)) {
+          if (event === 'fout') {
+            throw new Error(String(data.fout ?? t.assistent.foutAlgemeen));
+          }
+
+          if (event === 'gesprek') {
+            gesprekId = String(data.conversationId);
+            continue;
+          }
+
+          if (event === 'bezig') {
+            setVoortgang(String(data.tekst ?? ''));
+            continue;
+          }
+
+          if (event === 'klaar') {
+            setVoortgang(null);
+            setBerichten((b) => [
+              ...b,
+              {
+                id: data.berichtId as string,
+                role: 'assistant',
+                content: data.antwoord as string,
+                bronnen: data.bronnen as BerichtBron[],
+                dichtbij: data.dichtbij as BerichtBron[],
+                escaleren: data.escaleren as boolean,
+                verduidelijking: data.verduidelijking as boolean,
+                helpful: null,
+              },
+            ]);
+          }
+        }
+
+        if (!huidigId && gesprekId) {
+          setHuidigId(gesprekId);
+          router.replace(`${pad(taal, '/assistent')}?gesprek=${gesprekId}`, { scroll: false });
           router.refresh();
         }
         setTimeout(() => bodemRef.current?.scrollIntoView({ behavior: 'smooth' }), 50);
       } catch (e) {
         setFout(e instanceof Error ? e.message : t.assistent.foutOnbekend);
+      } finally {
+        setVoortgang(null);
       }
     });
   }
@@ -141,9 +214,16 @@ export function AssistentChat({
             ) : (
               <div
                 className={`rounded-lg border p-4 ${
-                  b.escaleren ? 'border-amber bg-[#fffbf5]' : 'border-line bg-white'
+                  b.escaleren
+                    ? 'border-amber bg-[#fffbf5]'
+                    : b.verduidelijking
+                      ? 'border-teal bg-[#f0faf6]'
+                      : 'border-line bg-white'
                 }`}
               >
+                {b.verduidelijking && (
+                  <p className="kb-label mb-2">{t.assistent.verduidelijking}</p>
+                )}
                 <ArtikelMarkdown>{b.content}</ArtikelMarkdown>
                 {b.bronnen && b.bronnen.length > 0 && (
                   <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-line pt-3">
@@ -155,7 +235,20 @@ export function AssistentChat({
                     ))}
                   </div>
                 )}
-                {!b.escaleren && (
+                {/* Een escalatie was een doodlopende weg: één zin en verder niets.
+                    Deze artikelen zijn nadrukkelijk geen antwoord, maar geven de
+                    medewerker wel een richting om zelf verder te kijken. */}
+                {b.escaleren && b.dichtbij && b.dichtbij.length > 0 && (
+                  <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-line pt-3">
+                    <span className="kb-label">{t.assistent.dichtbij}</span>
+                    {b.dichtbij.map((bron) => (
+                      <TaalLink key={bron.slug} href={`/bibliotheek/${bron.slug}`} className="kb-chip">
+                        {bron.title}
+                      </TaalLink>
+                    ))}
+                  </div>
+                )}
+                {!b.escaleren && !b.verduidelijking && (
                   <FeedbackKnoppen berichtId={b.id} helpful={b.helpful} onFeedback={geefFeedback} />
                 )}
               </div>
@@ -163,7 +256,18 @@ export function AssistentChat({
           </div>
         ))}
 
-        {bezig && <div className="kb-empty">{t.assistent.bezigMetAntwoorden}</div>}
+        {/* De voortgangsregel komt uit het model zelf, terwijl het nadenkt. Zonder
+            dit was elke wachttijd stille wachttijd — en dat is precies waardoor
+            de assistent traag aanvoelde. */}
+        {bezig && (
+          <div className="kb-empty" aria-live="polite">
+            {voortgang ? (
+              <span className="italic text-muted">{voortgang}</span>
+            ) : (
+              t.assistent.bezigMetAntwoorden
+            )}
+          </div>
+        )}
         <div ref={bodemRef} />
       </div>
 

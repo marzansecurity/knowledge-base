@@ -153,6 +153,8 @@
     "geenGesprekken": "No conversations yet.",
     "introTekst": "Ask a question about a procedure. The answer always points to the article it used — and if it isn't in the knowledge base, the assistant escalates to Martijn rather than guessing.",
     "wasDitNuttig": "Was this helpful?",
+    "verduidelijking": "One question first:",
+    "dichtbij": "Comes close:",
     "bronnen": "Sources:",
     "bezigMetAntwoorden": "Answering…",
     "vraagPlaceholder": "Ask your question…",

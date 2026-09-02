@@ -3,6 +3,8 @@ import { STANDAARD_TAAL, type Taal } from '@/lib/talen';
 
 export type KennisbankArtikel = {
   id: string;
+  /** Korte verwijzing (A1, A2, …) waarmee het model dit artikel citeert. */
+  ref: string;
   slug: string;
   title: string;
   categorie: string | null;
@@ -16,6 +18,8 @@ export type Kennisbank = {
   aantalArtikelen: number;
   /** Voor het valideren en opzoeken van de bronnen die het model teruggeeft. */
   artikelen: Map<string, KennisbankArtikel>;
+  /** Dezelfde artikelen, opgezocht op de korte verwijzing die het model gebruikt. */
+  perRef: Map<string, KennisbankArtikel>;
 };
 
 type Rij = {
@@ -77,7 +81,9 @@ export async function bouwKennisbank(
 
   const toegestaan = opties.toegestaneCategorieIds ?? null;
   const artikelMap = new Map<string, KennisbankArtikel>();
+  const perRef = new Map<string, KennisbankArtikel>();
   const delen: string[] = [];
+  let teller = 0;
 
   for (const rij of [...beste.values()].sort((a, b) => a.title.localeCompare(b.title))) {
     const categorieId = rij.articles?.category_id ?? null;
@@ -93,13 +99,20 @@ export async function bouwKennisbank(
       .map((t) => t.tags?.name)
       .filter((n): n is string => Boolean(n));
 
-    artikelMap.set(rij.article_id, {
+    // Korte, makkelijk over te tikken verwijzing. Een UUID laten citeren ging mis:
+    // één afwijkend teken maakte de bron ongeldig, en dan werd een verder correct
+    // antwoord alsnog als escalatie weggegooid. "A7" heeft dat probleem niet.
+    const ref = `A${++teller}`;
+    const artikel: KennisbankArtikel = {
       id: rij.article_id,
+      ref,
       slug: rij.slug,
       title: rij.title,
       categorie,
       taal: rij.locale,
-    });
+    };
+    artikelMap.set(rij.article_id, artikel);
+    perRef.set(ref, artikel);
 
     // De scope als data (briefing A4), zodat het model niet hoeft af te leiden
     // uit de lopende tekst voor welke webshop of welk kanaal iets geldt.
@@ -108,8 +121,7 @@ export async function bouwKennisbank(
 
     delen.push(
       [
-        `### ARTIKEL ${rij.article_id}`,
-        `Titel: ${rij.title}`,
+        `### ${ref} — ${rij.title}`,
         // Alleen vermelden als het artikel níét in de gevraagde taal is; anders
         // is het ruis in de prompt.
         rij.locale !== taal ? `Taal: ${rij.locale}` : null,
@@ -129,5 +141,6 @@ export async function bouwKennisbank(
     systeemblok: delen.join('\n\n---\n\n'),
     aantalArtikelen: artikelMap.size,
     artikelen: artikelMap,
+    perRef,
   };
 }

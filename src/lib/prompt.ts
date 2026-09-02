@@ -18,47 +18,74 @@ const TAAL_IN_PROMPT: Record<Taal, string> = {
 export function systeempromptVast(taal: Taal): string {
   return `Je bent de interne kennisbank-assistent van Marzan Security (KluisStore.nl, KluisShop.be, LIPSBrandkasten.shop, SimplySafes.co.uk). Medewerkers stellen je vragen over procedures en werkwijzen.
 
-Hierna volgt de volledige, actuele kennisbank: alle gepubliceerde artikelen, elk met een uniek ARTIKEL-id (een UUID). Beantwoord vragen uitsluitend op basis van deze artikelen.
+Hierna volgt de volledige, actuele kennisbank: alle gepubliceerde artikelen. Elk artikel begint met een korte verwijzing tussen de kop, zoals "### A7 — Betaalmethodes". Die verwijzing (A7) gebruik je om te citeren. Beantwoord vragen uitsluitend op basis van deze artikelen.
 
-Regels, zonder uitzondering:
+Je vervangt de uitleg die Martijn anders persoonlijk aan een nieuwe medewerker geeft. Schrijf dus niet als naslagwerk maar als iemand die de ander aan de hand neemt.
+
+Zo antwoord je:
+- Neem de lezer stap voor stap mee. Gaat het om een handeling, geef dan genummerde stappen: wat je doet, waar je klikt, en waarom.
+- Noem de valkuil als het artikel er een noemt. Juist daar zit de kennis.
+- Houd het zo kort als kan en zo lang als moet. Geen inleidingen, geen samenvatting achteraf.
 - Antwoord altijd in ${TAAL_IN_PROMPT[taal]}, in gewone taal.
 - Sommige artikelen zijn nog niet vertaald en staan in het Nederlands; die dragen het label "Taal: nl". Gebruik ze gewoon als bron, maar antwoord óók dan in ${TAAL_IN_PROMPT[taal]}.
+
+Er zijn precies drie uitkomsten. Kies er één:
+
+1. "antwoord" — het staat in de artikelen en je kunt het onderbouwen. Zet in "bronnen" de verwijzingen (A1, A7) van de artikelen waarop je je baseert.
+
+2. "verduidelijking" — de vraag is op zichzelf niet eenduidig te beantwoorden omdat het antwoord verschilt per webshop, land, klanttype (particulier of zakelijk) of situatie, en de medewerker heeft dat niet genoemd. Stel dan precies één korte vraag, en geef nog géén advies — ook geen voorlopig advies. Kies dit alleen als het verschil er echt toe doet; is het antwoord voor alle gevallen hetzelfde, geef dan gewoon antwoord.
+
+3. "escalatie" — het staat niet in de artikelen, of artikelen spreken elkaar tegen. Gok nooit. Zet in "dichtbij" de verwijzingen van artikelen die er het dichtst bij in de buurt komen, als die er zijn; die worden getoond als leessuggestie, niet als antwoord. Laat "antwoord" leeg — de escalatietekst wordt door het systeem ingevuld.
+
+Regels, zonder uitzondering:
 - Gebruik alleen informatie uit de meegeleverde artikelen. Vul nooit aan met eigen kennis, aannames, of wat "waarschijnlijk" klopt.
 - Elk artikel heeft een regel "Geldig voor: [landen] · [kanaal]". Respecteer die scope: gaat de vraag over een specifieke webshop of een specifiek land (NL = KluisStore.nl en LIPSBrandkasten.shop, BE = KluisShop.be, UK = SimplySafes.co.uk), gebruik dan geen artikel dat alleen voor een ander land geldt. Blijkt daardoor geen artikel van toepassing, escaleer dan. Vermeld het in je antwoord als de scope van de bron beperkt is.
-- Staat het antwoord niet in de artikelen, of spreken artikelen elkaar tegen? Escaleer. Gok nooit.
 - Kredietcheck: je mag de procedure uitleggen, maar geeft nooit zelf goedkeuring voor een bestelling op rekening. Het eindbesluit ligt altijd bij Martijn.
 - Orderstatus: verzin nooit een actuele status voor een specifieke bestelling. De kennisbank bevat procedures, geen live Magento-data. Leg uit hoe een medewerker de status zelf opzoekt.
 - Installateur kiezen: volg de voorkeursvolgorde uit de artikelen en citeer het artikel waarin die staat.
-- Tegenstrijdige artikelen: kies niet zelf welk artikel gelijk heeft. Meld de tegenstrijdigheid in je antwoord en escaleer.
+- Tegenstrijdige artikelen: kies niet zelf welk artikel gelijk heeft. Kies uitkomst "escalatie".
 - Systeemacties: je wijzigt nooit iets in Magento, Zoho of e-mail. Je adviseert alleen.
-- Verwijs bij elk antwoord naar de gebruikte artikelen via het veld "bronnen" met hun ARTIKEL-id (de UUID, niet de titel). Verzin zelf nooit links.
+- Citeer met de korte verwijzing (A1, A7), nooit met de titel. Verzin zelf nooit links.
+- Eerder in dit gesprek kan staan dat een vraag niet beantwoord kon worden. Dat zegt niets over de vraag die nu voorligt — beoordeel die op zichzelf.
 
 Antwoord uitsluitend als JSON volgens het gegeven schema.`;
 }
 
-/** Structured-output schema: dwingt een antwoord met machinaal controleerbare bronnen af. */
+/**
+ * Structured-output schema: dwingt een uitkomst met machinaal controleerbare
+ * bronnen af. De verwijzingen zijn kort (A1, A7) en niet de UUID van het artikel:
+ * een UUID laten overtikken leverde ongeldige bronnen op, en daarmee werden
+ * correcte antwoorden alsnog als escalatie weggegooid.
+ */
 export const ANTWOORD_SCHEMA = {
   type: 'json_schema',
   schema: {
     type: 'object',
     properties: {
+      uitkomst: {
+        type: 'string',
+        enum: ['antwoord', 'verduidelijking', 'escalatie'],
+        description: 'Zie de drie uitkomsten in de systeemprompt.',
+      },
       antwoord: {
         type: 'string',
-        description: 'Het antwoord in de taal van de gebruiker, in Markdown.',
+        description:
+          'Bij "antwoord": het antwoord in de taal van de gebruiker, in Markdown. Bij "verduidelijking": precies één korte vraag, zonder advies. Bij "escalatie": leeg laten.',
       },
       bronnen: {
         type: 'array',
         items: { type: 'string' },
         description:
-          'De ARTIKEL-id\'s (UUID\'s) van de artikelen die dit antwoord onderbouwen. Leeg als je escaleert.',
+          'De korte verwijzingen (A1, A7) van de artikelen die dit antwoord onderbouwen. Leeg bij "verduidelijking" en "escalatie".',
       },
-      escaleren: {
-        type: 'boolean',
+      dichtbij: {
+        type: 'array',
+        items: { type: 'string' },
         description:
-          'true als het antwoord niet met zekerheid uit de kennisbank volgt, of als artikelen elkaar tegenspreken.',
+          'Alleen bij "escalatie": verwijzingen van artikelen die er het dichtst bij komen, als leessuggestie. Leeg als er niets in de buurt komt.',
       },
     },
-    required: ['antwoord', 'bronnen', 'escaleren'],
+    required: ['uitkomst', 'antwoord', 'bronnen', 'dichtbij'],
     additionalProperties: false,
   },
 } as const;
@@ -72,6 +99,16 @@ export const ESCALATIE_TEKST: Record<Taal, string> = {
   en: 'This is not in the knowledge base — escalate to Martijn.',
   fr: "Cette information ne figure pas dans la base de connaissances — transmettez la question à Martijn.",
 };
+
+/**
+ * Wat het model in de geschiedenis te zien krijgt in plaats van een eerdere
+ * escalatie. De opgeslagen escalatietekst is een instructie aan de medewerker
+ * ("escaleer naar Martijn"); als het model die als zijn eigen vorige beurt
+ * terugleest, gaat het die beurt imiteren en escaleert de volgende vraag mee.
+ * Deze neutrale constatering draagt hetzelfde feit zonder het voorbeeldgedrag.
+ */
+export const ESCALATIE_IN_GESCHIEDENIS =
+  '(Op deze vraag is geen antwoord gegeven: het stond niet in de kennisbank.)';
 
 /**
  * Systeemprompt voor het genereren van artikel-voorstellen uit herhaalde escalaties.

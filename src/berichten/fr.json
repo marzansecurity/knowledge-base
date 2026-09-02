@@ -153,6 +153,8 @@
     "geenGesprekken": "Aucune conversation pour le moment.",
     "introTekst": "Posez une question sur une procédure. La réponse renvoie toujours à l'article utilisé — et si l'information ne figure pas dans la base de connaissances, l'assistant transmet la question à Martijn plutôt que de deviner.",
     "wasDitNuttig": "Cette réponse vous a-t-elle été utile ?",
+    "verduidelijking": "Une question d'abord :",
+    "dichtbij": "Se rapproche :",
     "bronnen": "Sources :",
     "bezigMetAntwoorden": "Réponse en cours…",
     "vraagPlaceholder": "Posez votre question…",
