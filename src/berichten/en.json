@@ -46,7 +46,7 @@
     "regio": { "nlbe": "Netherlands & Belgium", "uk": "United Kingdom" },
     "leverancierstype": {
       "fulfilment": "E-fulfilment",
-      "dropshipment": "Drop shipment",
+      "dropshipment": "Dropshipment",
       "installateur": "Installer"
     },
     "vertaalstatus": {
