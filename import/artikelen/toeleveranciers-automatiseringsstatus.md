@@ -2,7 +2,7 @@
 titel: Toeleveranciers — wat gaat automatisch en waar grijp je zelf in?
 categorie: toeleveranciers-partners
 tags: dropshipment, pon, magento
-samenvatting: Hoe een order via de toeleverancier loopt en wat de vier onderdelen in het leveranciersoverzicht betekenen — inkooporder, orderbevestiging, tracking en voorraad-sync — en wat jij doet als er "manual" staat.
+samenvatting: Hoe een order via de toeleverancier loopt en wat de kolommen in het leveranciersoverzicht betekenen — voorraad-sync, inkooporder, orderbevestiging, vervoerder en tracking — en wat jij doet als er "manual" staat.
 type: naslag
 landen: alle
 kanaal: backoffice
@@ -12,12 +12,16 @@ kanaal: backoffice
 
 Per leverancier staat in het **[leveranciersoverzicht](/nl/leveranciers)** wat er automatisch
 gaat en waar jij zelf iets moet doen. Dit artikel legt uit wat de kolommen in dat overzicht
-betekenen en wat je doet bij elke status.
+betekenen en wat je doet bij elke status. In het overzicht open je dezelfde uitleg met de
+ⓘ-knop naast elke kolomnaam.
 
 - Het **plaatsen van de inkooporder** gaat vrijwel altijd vanzelf.
 - Het verschil tussen leveranciers zit in wat er daarna gebeurt: komt de **orderbevestiging**
   (leverweek) vanzelf in Magento, en komt de **tracking** vanzelf binnen?
 - Staat er **Manual**, dan gebeurt het niet als jij het niet doet. Daar zit het werk.
+- **Nederland & België** en het **Verenigd Koninkrijk** hebben elk een eigen tabblad. Dezelfde
+  leverancier kan in de UK anders werken dan in NL/BE — kijk dus altijd in het tabblad van de
+  webshop waar de order vandaan komt.
 
 ---
 
@@ -37,10 +41,13 @@ betekenen en wat je doet bij elke status.
 1. **De order komt binnen** — de klant plaatst hem in de webshop, of wij plaatsen hem zelf
    via de backend.
 2. **De order krijgt een statuslabel** dat bepaalt hoe hij verder loopt:
-   - **e-fulfillment** → het artikel komt uit onze eigen voorraad bij **PON** (onze
+   - **E-fulfilment** → het artikel komt uit onze eigen voorraad bij **PON** (onze
      3PL-partner). Via een API-koppeling gaat de order automatisch naar PON, die pickt,
-     verstuurt én de track & trace automatisch terugkoppelt.
-   - **dropshipment** → de inkooporder gaat automatisch naar de juiste toeleverancier.
+     verstuurt én de track & trace automatisch terugkoppelt. Voor NL/BE kopen wij een deel
+     van de producten van De Raat, Kruse en Phoenix in grotere aantallen in; die liggen bij
+     PON en lopen dus als E-fulfilment.
+   - **Dropshipment** → de inkooporder gaat automatisch naar de juiste toeleverancier, die
+     rechtstreeks aan de klant levert.
 3. **Van elke geplaatste dropshipment-inkooporder wordt automatisch een kopie bewaard** in
    de gedeelde mailbox **orders@marzansecurity.com**, in de submap **Inkooporders** onder
    Postvak IN.
@@ -50,7 +57,19 @@ betekenen en wat je doet bij elke status.
 
 ---
 
-## De vier onderdelen in het overzicht
+## De onderdelen in het overzicht
+
+### Voorraad-sync
+
+**Wat het is:** de koppeling waarmee de leverancier zijn voorraad met ons deelt. Die voedt
+rechtstreeks de levertijd die Magento aan de klant belooft. Hoe dat precies werkt staat in
+*Voorraadsynchronisatie en levertijdlogica*.
+
+- **Auto** — de voorraad wordt automatisch bijgewerkt. In het overzicht staat erbij hoe vaak.
+- **n.v.t.** — er is geen koppeling nodig, bijvoorbeeld omdat de producten vrijwel altijd op
+  voorraad zijn.
+- **Manual** — de voorraad wordt met de hand bijgewerkt. Reken er dan niet op dat de getoonde
+  levertijd actueel is.
 
 ### Inkooporder
 
@@ -58,8 +77,9 @@ betekenen en wat je doet bij elke status.
 
 - **Auto** — de inkooporder gaat vanzelf de deur uit zodra de order binnenkomt. Je hoeft
   niets te doen; een kopie staat in de mailbox (zie hierboven).
-- **Manual** — jij plaatst de inkooporder zelf. Bij Gunnebo wijkt het proces af; dat staat
-  in *Inkooporder plaatsen bij Gunnebo* (gekoppeld op de pagina van Gunnebo).
+- **Manual** — jij plaatst de inkooporder zelf. Bij Gunnebo gaat dat via een eigen
+  inkoopformulier; dat staat in *Inkooporder plaatsen bij Gunnebo* (gekoppeld op de pagina van
+  Gunnebo).
 
 **Valkuil:** bij een order die wij zelf in de backend invoeren, moet je informatie voor de
 toeleverancier invullen **vóórdat** je hem doorzet. Daarna gaat de inkooporder al weg en
@@ -81,7 +101,8 @@ nooit één op één over naar de klant.
 ### Tracking
 
 **Wat het is:** de track & trace van de zending. Komt die in Magento, dan krijgt de klant
-hem, en wordt de order afgesloten.
+hem, en wordt de order afgesloten. Welke vervoerder de zending brengt, staat in de kolom
+ervoor.
 
 - **Auto** — de leverancier levert de tracking aan (bij Nauta en De Raat aan het einde van
   de dag als databestand op een eigen serverlocatie), die wordt automatisch verwerkt en
@@ -92,18 +113,6 @@ hem, en wordt de order afgesloten.
   order dus wel of er echt een track & trace is binnengekomen.
 - **Manual** — jij voert de track & trace zelf in. Doe je dat niet, dan blijft de order
   openstaan en hoort de klant niets.
-
-### Voorraad-sync
-
-**Wat het is:** de koppeling waarmee de leverancier zijn voorraad met ons deelt. Die voedt
-rechtstreeks de levertijd die Magento aan de klant belooft. Hoe dat precies werkt staat in
-*Voorraadsynchronisatie en levertijdlogica*.
-
-- **Auto** — de voorraad wordt automatisch bijgewerkt. In het overzicht staat erbij hoe vaak.
-- **n.v.t.** — er is geen koppeling nodig, bijvoorbeeld omdat de producten vrijwel altijd op
-  voorraad zijn.
-- **Manual** — de voorraad wordt met de hand bijgewerkt. Reken er dan niet op dat de getoonde
-  levertijd actueel is.
 
 ---
 
@@ -128,7 +137,7 @@ rechtstreeks de levertijd die Magento aan de klant belooft. Hoe dat precies werk
 Wij hebben **zelf geen contract** met deze vervoerders. De toeleverancier heeft zijn eigen
 vervoerdercontracten en bepaalt zelf welke vervoerder hij voor welk type zending inzet. In
 het overzicht staat per leverancier welke vervoerder(s) hij gebruikt — dat is informatie, geen
-contactpersoon.
+contactpersoon. In de UK kan dat een andere vervoerder zijn dan in NL/BE.
 
 Dat is niet alleen een woordenkwestie: het bepaalt **bij wie je moet zijn**. Loopt een
 zending mis, dan bel je niet de vervoerder maar de toeleverancier — die is onze
@@ -141,14 +150,20 @@ contractpartij en heeft als enige grip op de vervoerder.
 Dit kan alleen een redacteur of beheerder.
 
 1. Ga naar **Leveranciers** in het menu en scrol naar **Nieuwe leverancier toevoegen**.
-2. Vul de **naam** in en vink de **landen** en het **type** aan. Klik op **+ Toevoegen**.
-3. Je komt op de pagina van de nieuwe leverancier. Kies per onderdeel de status. **Weet je
-   iets niet zeker, laat het dan op "?" staan** — dan ziet iedereen dat het nog nagevraagd
-   moet worden, in plaats van dat er ten onrechte "Auto" staat.
-4. Vul de **frequentie** van de voorraad-sync en de **vervoerder(s)** in, als je die weet.
-5. Zet bijzonderheden en uitzonderingen in **Uitleg bij deze leverancier**, en plak onder
+2. Vul de **naam** in, kies vanuit welk land hij **opereert**, en vink aan in welke regio's hij
+   actief is: **Nederland & België**, het **Verenigd Koninkrijk**, of allebei. Klik op
+   **+ Toevoegen**.
+3. Je komt op de pagina van de nieuwe leverancier. Vul **per regio** de statussen in — werkt de
+   leverancier in de UK anders, dan vul je dat daar apart in. **Weet je iets niet zeker, laat
+   het dan op "?" staan**, zodat iedereen ziet dat het nog nagevraagd moet worden in plaats van
+   dat er ten onrechte "Auto" staat.
+4. Vink per regio het **type** aan. Een leverancier kan zowel **Dropshipment** als
+   **E-fulfilment** zijn, als een deel van zijn producten bij PON op voorraad ligt.
+5. Vul per regio de **frequentie** van de voorraad-sync en de **vervoerder(s)** in, als je die
+   weet.
+6. Zet bijzonderheden en uitzonderingen in **Uitleg bij deze leverancier**, en plak onder
    **Gekoppelde artikelen** de link van artikelen die bij deze leverancier horen.
-6. Klik op **Opslaan**. De datum "laatst gecontroleerd" wordt daarmee op vandaag gezet.
+7. Klik op **Opslaan**. De datum "laatst gecontroleerd" wordt daarmee op vandaag gezet.
 
 ---
 
@@ -160,6 +175,7 @@ Dit kan alleen een redacteur of beheerder.
 | Bij een leverancier met "Manual"-tracking wachten op automatische tracking | Die komt nooit; de order blijft openstaan en de klant hoort niets |
 | "Half" behandelen als "Auto" | Een ontbrekende zending valt te laat op |
 | Een "?" lezen als "gaat vanzelf" | Niemand heeft het gecontroleerd; het kan net zo goed handwerk zijn |
+| Voor een UK-order in het tabblad Nederland & België kijken | De werkwijze en de vervoerder kunnen in de UK anders zijn |
 | De vervoerder bellen in plaats van de toeleverancier | Wij hebben daar geen contract mee; je krijgt geen informatie en verliest tijd |
 | Zelf op zoek gaan naar een verstuurde inkooporder buiten de mailbox | Alle kopieën staan in orders@marzansecurity.com → Inkooporders |
 
@@ -169,18 +185,19 @@ Dit kan alleen een redacteur of beheerder.
 
 1. **Volledigheid.** De lijst met alle leveranciers voor NL, BE en UK moet nog in het
    overzicht; nu staan alleen de zeven uit de oorspronkelijke tabel erin.
-2. **Phoenix-tracking.** Loopt de recent geautomatiseerde tracking inmiddels stabiel? Dan kan
+2. **UK-werkwijze.** Bij De Raat staat de UK-regio klaar, maar alle statussen en de vervoerder
+   staan nog op "?". Hoe werkt De Raat in de UK?
+3. **Phoenix-tracking.** Loopt de recent geautomatiseerde tracking inmiddels stabiel? Dan kan
    de status van "Half" naar "Auto".
-3. **Gunnebo-voorraadsync.** Werkt die betrouwbaar? In de bron stond dit als onzeker.
-4. **Gunnebo-tracking.** Komt de Bpost-tracking automatisch in Magento, of moet die
+4. **Gunnebo-voorraadsync.** Werkt die betrouwbaar? In de bron stond dit als onzeker.
+5. **Gunnebo-tracking.** Komt de Bpost-tracking automatisch in Magento, of moet die
    handmatig ingevoerd worden? Staat nu op "?".
-5. **Kruse-voorraad.** Is er echt geen voorraadkoppeling, of is die er wel maar onbekend?
-   Staat nu op "?".
 6. **Gunnebo-inkooporder.** De oude tabel zei "automatisch", maar *Inkooporder plaatsen bij
    Gunnebo* beschrijft een handmatig inkoopformulier. In het overzicht staat Gunnebo nu op
    "Manual". Klopt dat?
-7. **Landen.** Bij PON, Phoenix en Burgwacht zijn de landen nog niet ingevuld. Die komen uit
-   de volledige leverancierslijst.
+7. **Kruse-voorraad.** Is er echt geen voorraadkoppeling, of is die er wel maar onbekend?
+   Staat nu op "?".
+8. **Vanuit.** Bij BurgWachter is nog niet ingevuld vanuit welk land ze opereren.
 
 ---
 

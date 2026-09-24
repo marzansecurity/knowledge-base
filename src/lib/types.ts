@@ -107,28 +107,58 @@ export const SUPPLIER_TYPES: SupplierType[] = ['fulfilment', 'dropshipment', 'in
 export type AutomationStatus = 'auto' | 'half' | 'manual' | 'nvt';
 export const AUTOMATION_STATUSES: AutomationStatus[] = ['auto', 'half', 'manual', 'nvt'];
 
-/** De vier kolommen van het leveranciersoverzicht, in weergavevolgorde. */
-export type SupplierStep = 'purchase_order' | 'order_confirmation' | 'tracking' | 'stock_sync';
-export const SUPPLIER_STEPS: SupplierStep[] = ['purchase_order', 'order_confirmation', 'tracking', 'stock_sync'];
+/** De vier onderdelen van het orderproces die een status hebben. */
+export type SupplierStep = 'stock_sync' | 'purchase_order' | 'order_confirmation' | 'tracking';
+export const SUPPLIER_STEPS: SupplierStep[] = ['stock_sync', 'purchase_order', 'order_confirmation', 'tracking'];
+
+/**
+ * De kolommen van het leveranciersoverzicht, in de volgorde waarin een order
+ * loopt. De vervoerder staat direct vóór de tracking: die horen bij elkaar.
+ */
+export type SupplierColumn = SupplierStep | 'carrier';
+export const SUPPLIER_COLUMNS: SupplierColumn[] = [
+  'stock_sync',
+  'purchase_order',
+  'order_confirmation',
+  'carrier',
+  'tracking',
+];
+
+/** Nederland en België werken hetzelfde en vormen één regio; de UK werkt anders. */
+export type Region = 'nlbe' | 'uk';
+export const REGIONS: Region[] = ['nlbe', 'uk'];
+
+/** Hoe een leverancier in één regio werkt. */
+export type SupplierRegion = {
+  id: string;
+  supplier_id: string;
+  region: Region;
+  types: SupplierType[];
+  /** Null = nog niet ingevuld. */
+  stock_sync_status: AutomationStatus | null;
+  stock_sync_frequency: string | null;
+  purchase_order_status: AutomationStatus | null;
+  order_confirmation_status: AutomationStatus | null;
+  carrier: string | null;
+  tracking_status: AutomationStatus | null;
+  /** Korte toelichting, zichtbaar in het overzicht. */
+  notes: string | null;
+  updated_at: string;
+};
 
 export type Supplier = {
   id: string;
   slug: string;
   name: string;
-  countries: Country[];
-  types: SupplierType[];
-  carrier: string | null;
-  /** Null = nog niet ingevuld. */
-  purchase_order_status: AutomationStatus | null;
-  order_confirmation_status: AutomationStatus | null;
-  tracking_status: AutomationStatus | null;
-  stock_sync_status: AutomationStatus | null;
-  stock_sync_frequency: string | null;
-  /** Korte toelichting, zichtbaar in het overzicht. */
-  notes: string | null;
+  /** ISO-landcode van waaruit de leverancier opereert, bv. DE. */
+  based_in: string | null;
+  /** Onze eigen voorraad (PON): bovenaan en in een eigen kleur. */
+  own_stock: boolean;
   /** Uitgebreide uitleg op de detailpagina. */
   details_markdown: string | null;
   related_article_slugs: string[];
   reviewed_at: string | null;
   updated_at: string;
+  /** Alleen de regio's waarin de leverancier actief is. */
+  regions: SupplierRegion[];
 };

@@ -2,15 +2,16 @@ import { notFound } from 'next/navigation';
 import type { ReactNode } from 'react';
 import { AutomatiseringBadge } from '@/components/automatisering-badge';
 import { KbShell } from '@/components/kb-shell';
-import { LandEnTypeVinkjes } from '@/components/leverancier-velden';
+import { KolomKop, RegioVelden, VanuitKeuze } from '@/components/leverancier-velden';
 import { TaalLink } from '@/components/taal-link';
 import { vereisIngelogd } from '@/lib/auth';
 import { haalArtikelLinks, haalLeverancier } from '@/lib/data';
-import { statusVan, UITLEG_PER_KOLOM } from '@/lib/leveranciers';
+import { landNaam, regioVan, statusVan } from '@/lib/leveranciers';
+import { haalKolomUitleg, type KolomUitleg } from '@/lib/leveranciers-uitleg';
 import { ArtikelMarkdown } from '@/lib/markdown';
-import { isTaal, STANDAARD_TAAL, TAAL_OPMAAK } from '@/lib/talen';
+import { isTaal, TAAL_OPMAAK, type Taal } from '@/lib/talen';
 import { haalVertalingen, type Berichten } from '@/lib/vertalingen';
-import { AUTOMATION_STATUSES, SUPPLIER_STEPS, type Supplier } from '@/lib/types';
+import { REGIONS, SUPPLIER_COLUMNS, type Supplier, type SupplierColumn, type SupplierRegion } from '@/lib/types';
 import { bewaarLeverancier, verwijderLeverancier } from '../acties';
 
 export default async function LeverancierPagina({ params }: PageProps<'/[taal]/leveranciers/[slug]'>) {
@@ -24,15 +25,10 @@ export default async function LeverancierPagina({ params }: PageProps<'/[taal]/l
   const s = await haalLeverancier(supabase, slug);
   if (!s) notFound();
 
-  const uitlegSlugs = Object.values(UITLEG_PER_KOLOM).map((u) => u.slug);
-  const artikelLinks = await haalArtikelLinks(supabase, [...new Set([...uitlegSlugs, ...s.related_article_slugs])], taal);
-
-  const uitlegHref = (kolom: keyof typeof UITLEG_PER_KOLOM) => {
-    const { slug: artikelSlug, anker } = UITLEG_PER_KOLOM[kolom];
-    const artikel = artikelLinks.get(artikelSlug);
-    if (!artikel) return undefined;
-    return `/bibliotheek/${artikel.slug}${anker && taal === STANDAARD_TAAL ? `#${anker}` : ''}`;
-  };
+  const [uitleg, artikelLinks] = await Promise.all([
+    haalKolomUitleg(supabase, taal),
+    haalArtikelLinks(supabase, s.related_article_slugs, taal),
+  ]);
 
   const gekoppeld = s.related_article_slugs
     .map((artikelSlug) => artikelLinks.get(artikelSlug))
@@ -45,24 +41,30 @@ export default async function LeverancierPagina({ params }: PageProps<'/[taal]/l
           {t.leveranciers.terugNaarOverzicht}
         </TaalLink>
 
-        <div className="kb-card p-4 sm:p-6">
-          <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className={`kb-card p-4 sm:p-6 ${s.own_stock ? 'border-l-4 border-l-navy-mid bg-[#f5fafd]' : ''}`}>
+          <div className="flex flex-wrap items-center gap-3">
             <h1 className="text-[24px] font-bold text-navy">{s.name}</h1>
-            <div className="flex flex-wrap gap-1.5">
-              {s.countries.map((c) => (
-                <span key={c} className="kb-chip py-0.5 text-[12px]">
-                  {t.labels.land[c]}
-                </span>
-              ))}
-              {s.types.map((tp) => (
-                <span key={tp} className="kb-chip border-navy-mid py-0.5 text-[12px] text-navy-mid">
-                  {t.labels.leverancierstype[tp]}
-                </span>
-              ))}
-            </div>
+            {s.own_stock && (
+              <span className="rounded-full bg-navy-mid px-2.5 py-0.5 text-[11px] font-bold tracking-[0.04em] text-white uppercase">
+                {t.leveranciers.eigenVoorraad}
+              </span>
+            )}
           </div>
-          {s.notes && <p className="mt-2 text-[14px] text-ink-soft">{s.notes}</p>}
-          <p className="mt-2 text-[12px] text-muted">
+          <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-[13px] text-ink-soft">
+            <span>
+              <span className="text-muted">{t.leveranciers.vanuit}: </span>
+              <strong className="font-semibold">
+                {s.based_in ? landNaam(s.based_in, taal) : t.leveranciers.vanuitOnbekend}
+              </strong>
+            </span>
+            {s.regions.length > 0 && (
+              <span>
+                <span className="text-muted">{t.leveranciers.actiefIn}: </span>
+                <strong className="font-semibold">{s.regions.map((r) => t.labels.regio[r.region]).join(', ')}</strong>
+              </span>
+            )}
+          </div>
+          <p className="mt-1.5 text-[12px] text-muted">
             {s.reviewed_at
               ? t.leveranciers.laatstGecontroleerd.replace(
                   '{datum}',
@@ -75,25 +77,9 @@ export default async function LeverancierPagina({ params }: PageProps<'/[taal]/l
               : t.leveranciers.nietGecontroleerd}
           </p>
 
-          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
-            {SUPPLIER_STEPS.map((stap) => {
-              const status = statusVan(s, stap);
-              return (
-                <OnderdeelKaart key={stap} label={t.leveranciers.onderdeel[stap]} href={uitlegHref(stap)} t={t}>
-                  <AutomatiseringBadge status={status} t={t} />
-                  {stap === 'stock_sync' && s.stock_sync_frequency && (
-                    <div className="mt-1.5 text-[12px] text-ink-soft">{s.stock_sync_frequency}</div>
-                  )}
-                  <div className="mt-1.5 text-[12px] leading-snug text-muted">
-                    {t.leveranciers.legenda[status ?? 'onbekend']}
-                  </div>
-                </OnderdeelKaart>
-              );
-            })}
-            <OnderdeelKaart label={t.leveranciers.vervoerder} href={uitlegHref('carrier')} t={t}>
-              <div className="text-[14px] font-semibold text-ink-soft">{s.carrier || '—'}</div>
-            </OnderdeelKaart>
-          </div>
+          {s.regions.map((r) => (
+            <RegioBlok key={r.id} gegevens={r} uitleg={uitleg} t={t} />
+          ))}
 
           <hr className="mt-6 mb-1 border-line" />
 
@@ -111,7 +97,10 @@ export default async function LeverancierPagina({ params }: PageProps<'/[taal]/l
               <ul className="grid gap-1.5 text-[14px]">
                 {gekoppeld.map((a) => (
                   <li key={a.slug}>
-                    <TaalLink href={`/bibliotheek/${a.slug}`} className="text-navy-mid underline underline-offset-2 hover:text-orange">
+                    <TaalLink
+                      href={`/bibliotheek/${a.slug}`}
+                      className="text-navy-mid underline underline-offset-2 hover:text-orange"
+                    >
                       {a.title}
                     </TaalLink>
                   </li>
@@ -121,101 +110,102 @@ export default async function LeverancierPagina({ params }: PageProps<'/[taal]/l
           )}
         </div>
 
-        {magBewerken && <BewerkFormulier leverancier={s} t={t} />}
+        {magBewerken && <BewerkFormulier leverancier={s} taal={taal} t={t} />}
       </main>
     </KbShell>
   );
 }
 
+function RegioBlok({
+  gegevens: r,
+  uitleg,
+  t,
+}: {
+  gegevens: SupplierRegion;
+  uitleg: Record<SupplierColumn, KolomUitleg>;
+  t: Berichten;
+}) {
+  return (
+    <section className="mt-5">
+      <div className="mb-2.5 flex flex-wrap items-center gap-2">
+        <h2 className="kb-section-title">{t.labels.regio[r.region]}</h2>
+        {r.types.map((tp) => (
+          <span key={tp} className="kb-chip border-navy-mid py-0.5 text-[12px] text-navy-mid">
+            {t.labels.leverancierstype[tp]}
+          </span>
+        ))}
+      </div>
+      {r.notes && <p className="mb-2.5 text-[14px] text-ink-soft">{r.notes}</p>}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        {SUPPLIER_COLUMNS.map((kolom) => (
+          <OnderdeelKaart key={kolom} kolom={kolom} uitleg={uitleg[kolom]} t={t}>
+            {kolom === 'carrier' ? (
+              <div className="text-[14px] font-semibold text-ink-soft">{r.carrier || '-'}</div>
+            ) : (
+              <>
+                <AutomatiseringBadge status={statusVan(r, kolom)} t={t} />
+                {kolom === 'stock_sync' && r.stock_sync_frequency && (
+                  <div className="mt-1.5 text-[12px] text-ink-soft">{r.stock_sync_frequency}</div>
+                )}
+                <div className="mt-1.5 text-[12px] leading-snug text-muted">
+                  {t.leveranciers.legenda[statusVan(r, kolom) ?? 'onbekend']}
+                </div>
+              </>
+            )}
+          </OnderdeelKaart>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function OnderdeelKaart({
-  label,
-  href,
+  kolom,
+  uitleg,
   t,
   children,
 }: {
-  label: string;
-  href?: string;
+  kolom: SupplierColumn;
+  uitleg: KolomUitleg;
   t: Berichten;
   children: ReactNode;
 }) {
   return (
-    <div className="rounded-lg border border-line p-3">
+    <div className="rounded-lg border border-line bg-white p-3">
       <div className="mb-2">
-        {href ? (
-          <TaalLink href={href} title={t.leveranciers.watIsDit} className="kb-label text-navy-mid hover:text-orange">
-            {label} ?
-          </TaalLink>
-        ) : (
-          <span className="kb-label">{label}</span>
-        )}
+        <KolomKop kolom={kolom} uitleg={uitleg} t={t} />
       </div>
       {children}
     </div>
   );
 }
 
-function BewerkFormulier({ leverancier: s, t }: { leverancier: Supplier; t: Berichten }) {
+function BewerkFormulier({ leverancier: s, taal, t }: { leverancier: Supplier; taal: Taal; t: Berichten }) {
   return (
     <details className="kb-card p-4 sm:p-6" open={!s.reviewed_at}>
       <summary className="kb-section-title cursor-pointer">{t.leveranciers.bewerkenTitel}</summary>
 
       <form action={bewaarLeverancier.bind(null, s.id)} className="mt-4 grid gap-4">
-        <div className="flex flex-wrap items-end gap-4">
-          <div className="min-w-[220px] flex-1">
+        <div className="grid grid-cols-1 items-end gap-4 sm:grid-cols-[1fr_220px]">
+          <div>
             <label className="kb-label mb-1 block">{t.leveranciers.naam}</label>
             <input name="name" defaultValue={s.name} required className="kb-input" />
           </div>
-          <LandEnTypeVinkjes t={t} landen={s.countries} types={s.types} />
+          <VanuitKeuze waarde={s.based_in} taal={taal} t={t} />
         </div>
 
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {SUPPLIER_STEPS.map((stap) => (
-            <div key={stap}>
-              <label className="kb-label mb-1 block">{t.leveranciers.onderdeel[stap]}</label>
-              <select name={`${stap}_status`} defaultValue={statusVan(s, stap) ?? ''} className="kb-input">
-                <option value="">
-                  {t.labels.automatisering.onbekend} — {t.leveranciers.legenda.onbekend}
-                </option>
-                {AUTOMATION_STATUSES.map((status) => (
-                  <option key={status} value={status}>
-                    {t.labels.automatisering[status]} — {t.leveranciers.legenda[status]}
-                  </option>
-                ))}
-              </select>
-            </div>
-          ))}
-        </div>
+        <label className="flex items-start gap-2 text-[13px] text-ink-soft">
+          <input type="checkbox" name="own_stock" defaultChecked={s.own_stock} className="mt-0.5 h-3.5 w-3.5" />
+          <span>
+            <strong className="font-semibold text-navy">{t.leveranciers.eigenVoorraad}</strong>
+            {' - '}
+            {t.leveranciers.eigenVoorraadHint}
+          </span>
+        </label>
 
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          <div>
-            <label className="kb-label mb-1 block">{t.leveranciers.frequentie}</label>
-            <input
-              name="stock_sync_frequency"
-              defaultValue={s.stock_sync_frequency ?? ''}
-              className="kb-input"
-              placeholder={t.leveranciers.frequentiePlaceholder}
-            />
-          </div>
-          <div>
-            <label className="kb-label mb-1 block">{t.leveranciers.vervoerder}</label>
-            <input
-              name="carrier"
-              defaultValue={s.carrier ?? ''}
-              className="kb-input"
-              placeholder={t.leveranciers.vervoerderPlaceholder}
-            />
-          </div>
-        </div>
-
-        <div>
-          <label className="kb-label mb-1 block">{t.leveranciers.opmerkingen}</label>
-          <input
-            name="notes"
-            defaultValue={s.notes ?? ''}
-            className="kb-input"
-            placeholder={t.leveranciers.opmerkingenPlaceholder}
-          />
-        </div>
+        {REGIONS.map((regio) => (
+          <RegioVelden key={regio} regio={regio} gegevens={regioVan(s, regio)} t={t} />
+        ))}
 
         <div>
           <label className="kb-label mb-1 block">{t.leveranciers.details}</label>

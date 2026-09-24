@@ -43,8 +43,9 @@
       "UK": "Royaume-Uni"
     },
     "automatisering": { "auto": "Auto", "half": "Partiel", "manual": "Manuel", "nvt": "N/A", "onbekend": "?" },
+    "regio": { "nlbe": "Pays-Bas & Belgique", "uk": "Royaume-Uni" },
     "leverancierstype": {
-      "fulfilment": "Fulfilment",
+      "fulfilment": "E-fulfilment",
       "dropshipment": "Drop shipment",
       "installateur": "Installateur"
     },
@@ -165,35 +166,47 @@
   },
   "leveranciers": {
     "titel": "Fournisseurs",
-    "introTekst": "Pour chaque fournisseur aux Pays-Bas, en Belgique et au Royaume-Uni : ce qui se fait automatiquement et là où vous devez intervenir. Cliquez sur un en-tête de colonne pour une explication, ou sur un fournisseur pour tous les détails.",
-    "filterLand": "Pays",
+    "introTekst": "Pour chaque fournisseur : ce qui se fait automatiquement et là où vous devez intervenir. Choisissez la région en haut. Cliquez sur ⓘ pour l'explication d'une colonne, ou sur un fournisseur pour tous les détails.",
     "filterType": "Type",
     "filterWissen": "Effacer",
     "geenResultaten": "Aucun fournisseur ne correspond à ce filtre.",
-    "nogGeen": "Aucun fournisseur n'a encore été ajouté.",
+    "geenInRegio": "Pas encore de fournisseurs pour {regio}.",
     "kolomLeverancier": "Fournisseur",
-    "kolomLand": "Pays",
+    "kolomVanuit": "Depuis",
     "kolomType": "Type",
     "vervoerder": "Transporteur",
     "onderdeel": {
+      "stock_sync": "Synchro du stock",
       "purchase_order": "Bon de commande",
       "order_confirmation": "Confirmation de commande",
-      "tracking": "Suivi",
-      "stock_sync": "Synchro du stock"
+      "tracking": "Suivi"
     },
-    "watIsDit": "Qu'est-ce que cela signifie ?",
-    "legendaTitel": "Signification des statuts",
+    "uitlegOpenen": "Explication : {onderdeel}",
+    "uitlegHeleArtikel": "Lire l'article complet",
+    "uitlegOntbreekt": "Pas encore d'explication.",
     "legenda": {
-      "auto": "Se fait tout seul — rien à faire de votre côté.",
-      "half": "En partie automatique, ou pas encore fiable — vérifiez.",
+      "auto": "Se fait tout seul - rien à faire de votre côté.",
+      "half": "En partie automatique, ou pas encore fiable - vérifiez.",
       "manual": "Vous devez le faire manuellement.",
       "nvt": "Sans objet ou pas nécessaire.",
-      "onbekend": "Pas encore renseigné — renseignez-vous avant de supposer quoi que ce soit."
+      "onbekend": "Pas encore renseigné - renseignez-vous avant de supposer quoi que ce soit."
     },
-    "uitlegLink": "Le parcours d'une commande et le sens de chaque étape →",
+    "legendaKort": {
+      "auto": "se fait tout seul",
+      "half": "à vérifier",
+      "manual": "à faire soi-même",
+      "nvt": "pas nécessaire",
+      "onbekend": "pas encore renseigné"
+    },
+    "eigenVoorraad": "Stock propre",
+    "eigenVoorraadHint": "Notre propre stock (comme PON) : en tête de l'aperçu, dans une couleur à part.",
     "vervoerdersTitel": "Fournisseur ou transporteur ?",
-    "vervoerdersTekst": "Bpost, GLS, DPD, Schenker, Transmission et Schmidt & Gevelberg sont des transporteurs, pas des fournisseurs. Nous n'avons pas de contrat avec eux. Si un envoi pose problème, appelez le fournisseur — pas le transporteur.",
-    "vervoerdersLink": "Pourquoi →",
+    "vervoerdersTekst": "Bpost, GLS, DPD, Schenker, Transmission et Schmidt & Gevelberg sont des transporteurs, pas des fournisseurs. Nous n'avons pas de contrat avec eux. Si un envoi pose problème, appelez le fournisseur - pas le transporteur.",
+    "vanuit": "Opère depuis",
+    "vanuitOnbekend": "Inconnu",
+    "actiefIn": "Actif en",
+    "regioActief": "Actif : {regio}",
+    "regioUitvinkenHint": "Décocher puis enregistrer supprime les données de cette région.",
     "frequentie": "Fréquence de synchro du stock",
     "frequentiePlaceholder": "p. ex. environ toutes les heures, 1× par jour",
     "vervoerderPlaceholder": "p. ex. Transmission, GLS",
@@ -209,11 +222,10 @@
     "laatstGecontroleerd": "Dernière vérification : {datum}",
     "nietGecontroleerd": "Pas encore vérifié",
     "nieuweTitel": "Ajouter un nouveau fournisseur",
-    "nieuweHint": "Après l'ajout, vous arrivez sur la page du fournisseur pour renseigner les statuts.",
+    "nieuweHint": "Après l'ajout, vous arrivez sur la page du fournisseur pour renseigner les statuts par région.",
     "naam": "Nom",
     "naamPlaceholder": "Nom du fournisseur",
     "toevoegen": "+ Ajouter",
-    "landen": "Pays",
     "types": "Type"
   },
   "beheer": {

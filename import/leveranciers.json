@@ -2,106 +2,571 @@
   {
     "name": "PON",
     "slug": "pon",
-    "countries": [],
-    "types": ["fulfilment"],
-    "purchase_order_status": "auto",
-    "order_confirmation_status": "auto",
-    "tracking_status": "auto",
-    "stock_sync_status": "auto",
-    "stock_sync_frequency": null,
-    "carrier": null,
-    "notes": "Eigen voorraad (e-fulfillment) — alles loopt via de API-koppeling.",
-    "details_markdown": "PON is onze 3PL-partner en de enige leverancier met **eigen voorraad**; alle andere leveranciers zijn dropshipment.\n\nEen order met het statuslabel **e-fulfillment** gaat via de API-koppeling automatisch naar PON. PON pickt en verstuurt, en koppelt de track & trace automatisch terug. Ook de voorraad loopt via de koppeling.\n\nJe hoeft hier dus niets zelf te doen — alleen ingrijpen als er iets níét gebeurt wat wel had moeten gebeuren.",
-    "related_article_slugs": []
+    "based_in": "NL",
+    "own_stock": true,
+    "details_markdown": "PON is onze 3PL-partner: hier ligt onze **eigen voorraad**. Wat wij voor NL/BE in grotere aantallen inkopen, bijvoorbeeld een deel van de producten van De Raat, Kruse en Phoenix, ligt hier op voorraad.\n\nEen order met het statuslabel **E-fulfilment** gaat via de API-koppeling automatisch naar PON. PON pickt en verstuurt, en koppelt de track & trace automatisch terug. Ook de voorraad loopt via de koppeling.\n\nJe hoeft hier dus niets zelf te doen - alleen ingrijpen als er iets níét gebeurt wat wel had moeten gebeuren.",
+    "related_article_slugs": [],
+    "regions": {
+      "nlbe": {
+        "types": [
+          "fulfilment"
+        ],
+        "stock_sync_status": "auto",
+        "stock_sync_frequency": null,
+        "purchase_order_status": "auto",
+        "order_confirmation_status": "auto",
+        "carrier": null,
+        "tracking_status": "auto",
+        "notes": "Eigen voorraad (E-fulfilment) - alles loopt via de API-koppeling."
+      }
+    }
   },
   {
     "name": "Nauta",
     "slug": "nauta",
-    "countries": [],
-    "types": ["dropshipment"],
-    "purchase_order_status": "auto",
-    "order_confirmation_status": "auto",
-    "tracking_status": "auto",
-    "stock_sync_status": "auto",
-    "stock_sync_frequency": "ca. elk uur à anderhalf uur",
-    "carrier": "Transmission",
-    "notes": "Alles automatisch. Geen tracking 's ochtends = er is iets mis.",
-    "details_markdown": "De orderbevestiging met de leverweek wordt automatisch uitgelezen en in Magento gezet.\n\nDe tracking zet Nauta aan het einde van de dag als databestand (CSV, tekst of XML) op een eigen serverlocatie. Dat wordt automatisch uitgelezen en verwerkt, **en daarmee wordt de order in Magento afgesloten**.\n\n> [!WARNING]\n> Zie je bij een Nauta-order 's ochtends geen tracking, dan is er iets mis — die hoort er te staan. Neem dan contact op met Nauta, niet met de vervoerder.\n\nHoe de afhaaltijden en de beloofde levertijd werken, staat in *Voorraadsynchronisatie en levertijdlogica*.",
-    "related_article_slugs": ["voorraadsynchronisatie-en-levertijdlogica"]
+    "based_in": "NL",
+    "own_stock": false,
+    "details_markdown": "De orderbevestiging met de leverweek wordt automatisch uitgelezen en in Magento gezet.\n\nDe tracking zet Nauta aan het einde van de dag als databestand (CSV, tekst of XML) op een eigen serverlocatie. Dat wordt automatisch uitgelezen en verwerkt, **en daarmee wordt de order in Magento afgesloten**.\n\n> [!WARNING]\n> Zie je bij een Nauta-order 's ochtends geen tracking, dan is er iets mis - die hoort er te staan. Neem dan contact op met Nauta, niet met de vervoerder.\n\nHoe de afhaaltijden en de beloofde levertijd werken, staat in *Voorraadsynchronisatie en levertijdlogica*.",
+    "related_article_slugs": [
+      "voorraadsynchronisatie-en-levertijdlogica"
+    ],
+    "regions": {
+      "nlbe": {
+        "types": [
+          "dropshipment"
+        ],
+        "stock_sync_status": "auto",
+        "stock_sync_frequency": "ca. elk uur à anderhalf uur",
+        "purchase_order_status": "auto",
+        "order_confirmation_status": "auto",
+        "carrier": "Transmission",
+        "tracking_status": "auto",
+        "notes": "Alles automatisch. Geen tracking 's ochtends = er is iets mis."
+      }
+    }
   },
   {
-    "name": "De Raat NL",
+    "name": "De Raat",
     "slug": "de-raat-nl",
-    "countries": [],
-    "types": ["dropshipment"],
-    "purchase_order_status": "auto",
-    "order_confirmation_status": "auto",
-    "tracking_status": "auto",
-    "stock_sync_status": "auto",
-    "stock_sync_frequency": "ca. elk uur à anderhalf uur",
-    "carrier": "Transmission",
-    "notes": "Alles automatisch. Geen tracking 's ochtends = er is iets mis.",
-    "details_markdown": "De orderbevestiging met de leverweek wordt automatisch uitgelezen en in Magento gezet.\n\nDe tracking zet De Raat aan het einde van de dag als databestand (CSV, tekst of XML) op een eigen serverlocatie. Dat wordt automatisch uitgelezen en verwerkt, **en daarmee wordt de order in Magento afgesloten**.\n\n> [!WARNING]\n> Zie je bij een De Raat-order 's ochtends geen tracking, dan is er iets mis — die hoort er te staan. Neem dan contact op met De Raat, niet met de vervoerder.\n\nHoe de afhaaltijden en de beloofde levertijd werken, staat in *Voorraadsynchronisatie en levertijdlogica*.",
-    "related_article_slugs": ["voorraadsynchronisatie-en-levertijdlogica"]
+    "based_in": "NL",
+    "own_stock": false,
+    "details_markdown": "De orderbevestiging met de leverweek wordt automatisch uitgelezen en in Magento gezet.\n\nDe tracking zet De Raat aan het einde van de dag als databestand (CSV, tekst of XML) op een eigen serverlocatie. Dat wordt automatisch uitgelezen en verwerkt, **en daarmee wordt de order in Magento afgesloten**.\n\n> [!WARNING]\n> Zie je bij een De Raat-order 's ochtends geen tracking, dan is er iets mis - die hoort er te staan. Neem dan contact op met De Raat, niet met de vervoerder.\n\nHoe de afhaaltijden en de beloofde levertijd werken, staat in *Voorraadsynchronisatie en levertijdlogica*.",
+    "related_article_slugs": [
+      "voorraadsynchronisatie-en-levertijdlogica"
+    ],
+    "regions": {
+      "nlbe": {
+        "types": [
+          "dropshipment",
+          "fulfilment"
+        ],
+        "stock_sync_status": "auto",
+        "stock_sync_frequency": "ca. elk uur à anderhalf uur",
+        "purchase_order_status": "auto",
+        "order_confirmation_status": "auto",
+        "carrier": "Transmission",
+        "tracking_status": "auto",
+        "notes": "Alles automatisch. Geen tracking 's ochtends = er is iets mis."
+      },
+      "uk": {
+        "types": [
+          "dropshipment"
+        ]
+      }
+    }
   },
   {
     "name": "Phoenix",
     "slug": "phoenix",
-    "countries": [],
-    "types": ["dropshipment"],
-    "purchase_order_status": "auto",
-    "order_confirmation_status": "manual",
-    "tracking_status": "half",
-    "stock_sync_status": "auto",
-    "stock_sync_frequency": "1× per dag",
-    "carrier": "GLS, Schenker",
-    "notes": "Duitsland. Leverweek zelf overnemen; tracking nog controleren.",
-    "details_markdown": "**Orderbevestiging:** de bevestiging met de leverweek moet je **zelf openen en overnemen in Magento**. Dat gebeurt niet vanzelf.\n\n**Tracking:** recent geautomatiseerd — Phoenix post die dagelijks op werkdagen — maar aan de kant van Phoenix is dat proces zelf nog handmatig.\n\n> [!WARNING]\n> Vertrouw de Phoenix-tracking nog niet blind. De automatisering is nieuw en het is nog niet bewezen dat het betrouwbaar loopt. Controleer bij een Phoenix-order dus wel of er daadwerkelijk een track & trace is binnengekomen.\n\n**Levertijd:** Phoenix zit in Duitsland; \"vandaag besteld, morgen geleverd\" bestaat hier niet. Welke vervoerder wordt ingezet hangt af van het type en gewicht van de zending. Zie *Voorraadsynchronisatie en levertijdlogica*.",
-    "related_article_slugs": ["voorraadsynchronisatie-en-levertijdlogica", "magento-backend-velden-voor-orderopvolging"]
+    "based_in": "DE",
+    "own_stock": false,
+    "details_markdown": "**Orderbevestiging:** de bevestiging met de leverweek moet je **zelf openen en overnemen in Magento**. Dat gebeurt niet vanzelf.\n\n**Tracking:** recent geautomatiseerd - Phoenix post die dagelijks op werkdagen - maar aan de kant van Phoenix is dat proces zelf nog handmatig.\n\n> [!WARNING]\n> Vertrouw de Phoenix-tracking nog niet blind. De automatisering is nieuw en het is nog niet bewezen dat het betrouwbaar loopt. Controleer bij een Phoenix-order dus wel of er daadwerkelijk een track & trace is binnengekomen.\n\n**Levertijd:** Phoenix zit in Duitsland; \"vandaag besteld, morgen geleverd\" bestaat hier niet. Welke vervoerder wordt ingezet hangt af van het type en gewicht van de zending. Zie *Voorraadsynchronisatie en levertijdlogica*.\n\n**Tussenpersoon:** Diplomat, Safewell en Promet bestellen wij via Phoenix.",
+    "related_article_slugs": [
+      "voorraadsynchronisatie-en-levertijdlogica",
+      "magento-backend-velden-voor-orderopvolging"
+    ],
+    "regions": {
+      "nlbe": {
+        "types": [
+          "dropshipment",
+          "fulfilment"
+        ],
+        "stock_sync_status": "auto",
+        "stock_sync_frequency": "1× per dag",
+        "purchase_order_status": "auto",
+        "order_confirmation_status": "manual",
+        "carrier": "GLS, Schenker",
+        "tracking_status": "half",
+        "notes": "Duitsland. Leverweek zelf overnemen; tracking nog controleren."
+      },
+      "uk": {
+        "types": []
+      }
+    }
   },
   {
     "name": "Kruse Sicherheitstechnik",
     "slug": "kruse-sicherheitstechnik",
-    "countries": [],
-    "types": ["dropshipment"],
-    "purchase_order_status": "auto",
-    "order_confirmation_status": "manual",
-    "tracking_status": "manual",
-    "stock_sync_status": null,
-    "stock_sync_frequency": null,
-    "carrier": null,
-    "notes": "Duitsland. Leverweek én tracking zelf invoeren.",
-    "details_markdown": "**Beide handmatig:** je opent zelf de orderbevestiging en neemt de leverdatum over in Magento, en je voert de tracking zelf in.\n\n> [!WARNING]\n> Wacht bij Kruse niet op automatische tracking — die komt nooit. Voer je hem niet in, dan blijft de order openstaan en hoort de klant niets.\n\n**Levertijd:** Kruse zit in Duitsland; \"vandaag besteld, morgen geleverd\" bestaat hier niet. Zie *Voorraadsynchronisatie en levertijdlogica*.",
-    "related_article_slugs": ["voorraadsynchronisatie-en-levertijdlogica", "magento-backend-velden-voor-orderopvolging"]
+    "based_in": "DE",
+    "own_stock": false,
+    "details_markdown": "**Beide handmatig:** je opent zelf de orderbevestiging en neemt de leverdatum over in Magento, en je voert de tracking zelf in.\n\n> [!WARNING]\n> Wacht bij Kruse niet op automatische tracking - die komt nooit. Voer je hem niet in, dan blijft de order openstaan en hoort de klant niets.\n\n**Levertijd:** Kruse zit in Duitsland; \"vandaag besteld, morgen geleverd\" bestaat hier niet. Zie *Voorraadsynchronisatie en levertijdlogica*.",
+    "related_article_slugs": [
+      "voorraadsynchronisatie-en-levertijdlogica",
+      "magento-backend-velden-voor-orderopvolging"
+    ],
+    "regions": {
+      "nlbe": {
+        "types": [
+          "dropshipment",
+          "fulfilment"
+        ],
+        "stock_sync_status": null,
+        "stock_sync_frequency": null,
+        "purchase_order_status": "auto",
+        "order_confirmation_status": "manual",
+        "carrier": null,
+        "tracking_status": "manual",
+        "notes": "Duitsland. Leverweek én tracking zelf invoeren."
+      }
+    }
   },
   {
-    "name": "Burgwacht",
+    "name": "BurgWachter",
     "slug": "burgwacht",
-    "countries": [],
-    "types": ["dropshipment"],
-    "purchase_order_status": "auto",
-    "order_confirmation_status": "manual",
-    "tracking_status": "manual",
-    "stock_sync_status": "nvt",
-    "stock_sync_frequency": null,
-    "carrier": null,
-    "notes": "Leverweek én tracking zelf invoeren; producten vrijwel altijd op voorraad.",
-    "details_markdown": "**Orderbevestiging en tracking:** allebei handmatig. Je neemt de leverweek zelf over in Magento en voert de track & trace zelf in.\n\n**Voorraad:** een voorraadkoppeling is hier niet nodig, omdat de producten vrijwel altijd op voorraad zijn.\n\n> [!WARNING]\n> Wacht bij Burgwacht niet op automatische tracking — die komt nooit. Voer je hem niet in, dan blijft de order openstaan en hoort de klant niets.",
-    "related_article_slugs": ["magento-backend-velden-voor-orderopvolging"]
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "**Orderbevestiging en tracking:** allebei handmatig. Je neemt de leverweek zelf over in Magento en voert de track & trace zelf in.\n\n**Voorraad:** een voorraadkoppeling is hier niet nodig, omdat de producten vrijwel altijd op voorraad zijn.\n\n> [!WARNING]\n> Wacht bij BurgWachter niet op automatische tracking - die komt nooit. Voer je hem niet in, dan blijft de order openstaan en hoort de klant niets.",
+    "related_article_slugs": [
+      "magento-backend-velden-voor-orderopvolging"
+    ],
+    "regions": {
+      "nlbe": {
+        "types": [
+          "dropshipment"
+        ],
+        "stock_sync_status": "nvt",
+        "stock_sync_frequency": null,
+        "purchase_order_status": "auto",
+        "order_confirmation_status": "manual",
+        "carrier": null,
+        "tracking_status": "manual",
+        "notes": "Leverweek én tracking zelf invoeren; producten vrijwel altijd op voorraad."
+      },
+      "uk": {
+        "types": []
+      }
+    }
   },
   {
     "name": "Gunnebo",
     "slug": "gunnebo",
-    "countries": ["NL", "BE"],
-    "types": ["dropshipment"],
-    "purchase_order_status": "manual",
-    "order_confirmation_status": "manual",
-    "tracking_status": null,
-    "stock_sync_status": "half",
-    "stock_sync_frequency": null,
-    "carrier": "Bpost",
-    "notes": "Eigen inkoopformulier; Gunnebo verzendt zelf niets (Base Logistics).",
-    "details_markdown": "Gunnebo werkt anders dan onze andere toeleveranciers:\n\n1. **De inkooporder gaat niet via het geautomatiseerde systeem**, maar via een handmatig nagebouwd inkoopformulier. Hoe dat gaat staat stap voor stap in *Inkooporder plaatsen bij Gunnebo*.\n2. **Gunnebo verzendt zelf niets.** Zij geven de order vrij bij hun 3PL-partner **Base Logistics**; wij sturen Base Logistics daarna zelf aan voor de aflevering.\n\n**Orderbevestiging:** de bestelbevestiging lees je handmatig uit en neem je over in Magento.\n\n**Tracking:** loopt via **Bpost**. Of die vanzelf in Magento komt, is nog niet bevestigd — controleer het bij elke order.\n\n> [!WARNING]\n> Dit geldt voor het NL/BE-proces. Het UK-inkoopproces bij Gunnebo loopt anders.",
-    "related_article_slugs": ["inkooporder-plaatsen-bij-gunnebo", "magento-backend-velden-voor-orderopvolging"]
+    "based_in": "NL",
+    "own_stock": false,
+    "details_markdown": "Gunnebo werkt anders dan onze andere toeleveranciers:\n\n1. **De inkooporder gaat niet via het geautomatiseerde systeem**, maar via een handmatig nagebouwd inkoopformulier. Hoe dat gaat staat stap voor stap in *Inkooporder plaatsen bij Gunnebo*.\n2. **Gunnebo verzendt zelf niets.** Zij geven de order vrij bij hun 3PL-partner **Base Logistics**; wij sturen Base Logistics daarna zelf aan voor de aflevering.\n\n**Orderbevestiging:** de bestelbevestiging lees je handmatig uit en neem je over in Magento.\n\n**Tracking:** loopt via **Bpost**. Of die vanzelf in Magento komt, is nog niet bevestigd - controleer het bij elke order.\n\n> [!WARNING]\n> Dit geldt voor het NL/BE-proces. Het UK-inkoopproces bij Gunnebo loopt anders.",
+    "related_article_slugs": [
+      "inkooporder-plaatsen-bij-gunnebo",
+      "magento-backend-velden-voor-orderopvolging"
+    ],
+    "regions": {
+      "nlbe": {
+        "types": [
+          "dropshipment"
+        ],
+        "stock_sync_status": "half",
+        "stock_sync_frequency": null,
+        "purchase_order_status": "manual",
+        "order_confirmation_status": "manual",
+        "carrier": "Bpost",
+        "tracking_status": null,
+        "notes": "Eigen inkoopformulier; Gunnebo verzendt zelf niets (Base Logistics)."
+      },
+      "uk": {
+        "types": []
+      }
+    }
+  },
+  {
+    "name": "Aldridge",
+    "slug": "aldridge",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `aldridge` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "uk": {
+        "types": [],
+        "notes": null
+      }
+    }
+  },
+  {
+    "name": "Anlag",
+    "slug": "anlag",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `anlag` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "nlbe": {
+        "types": [],
+        "notes": null
+      }
+    }
+  },
+  {
+    "name": "Autolok",
+    "slug": "autolok",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `autolok` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "uk": {
+        "types": [],
+        "notes": null
+      }
+    }
+  },
+  {
+    "name": "Buffalo River",
+    "slug": "buffalo-river",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `buffalo-river` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "uk": {
+        "types": [],
+        "notes": "Via Highland Outdoors."
+      }
+    }
+  },
+  {
+    "name": "Bulldog",
+    "slug": "bulldog",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `bulldog` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "uk": {
+        "types": [],
+        "notes": null
+      }
+    }
+  },
+  {
+    "name": "Burton",
+    "slug": "burton",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `burton` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "nlbe": {
+        "types": [],
+        "notes": "Geen omzet meer in 2026."
+      },
+      "uk": {
+        "types": [],
+        "notes": null
+      }
+    }
+  },
+  {
+    "name": "De Beer",
+    "slug": "de-beer",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `de beer` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "nlbe": {
+        "types": [],
+        "notes": null
+      }
+    }
+  },
+  {
+    "name": "Diplomat",
+    "slug": "diplomat",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `diplomat` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "nlbe": {
+        "types": [],
+        "notes": "Via Phoenix."
+      },
+      "uk": {
+        "types": [],
+        "notes": "Via Phoenix; geen omzet meer in 2026."
+      }
+    }
+  },
+  {
+    "name": "Eastern Sporting",
+    "slug": "eastern-sporting",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `eastern-sporting` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "uk": {
+        "types": [],
+        "notes": "Nieuw in 2026."
+      }
+    }
+  },
+  {
+    "name": "Insafe",
+    "slug": "insafe",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `insafe` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "uk": {
+        "types": [],
+        "notes": null
+      }
+    }
+  },
+  {
+    "name": "Keysecure",
+    "slug": "keysecure",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `keysecure` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "uk": {
+        "types": [],
+        "notes": null
+      }
+    }
+  },
+  {
+    "name": "Kniggendorf",
+    "slug": "kniggendorf",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `kniggendorf` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "nlbe": {
+        "types": [],
+        "notes": null
+      }
+    }
+  },
+  {
+    "name": "Marzan",
+    "slug": "marzan",
+    "based_in": null,
+    "own_stock": true,
+    "details_markdown": "In Magento heet deze leverancier `Marzan` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "nlbe": {
+        "types": [],
+        "notes": "Eigen voorraad, geen externe leverancier."
+      },
+      "uk": {
+        "types": [],
+        "notes": "Eigen voorraad, geen externe leverancier."
+      }
+    }
+  },
+  {
+    "name": "Marzan Breda",
+    "slug": "marzan-breda",
+    "based_in": null,
+    "own_stock": true,
+    "details_markdown": "In Magento heet deze leverancier `Marzan-Breda` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "nlbe": {
+        "types": [],
+        "notes": "Eigen voorraad; niet meer gebruikt in 2026."
+      }
+    }
+  },
+  {
+    "name": "Master Lock",
+    "slug": "master-lock",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `masterlock` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "nlbe": {
+        "types": [],
+        "notes": null
+      },
+      "uk": {
+        "types": [],
+        "notes": null
+      }
+    }
+  },
+  {
+    "name": "Metain",
+    "slug": "metain",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `metain` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "nlbe": {
+        "types": [],
+        "notes": null
+      }
+    }
+  },
+  {
+    "name": "Mobeye",
+    "slug": "mobeye",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `mobeye` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "nlbe": {
+        "types": [],
+        "notes": null
+      }
+    }
+  },
+  {
+    "name": "Osseman",
+    "slug": "osseman",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `osseman` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "nlbe": {
+        "types": [],
+        "notes": null
+      }
+    }
+  },
+  {
+    "name": "Promet",
+    "slug": "promet",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `promet` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "nlbe": {
+        "types": [],
+        "notes": "Via Phoenix."
+      }
+    }
+  },
+  {
+    "name": "Safe2Lock",
+    "slug": "safe2lock",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `safe2lock` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "nlbe": {
+        "types": [],
+        "notes": null
+      }
+    }
+  },
+  {
+    "name": "Safewell",
+    "slug": "safewell",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `safewell` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "nlbe": {
+        "types": [],
+        "notes": "Via Phoenix."
+      },
+      "uk": {
+        "types": [],
+        "notes": "Via Phoenix."
+      }
+    }
+  },
+  {
+    "name": "Securikey",
+    "slug": "securikey",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `securikey` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "uk": {
+        "types": [],
+        "notes": null
+      }
+    }
+  },
+  {
+    "name": "Sentinel",
+    "slug": "sentinel",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `sentinel` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "uk": {
+        "types": [],
+        "notes": "Geen omzet in 2026 - mogelijk gestopt."
+      }
+    }
+  },
+  {
+    "name": "Traka",
+    "slug": "traka",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `traka` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "nlbe": {
+        "types": [],
+        "notes": "Nieuw in 2026."
+      }
+    }
+  },
+  {
+    "name": "Van Vault",
+    "slug": "van-vault",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `van-vault` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "uk": {
+        "types": [],
+        "notes": null
+      }
+    }
+  },
+  {
+    "name": "Yale",
+    "slug": "yale",
+    "based_in": null,
+    "own_stock": false,
+    "details_markdown": "In Magento heet deze leverancier `yale` (veld *Supplier*).",
+    "related_article_slugs": [],
+    "regions": {
+      "nlbe": {
+        "types": [],
+        "notes": null
+      }
+    }
   }
 ]

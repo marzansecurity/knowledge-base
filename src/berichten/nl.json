@@ -43,8 +43,9 @@
       "UK": "UK"
     },
     "automatisering": { "auto": "Auto", "half": "Half", "manual": "Manual", "nvt": "n.v.t.", "onbekend": "?" },
+    "regio": { "nlbe": "Nederland & België", "uk": "Verenigd Koninkrijk" },
     "leverancierstype": {
-      "fulfilment": "Fulfilment",
+      "fulfilment": "E-fulfilment",
       "dropshipment": "Drop Shipment",
       "installateur": "Installateur"
     },
@@ -165,35 +166,47 @@
   },
   "leveranciers": {
     "titel": "Leveranciers",
-    "introTekst": "Per leverancier in Nederland, België en de UK: wat gaat automatisch en waar moet je zelf iets doen. Klik op een kolomkop voor uitleg over dat onderdeel, of op een leverancier voor alle details.",
-    "filterLand": "Land",
+    "introTekst": "Per leverancier: wat gaat automatisch en waar moet je zelf iets doen. Kies bovenaan de regio. Klik op ⓘ voor uitleg over een kolom, of op een leverancier voor alle details.",
     "filterType": "Type",
     "filterWissen": "Wissen",
     "geenResultaten": "Geen leveranciers gevonden voor dit filter.",
-    "nogGeen": "Nog geen leveranciers toegevoegd.",
+    "geenInRegio": "Nog geen leveranciers in {regio}.",
     "kolomLeverancier": "Leverancier",
-    "kolomLand": "Land",
+    "kolomVanuit": "Vanuit",
     "kolomType": "Type",
     "vervoerder": "Vervoerder",
     "onderdeel": {
+      "stock_sync": "Voorraad-sync",
       "purchase_order": "Inkooporder",
       "order_confirmation": "Orderbevestiging",
-      "tracking": "Tracking",
-      "stock_sync": "Voorraad-sync"
+      "tracking": "Tracking"
     },
-    "watIsDit": "Wat houdt dit in?",
-    "legendaTitel": "Wat de statussen betekenen",
+    "uitlegOpenen": "Uitleg: {onderdeel}",
+    "uitlegHeleArtikel": "Lees het hele artikel",
+    "uitlegOntbreekt": "Hier is nog geen uitleg voor.",
     "legenda": {
-      "auto": "Loopt vanzelf — je hoeft niets te doen.",
-      "half": "Loopt deels vanzelf, of is nog niet bewezen betrouwbaar — controleer het.",
+      "auto": "Loopt vanzelf - je hoeft niets te doen.",
+      "half": "Loopt deels vanzelf, of is nog niet bewezen betrouwbaar - controleer het.",
       "manual": "Jij moet dit handmatig doen.",
       "nvt": "Niet van toepassing of niet nodig.",
-      "onbekend": "Nog niet ingevuld — vraag het na voordat je ervan uitgaat."
+      "onbekend": "Nog niet ingevuld - vraag het na voordat je ervan uitgaat."
     },
-    "uitlegLink": "Hoe een order loopt en wat elk onderdeel inhoudt →",
+    "legendaKort": {
+      "auto": "loopt vanzelf",
+      "half": "controleer het",
+      "manual": "zelf doen",
+      "nvt": "niet nodig",
+      "onbekend": "nog niet ingevuld"
+    },
+    "eigenVoorraad": "Eigen voorraad",
+    "eigenVoorraadHint": "Onze eigen voorraad (zoals PON): staat bovenaan het overzicht, in een eigen kleur.",
     "vervoerdersTitel": "Leverancier of vervoerder?",
-    "vervoerdersTekst": "Bpost, GLS, DPD, Schenker, Transmission en Schmidt & Gevelberg zijn vervoerders, geen toeleveranciers. Wij hebben met hen geen contract. Loopt een zending mis, dan bel je de toeleverancier — niet de vervoerder.",
-    "vervoerdersLink": "Lees waarom →",
+    "vervoerdersTekst": "Bpost, GLS, DPD, Schenker, Transmission en Schmidt & Gevelberg zijn vervoerders, geen toeleveranciers. Wij hebben met hen geen contract. Loopt een zending mis, dan bel je de toeleverancier - niet de vervoerder.",
+    "vanuit": "Opereert vanuit",
+    "vanuitOnbekend": "Onbekend",
+    "actiefIn": "Actief in",
+    "regioActief": "Actief in {regio}",
+    "regioUitvinkenHint": "Uitvinken en opslaan verwijdert de gegevens van deze regio.",
     "frequentie": "Frequentie voorraad-sync",
     "frequentiePlaceholder": "bv. ca. elk uur, 1× per dag",
     "vervoerderPlaceholder": "bv. Transmission, GLS",
@@ -209,11 +222,10 @@
     "laatstGecontroleerd": "Laatst gecontroleerd: {datum}",
     "nietGecontroleerd": "Nog niet gecontroleerd",
     "nieuweTitel": "Nieuwe leverancier toevoegen",
-    "nieuweHint": "Na het toevoegen kom je op de pagina van de leverancier om de statussen in te vullen.",
+    "nieuweHint": "Na het toevoegen kom je op de pagina van de leverancier om de statussen per regio in te vullen.",
     "naam": "Naam",
     "naamPlaceholder": "Leveranciersnaam",
     "toevoegen": "+ Toevoegen",
-    "landen": "Landen",
     "types": "Type"
   },
   "beheer": {
