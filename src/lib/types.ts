@@ -154,6 +154,8 @@ export type Supplier = {
   based_in: string | null;
   /** Onze eigen voorraad (PON): bovenaan en in een eigen kleur. */
   own_stock: boolean;
+  /** Hier bestellen we containers (bulk, via Phoenix): apart blok onderaan. */
+  container_purchase: boolean;
   /** Uitgebreide uitleg op de detailpagina. */
   details_markdown: string | null;
   related_article_slugs: string[];

@@ -94,7 +94,12 @@ for (const l of leveranciers) {
     teller.nieuw += 1;
     veranderd = true;
     if (!DROOGLOOP) {
-      const rij = { name: l.name, slug: l.slug, own_stock: Boolean(l.own_stock) };
+      const rij = {
+        name: l.name,
+        slug: l.slug,
+        own_stock: Boolean(l.own_stock),
+        container_purchase: Boolean(l.container_purchase),
+      };
       for (const v of [...LEVERANCIER_TEKST, ...LEVERANCIER_LIJST]) if (!leeg(l[v])) rij[v] = l[v];
       const { data, error: fout } = await supabase.from('suppliers').insert(rij).select('*').single();
       if (fout) throw fout;
@@ -104,8 +109,11 @@ for (const l of leveranciers) {
     }
   } else {
     const w = wijzigingen(huidig, l, [...LEVERANCIER_TEKST, ...LEVERANCIER_LIJST]);
-    // Eigen voorraad alleen aanzetten; uitzetten doe je in de app.
-    if (l.own_stock && !huidig.own_stock) w.own_stock = true;
+    // Vinkjes standaard alleen aanzetten; uitzetten doe je in de app, of met --overschrijf.
+    for (const vink of ['own_stock', 'container_purchase']) {
+      if (typeof l[vink] !== 'boolean' || l[vink] === Boolean(huidig[vink])) continue;
+      if (l[vink] || OVERSCHRIJF) w[vink] = l[vink];
+    }
     if (Object.keys(w).length) {
       meld(`wijzigen     ${l.slug}`, huidig, w);
       veranderd = true;

@@ -36,6 +36,14 @@ export function statusVan(regio: SupplierRegion, stap: SupplierStep): Automation
   return regio[`${stap}_status`];
 }
 
+/**
+ * Zowel Dropshipment als E-fulfilment: de statussen gaan dan over het
+ * dropshipment-deel; het E-fulfilment-deel ligt bij PON en loopt automatisch.
+ */
+export function isGemengd(regio: SupplierRegion) {
+  return regio.types.includes('dropshipment') && regio.types.includes('fulfilment');
+}
+
 export function regioVan(s: Supplier, regio: Region): SupplierRegion | undefined {
   return s.regions.find((r) => r.region === regio);
 }
@@ -94,11 +102,15 @@ export function leveranciersVoorAssistent(leveranciers: Supplier[]): string {
   for (const s of leveranciers) {
     for (const r of s.regions) {
       const cellen = [
-        s.name + (s.own_stock ? ' (eigen voorraad)' : ''),
+        s.name +
+          (s.own_stock ? ' (eigen voorraad)' : '') +
+          (s.container_purchase ? ' (containerinkoop; regelt Martijn zelf, niet voor de backoffice)' : ''),
         REGIO_TEKST[r.region],
         s.based_in ?? '—',
         r.types.length ? r.types.map((t) => (t === 'fulfilment' ? 'E-fulfilment' : t)).join('/') : '—',
-        cel(r.stock_sync_status) + (r.stock_sync_frequency ? ` (${schoon(r.stock_sync_frequency)})` : ''),
+        cel(r.stock_sync_status) +
+          (r.stock_sync_frequency ? ` (${schoon(r.stock_sync_frequency)})` : '') +
+          (isGemengd(r) ? '; E-fulfilment-deel: auto via PON' : ''),
         cel(r.purchase_order_status),
         cel(r.order_confirmation_status),
         schoon(r.carrier) || '—',
