@@ -12,7 +12,12 @@
  * categorie (slug), samenvatting. Optioneel: tags (komma-gescheiden), type
  * (gespreksroute/procedure/naslag/producttraining), landen (nl,be,uk of
  * "alle" voor overal geldig), kanaal (klantcontact/backoffice/technisch/alle),
- * volgorde (plek in het onboarding-leerpad), verplicht (ja/nee).
+ * volgorde (plek in het onboarding-leerpad), verplicht (ja/nee), eigenaar
+ * (display_name uit profiles).
+ *
+ * Elk artikel heeft een eigenaar nodig (AGENTS.md): de kop wint, anders
+ * IMPORT_EIGENAAR uit .env.local. Is er geen van beide, of bestaat het profiel
+ * niet, dan breekt het script af voordat er iets wordt weggeschreven.
  *
  * Idempotent: bij een tweede run wordt op slug bijgewerkt in plaats van
  * gedupliceerd. De nl-rij in article_translations wordt door de databasetrigger
@@ -41,6 +46,7 @@ const KANALEN = ['klantcontact', 'backoffice', 'technisch', 'alle'];
 const LANDEN = ['NL', 'BE', 'UK'];
 
 const DROOGLOOP = process.argv.includes('--droogloop');
+const STANDAARD_EIGENAAR = process.env.IMPORT_EIGENAAR?.trim() || null;
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -105,6 +111,14 @@ function leesBestand(ruw, standaard) {
 
   const verplicht = ['ja', 'true', '1'].includes((kop.verplicht ?? '').toLowerCase());
 
+  // Staat de eigenaar in de kop, dan is dat een bewuste keuze en overschrijft die
+  // ook bij een herimport. Valt hij terug op IMPORT_EIGENAAR, dan alleen invullen
+  // waar nog niets staat — zie het wegschrijven hieronder.
+  const eigenaar = kop.eigenaar?.trim() || STANDAARD_EIGENAAR;
+  if (!eigenaar) {
+    throw new Error('geen eigenaar: zet "eigenaar" in de kop of IMPORT_EIGENAAR in .env.local');
+  }
+
   return {
     titel: kop.titel,
     categorieSlug: kop.categorie,
@@ -114,6 +128,8 @@ function leesBestand(ruw, standaard) {
     kanaal,
     volgorde,
     verplicht,
+    eigenaar,
+    eigenaarUitKop: Boolean(kop.eigenaar?.trim()),
     tags: (kop.tags ?? '')
       .split(',')
       .map((t) => t.trim())
@@ -124,13 +140,20 @@ function leesBestand(ruw, standaard) {
   };
 }
 
-// --- Categorieën en tags vooraf ophalen ------------------------------------
+// --- Categorieën, profielen en tags vooraf ophalen --------------------------
 
 const { data: categorieen, error: categorieFout } = await supabase
   .from('categories')
   .select('id, slug');
 if (categorieFout) throw categorieFout;
 const categorieIdPerSlug = new Map(categorieen.map((c) => [c.slug, c.id]));
+
+const { data: profielen, error: profielFout } = await supabase
+  .from('profiles')
+  .select('user_id, display_name')
+  .eq('active', true);
+if (profielFout) throw profielFout;
+const profielIdPerNaam = new Map(profielen.map((p) => [p.display_name, p.user_id]));
 
 const artikelen = [];
 for (const { map, standaard } of MAPPEN) {
@@ -147,6 +170,12 @@ for (const { map, standaard } of MAPPEN) {
       const artikel = leesBestand(await readFile(path.join(map, bestand), 'utf8'), standaard);
       if (!categorieIdPerSlug.has(artikel.categorieSlug)) {
         throw new Error(`onbekende categorie "${artikel.categorieSlug}"`);
+      }
+      if (!profielIdPerNaam.has(artikel.eigenaar)) {
+        throw new Error(
+          `onbekende eigenaar "${artikel.eigenaar}" — ` +
+            `bekend zijn: ${[...profielIdPerNaam.keys()].join(', ')}`,
+        );
       }
       artikelen.push({ bestand, ...artikel, slug: maakSlug(artikel.titel) });
     } catch (fout) {
@@ -190,12 +219,17 @@ let bijgewerkt = 0;
 for (const artikel of artikelen) {
   const { data: bestaand } = await supabase
     .from('articles')
-    .select('id')
+    .select('id, owner_id')
     .eq('slug', artikel.slug)
     .maybeSingle();
 
   const label = bestaand ? 'bijwerken' : 'nieuw    ';
-  console.log(`  ${label}  [${artikel.type}] ${artikel.slug}`);
+  // Bij bijwerken alleen de eigenaar tonen als die daadwerkelijk wordt gezet.
+  const toontEigenaar = !bestaand || artikel.eigenaarUitKop || !bestaand.owner_id;
+  console.log(
+    `  ${label}  [${artikel.type}] ${artikel.slug}` +
+      (toontEigenaar ? `  → ${artikel.eigenaar}` : ''),
+  );
 
   if (DROOGLOOP) {
     if (bestaand) bijgewerkt += 1;
@@ -217,10 +251,17 @@ for (const artikel of artikelen) {
     source: 'handmatig',
   };
 
+  const eigenaarId = profielIdPerNaam.get(artikel.eigenaar);
+
   let artikelId;
   if (bestaand) {
     // De status blijft bij bijwerken onaangeroerd: een al gepubliceerd artikel
-    // mag door een herimport niet terugvallen naar concept.
+    // mag door een herimport niet terugvallen naar concept. Hetzelfde geldt voor
+    // de eigenaar: is die in de app aan iemand anders toegewezen, dan laat een
+    // herimport dat met rust. Alleen een expliciete "eigenaar" in de kop, of een
+    // artikel dat nog geen eigenaar heeft, wordt overschreven.
+    if (artikel.eigenaarUitKop || !bestaand.owner_id) velden.owner_id = eigenaarId;
+
     const { error } = await supabase.from('articles').update(velden).eq('id', bestaand.id);
     if (error) throw error;
     artikelId = bestaand.id;
@@ -229,7 +270,7 @@ for (const artikel of artikelen) {
     // Concept: de redactie kijkt elk nieuw artikel na voordat het gepubliceerd wordt.
     const { data, error } = await supabase
       .from('articles')
-      .insert({ ...velden, status: 'draft' })
+      .insert({ ...velden, owner_id: eigenaarId, status: 'draft' })
       .select('id')
       .single();
     if (error) throw error;
