@@ -1,18 +1,27 @@
 import { notFound } from 'next/navigation';
+import { AutomatiseringBadge } from '@/components/automatisering-badge';
 import { KbShell } from '@/components/kb-shell';
+import { LandEnTypeVinkjes } from '@/components/leverancier-velden';
 import { MultiChipFilter } from '@/components/multi-chip-filter';
+import { TaalLink } from '@/components/taal-link';
 import { vereisIngelogd } from '@/lib/auth';
-import { haalLeveranciers } from '@/lib/data';
-import { isTaal, TAAL_OPMAAK, type Taal } from '@/lib/talen';
+import { haalArtikelLinks, haalLeveranciers } from '@/lib/data';
+import { statusVan, UITLEG_ARTIKEL, UITLEG_PER_KOLOM } from '@/lib/leveranciers';
+import { isTaal, STANDAARD_TAAL } from '@/lib/talen';
 import { haalVertalingen, type Berichten } from '@/lib/vertalingen';
 import {
+  AUTOMATION_STATUSES,
   COUNTRIES,
+  SUPPLIER_STEPS,
   SUPPLIER_TYPES,
   type Country,
   type Supplier,
+  type SupplierStep,
   type SupplierType,
 } from '@/lib/types';
-import { maakLeverancier, bewaarLeverancier, verwijderLeverancier } from './acties';
+import { maakLeverancier } from './acties';
+
+type Uitleglinks = Partial<Record<SupplierStep | 'carrier', string>>;
 
 export default async function LeveranciersPagina({
   params,
@@ -29,10 +38,28 @@ export default async function LeveranciersPagina({
   const geselecteerdeLanden = (typeof land === 'string' ? land.split(',').filter(Boolean) : []) as Country[];
   const geselecteerdeTypes = (typeof type === 'string' ? type.split(',').filter(Boolean) : []) as SupplierType[];
 
-  const leveranciers = await haalLeveranciers(supabase, {
-    countries: geselecteerdeLanden.length > 0 ? geselecteerdeLanden : undefined,
-    types: geselecteerdeTypes.length > 0 ? geselecteerdeTypes : undefined,
-  });
+  const uitlegSlugs = [...new Set(Object.values(UITLEG_PER_KOLOM).map((u) => u.slug))];
+  const [leveranciers, artikelLinks] = await Promise.all([
+    haalLeveranciers(supabase, {
+      countries: geselecteerdeLanden.length > 0 ? geselecteerdeLanden : undefined,
+      types: geselecteerdeTypes.length > 0 ? geselecteerdeTypes : undefined,
+    }),
+    haalArtikelLinks(supabase, uitlegSlugs, taal),
+  ]);
+
+  // Alleen linken naar artikelen die bestaan en voor deze lezer zichtbaar zijn;
+  // een concept geeft voor een medewerker anders een 404. Het anker hoort bij de
+  // Nederlandse koppen, dus in een vertaling landt de lezer bovenaan.
+  const uitleg: Uitleglinks = {};
+  for (const [kolom, { slug, anker }] of Object.entries(UITLEG_PER_KOLOM)) {
+    const artikel = artikelLinks.get(slug);
+    if (!artikel) continue;
+    uitleg[kolom as keyof Uitleglinks] =
+      `/bibliotheek/${artikel.slug}${anker && taal === STANDAARD_TAAL ? `#${anker}` : ''}`;
+  }
+  const uitlegArtikel = artikelLinks.get(UITLEG_ARTIKEL);
+
+  const heeftFilter = geselecteerdeLanden.length > 0 || geselecteerdeTypes.length > 0;
 
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
@@ -42,6 +69,14 @@ export default async function LeveranciersPagina({
           <p className="mt-1.5 max-w-[720px] text-[13px] leading-relaxed text-muted">
             {t.leveranciers.introTekst}
           </p>
+          {uitlegArtikel && (
+            <TaalLink
+              href={`/bibliotheek/${uitlegArtikel.slug}`}
+              className="mt-1.5 inline-block text-[13px] font-medium text-navy-mid hover:text-orange"
+            >
+              {t.leveranciers.uitlegLink}
+            </TaalLink>
+          )}
         </div>
 
         <div className="kb-card grid gap-2.5 p-4">
@@ -61,213 +96,142 @@ export default async function LeveranciersPagina({
           />
         </div>
 
-        {magBewerken && <NieuweLeverancierFormulier t={t} />}
+        <div className="kb-card overflow-x-auto">
+          <table className="w-full min-w-[900px] border-collapse text-[13px]">
+            <thead>
+              <tr className="border-b border-line bg-page text-left">
+                <th className="sticky left-0 z-10 bg-page px-4 py-2.5 kb-label">{t.leveranciers.kolomLeverancier}</th>
+                <th className="px-3 py-2.5 kb-label">{t.leveranciers.kolomLand}</th>
+                <th className="px-3 py-2.5 kb-label">{t.leveranciers.kolomType}</th>
+                {SUPPLIER_STEPS.map((stap) => (
+                  <th key={stap} className="px-3 py-2.5 text-center">
+                    <KolomKop href={uitleg[stap]} label={t.leveranciers.onderdeel[stap]} t={t} />
+                  </th>
+                ))}
+                <th className="px-3 py-2.5">
+                  <KolomKop href={uitleg.carrier} label={t.leveranciers.vervoerder} t={t} />
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {leveranciers.map((s) => (
+                <LeverancierRij key={s.id} leverancier={s} t={t} />
+              ))}
+              {leveranciers.length === 0 && (
+                <tr>
+                  <td colSpan={8} className="kb-empty">
+                    {heeftFilter ? t.leveranciers.geenResultaten : t.leveranciers.nogGeen}
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
 
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-          {leveranciers.map((s) =>
-            magBewerken ? (
-              <LeverancierBewerkKaart key={s.id} leverancier={s} taal={taal} t={t} />
-            ) : (
-              <LeverancierKaart key={s.id} leverancier={s} t={t} />
-            ),
-          )}
-
-          {leveranciers.length === 0 && (
-            <div className="kb-card kb-empty lg:col-span-2">
-              {geselecteerdeLanden.length > 0 || geselecteerdeTypes.length > 0
-                ? t.leveranciers.geenResultaten
-                : t.leveranciers.nogGeen}
+          <Legenda t={t} />
+          <div className="kb-card p-4">
+            <div className="kb-section-title mb-2">{t.leveranciers.vervoerdersTitel}</div>
+            <div className="kb-callout kb-callout-warning my-0">
+              <p>
+                {t.leveranciers.vervoerdersTekst}{' '}
+                {uitleg.carrier && (
+                  <TaalLink href={uitleg.carrier} className="font-semibold underline underline-offset-2">
+                    {t.leveranciers.vervoerdersLink}
+                  </TaalLink>
+                )}
+              </p>
             </div>
-          )}
+          </div>
         </div>
+
+        {magBewerken && <NieuweLeverancierFormulier t={t} />}
       </main>
     </KbShell>
   );
 }
 
-function LandenChips({ countries, t }: { countries: Country[]; t: Berichten }) {
+function KolomKop({ href, label, t }: { href?: string; label: string; t: Berichten }) {
+  if (!href) return <span className="kb-label">{label}</span>;
   return (
-    <div className="flex flex-wrap gap-1">
-      {countries.length === 0 && <span className="text-[12px] text-muted">—</span>}
-      {countries.map((c) => (
-        <span key={c} className="kb-chip py-0.5 text-[12px]">
-          {t.labels.land[c]}
-        </span>
-      ))}
-    </div>
+    <TaalLink
+      href={href}
+      title={t.leveranciers.watIsDit}
+      className="kb-label inline-flex items-center gap-1 whitespace-nowrap text-navy-mid hover:text-orange"
+    >
+      {label}
+      <span
+        aria-hidden
+        className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-full border border-current text-[9px] leading-none normal-case"
+      >
+        ?
+      </span>
+    </TaalLink>
   );
 }
 
-function TypeChips({ types, t }: { types: SupplierType[]; t: Berichten }) {
-  if (types.length === 0) return null;
+function LeverancierRij({ leverancier: s, t }: { leverancier: Supplier; t: Berichten }) {
   return (
-    <div className="flex flex-wrap gap-1">
-      {types.map((tp) => (
-        <span key={tp} className="kb-chip border-navy-mid py-0.5 text-[12px] text-navy-mid">
-          {t.labels.leverancierstype[tp]}
-        </span>
-      ))}
-    </div>
-  );
-}
-
-function JaNee({ waar, t }: { waar: boolean; t: Berichten }) {
-  return (
-    <span className={`text-[13px] font-semibold ${waar ? 'text-[#1d5c46]' : 'text-muted'}`}>
-      {waar ? t.leveranciers.ja : t.leveranciers.nee}
-    </span>
-  );
-}
-
-function LeverancierKaart({ leverancier: s, t }: { leverancier: Supplier; t: Berichten }) {
-  return (
-    <div className="kb-card p-4">
-      <div className="flex flex-wrap items-start justify-between gap-2">
-        <div className="text-[15px] font-semibold text-navy">{s.name}</div>
-        <div className="flex flex-col items-end gap-1">
-          <LandenChips countries={s.countries} t={t} />
-          <TypeChips types={s.types} t={t} />
-        </div>
-      </div>
-      <div className="mt-2 grid grid-cols-3 gap-3 text-[13px]">
-        <div>
-          <div className="kb-label">{t.leveranciers.vervoerder}</div>
-          <div className="text-ink-soft">{s.carrier || '—'}</div>
-        </div>
-        <div>
-          <div className="kb-label">{t.leveranciers.tracking}</div>
-          <JaNee waar={s.tracking_available} t={t} />
-        </div>
-        <div>
-          <div className="kb-label">{t.leveranciers.automatisch}</div>
-          <JaNee waar={s.tracking_automatic} t={t} />
-        </div>
-      </div>
-      {s.notes && <p className="mt-2 text-[13px] text-muted">{s.notes}</p>}
-    </div>
-  );
-}
-
-function LeverancierBewerkKaart({
-  leverancier: s,
-  taal,
-  t,
-}: {
-  leverancier: Supplier;
-  taal: Taal;
-  t: Berichten;
-}) {
-  return (
-    <form action={bewaarLeverancier.bind(null, s.id)} className="kb-card p-4">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <input name="name" defaultValue={s.name} required className="kb-input w-auto min-w-[160px] flex-1" />
-        <div className="flex flex-wrap gap-2">
-          {COUNTRIES.map((c) => (
-            <label key={c} className="flex items-center gap-1 text-[12px] text-ink-soft">
-              <input type="checkbox" name={`country_${c}`} defaultChecked={s.countries.includes(c)} className="h-3.5 w-3.5" />
+    <tr className="group border-b border-line last:border-b-0 hover:bg-[#f7f9fc]">
+      <td className="sticky left-0 bg-white px-4 py-2.5 align-top group-hover:bg-[#f7f9fc]">
+        <TaalLink href={`/leveranciers/${s.slug}`} className="text-[14px] font-semibold text-navy hover:text-orange">
+          {s.name}
+        </TaalLink>
+        {s.notes && <div className="mt-0.5 max-w-[260px] text-[12px] leading-snug text-muted">{s.notes}</div>}
+      </td>
+      <td className="px-3 py-2.5 align-top">
+        <div className="flex flex-wrap gap-1">
+          {s.countries.length === 0 && <span className="text-muted">—</span>}
+          {s.countries.map((c) => (
+            <span key={c} title={t.labels.land[c]} className="kb-chip px-2 py-0 text-[11px] font-semibold">
               {c}
-            </label>
+            </span>
           ))}
         </div>
-      </div>
+      </td>
+      <td className="px-3 py-2.5 align-top text-ink-soft">
+        {s.types.length ? s.types.map((tp) => t.labels.leverancierstype[tp]).join(', ') : <span className="text-muted">—</span>}
+      </td>
+      {SUPPLIER_STEPS.map((stap) => (
+        <td key={stap} className="px-3 py-2.5 text-center align-top">
+          <AutomatiseringBadge status={statusVan(s, stap)} t={t} />
+          {stap === 'stock_sync' && s.stock_sync_frequency && (
+            <div className="mt-1 text-[11px] text-muted">{s.stock_sync_frequency}</div>
+          )}
+        </td>
+      ))}
+      <td className="px-3 py-2.5 align-top text-ink-soft">{s.carrier || <span className="text-muted">—</span>}</td>
+    </tr>
+  );
+}
 
-      <div className="mt-2 flex flex-wrap gap-3">
-        {SUPPLIER_TYPES.map((tp) => (
-          <label key={tp} className="flex items-center gap-1.5 text-[12px] text-ink-soft">
-            <input type="checkbox" name={`type_${tp}`} defaultChecked={s.types.includes(tp)} className="h-3.5 w-3.5" />
-            {t.labels.leverancierstype[tp]}
-          </label>
+function Legenda({ t }: { t: Berichten }) {
+  return (
+    <div className="kb-card p-4">
+      <div className="kb-section-title mb-2.5">{t.leveranciers.legendaTitel}</div>
+      <ul className="grid gap-2 text-[13px] text-ink-soft">
+        {[...AUTOMATION_STATUSES, null].map((status) => (
+          <li key={status ?? 'onbekend'} className="flex items-start gap-2.5">
+            <AutomatiseringBadge status={status} t={t} />
+            <span>{t.leveranciers.legenda[status ?? 'onbekend']}</span>
+          </li>
         ))}
-      </div>
-
-      <div className="mt-2.5 grid grid-cols-1 gap-2.5 sm:grid-cols-3">
-        <div>
-          <label className="kb-label mb-1 block">{t.leveranciers.vervoerder}</label>
-          <input
-            name="carrier"
-            defaultValue={s.carrier ?? ''}
-            className="kb-input"
-            placeholder={t.leveranciers.vervoerderPlaceholder}
-          />
-        </div>
-        <label className="mt-5 flex items-center gap-1.5 text-[13px] text-ink-soft">
-          <input type="checkbox" name="tracking_available" defaultChecked={s.tracking_available} className="h-3.5 w-3.5" />
-          {t.leveranciers.trackingBeschikbaar}
-        </label>
-        <label className="mt-5 flex items-center gap-1.5 text-[13px] text-ink-soft">
-          <input type="checkbox" name="tracking_automatic" defaultChecked={s.tracking_automatic} className="h-3.5 w-3.5" />
-          {t.leveranciers.automatischBinnen}
-        </label>
-      </div>
-
-      <div className="mt-2.5">
-        <label className="kb-label mb-1 block">{t.leveranciers.opmerkingen}</label>
-        <input name="notes" defaultValue={s.notes ?? ''} className="kb-input" />
-      </div>
-
-      <div className="mt-3 flex items-center justify-between border-t border-line pt-3">
-        <span className="text-[12px] text-muted">
-          {s.reviewed_at
-            ? t.leveranciers.laatstGecontroleerd.replace(
-                '{datum}',
-                new Date(s.reviewed_at).toLocaleDateString(TAAL_OPMAAK[taal], {
-                  day: 'numeric',
-                  month: 'short',
-                  year: 'numeric',
-                }),
-              )
-            : t.leveranciers.nietGecontroleerd}
-        </span>
-        <div className="flex gap-2">
-          <button type="submit" className="kb-btn kb-btn-primary">
-            {t.algemeen.opslaan}
-          </button>
-          <button formAction={verwijderLeverancier.bind(null, s.id)} className="kb-btn border-negative text-negative">
-            {t.algemeen.verwijderen}
-          </button>
-        </div>
-      </div>
-    </form>
+      </ul>
+    </div>
   );
 }
 
 function NieuweLeverancierFormulier({ t }: { t: Berichten }) {
   return (
     <form action={maakLeverancier} className="kb-card p-4">
-      <div className="kb-section-title mb-2.5">{t.leveranciers.nieuweTitel}</div>
+      <div className="kb-section-title mb-1">{t.leveranciers.nieuweTitel}</div>
+      <p className="mb-2.5 text-[12px] text-muted">{t.leveranciers.nieuweHint}</p>
       <div className="flex flex-wrap items-end gap-3">
-        <div className="min-w-[180px] flex-1">
+        <div className="min-w-[200px] flex-1">
           <label className="kb-label mb-1 block">{t.leveranciers.naam}</label>
           <input name="name" required className="kb-input" placeholder={t.leveranciers.naamPlaceholder} />
         </div>
-        <div className="flex gap-2">
-          {COUNTRIES.map((c) => (
-            <label key={c} className="flex items-center gap-1 text-[12px] text-ink-soft">
-              <input type="checkbox" name={`country_${c}`} className="h-3.5 w-3.5" />
-              {c}
-            </label>
-          ))}
-        </div>
-        <div className="flex gap-2">
-          {SUPPLIER_TYPES.map((tp) => (
-            <label key={tp} className="flex items-center gap-1 text-[12px] text-ink-soft">
-              <input type="checkbox" name={`type_${tp}`} className="h-3.5 w-3.5" />
-              {t.labels.leverancierstype[tp]}
-            </label>
-          ))}
-        </div>
-        <div className="min-w-[140px]">
-          <label className="kb-label mb-1 block">{t.leveranciers.vervoerder}</label>
-          <input name="carrier" className="kb-input" placeholder={t.leveranciers.vervoerderPlaceholderNieuw} />
-        </div>
-        <label className="flex items-center gap-1.5 text-[13px] text-ink-soft">
-          <input type="checkbox" name="tracking_available" className="h-3.5 w-3.5" />
-          {t.leveranciers.tracking}
-        </label>
-        <label className="flex items-center gap-1.5 text-[13px] text-ink-soft">
-          <input type="checkbox" name="tracking_automatic" className="h-3.5 w-3.5" />
-          {t.leveranciers.automatisch}
-        </label>
+        <LandEnTypeVinkjes t={t} />
         <button type="submit" className="kb-btn kb-btn-accent whitespace-nowrap">
           {t.leveranciers.toevoegen}
         </button>

@@ -103,15 +103,32 @@ export const COUNTRIES: Country[] = ['NL', 'BE', 'UK'];
 export type SupplierType = 'fulfilment' | 'dropshipment' | 'installateur';
 export const SUPPLIER_TYPES: SupplierType[] = ['fulfilment', 'dropshipment', 'installateur'];
 
+/** Hoe een onderdeel van het orderproces bij een leverancier loopt. */
+export type AutomationStatus = 'auto' | 'half' | 'manual' | 'nvt';
+export const AUTOMATION_STATUSES: AutomationStatus[] = ['auto', 'half', 'manual', 'nvt'];
+
+/** De vier kolommen van het leveranciersoverzicht, in weergavevolgorde. */
+export type SupplierStep = 'purchase_order' | 'order_confirmation' | 'tracking' | 'stock_sync';
+export const SUPPLIER_STEPS: SupplierStep[] = ['purchase_order', 'order_confirmation', 'tracking', 'stock_sync'];
+
 export type Supplier = {
   id: string;
+  slug: string;
   name: string;
   countries: Country[];
   types: SupplierType[];
   carrier: string | null;
-  tracking_available: boolean;
-  tracking_automatic: boolean;
+  /** Null = nog niet ingevuld. */
+  purchase_order_status: AutomationStatus | null;
+  order_confirmation_status: AutomationStatus | null;
+  tracking_status: AutomationStatus | null;
+  stock_sync_status: AutomationStatus | null;
+  stock_sync_frequency: string | null;
+  /** Korte toelichting, zichtbaar in het overzicht. */
   notes: string | null;
+  /** Uitgebreide uitleg op de detailpagina. */
+  details_markdown: string | null;
+  related_article_slugs: string[];
   reviewed_at: string | null;
   updated_at: string;
 };

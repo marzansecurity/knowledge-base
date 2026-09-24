@@ -14,7 +14,9 @@
     "import:droogloop": "node --env-file=.env.local scripts/importeer.mjs --droogloop",
     "import": "node --env-file=.env.local scripts/importeer.mjs",
     "import:gespreksroutes:droogloop": "node --env-file=.env.local scripts/importeer-gespreksroutes.mjs --droogloop",
-    "import:gespreksroutes": "node --env-file=.env.local scripts/importeer-gespreksroutes.mjs"
+    "import:gespreksroutes": "node --env-file=.env.local scripts/importeer-gespreksroutes.mjs",
+    "import:leveranciers:droogloop": "node --env-file=.env.local scripts/importeer-leveranciers.mjs --droogloop",
+    "import:leveranciers": "node --env-file=.env.local scripts/importeer-leveranciers.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.115.0",
