@@ -1,4 +1,5 @@
-import type { AutomationStatus, Supplier, SupplierStep } from '@/lib/types';
+import type { Taal } from '@/lib/talen';
+import type { AutomationStatus, Region, Supplier, SupplierColumn, SupplierRegion, SupplierStep } from '@/lib/types';
 
 /**
  * Het artikel dat uitlegt wat de kolommen van het leveranciersoverzicht
@@ -8,19 +9,35 @@ import type { AutomationStatus, Supplier, SupplierStep } from '@/lib/types';
 export const UITLEG_ARTIKEL = 'toeleveranciers-wat-gaat-automatisch-en-waar-grijp-je-zelf-in';
 
 /**
- * Waar een kolomkop naartoe linkt. Het anker is de kop in het Nederlandse
- * artikel; in een vertaling komt de lezer bovenaan het artikel uit.
+ * Per kolom: welke kop uit het uitlegartikel in het uitlegvenster komt, en naar
+ * welk artikel "lees het hele artikel" gaat. Het anker is de kop in de
+ * Nederlandse tekst.
  */
-export const UITLEG_PER_KOLOM: Record<SupplierStep | 'carrier', { slug: string; anker?: string }> = {
-  purchase_order: { slug: UITLEG_ARTIKEL, anker: 'inkooporder' },
-  order_confirmation: { slug: UITLEG_ARTIKEL, anker: 'orderbevestiging' },
-  tracking: { slug: UITLEG_ARTIKEL, anker: 'tracking' },
-  stock_sync: { slug: 'voorraadsynchronisatie-en-levertijdlogica', anker: 'hoe-de-voorraadsynchronisatie-werkt' },
-  carrier: { slug: UITLEG_ARTIKEL, anker: 'leverancier-of-vervoerder-haal-dat-niet-door-elkaar' },
+export const UITLEG_PER_KOLOM: Record<SupplierColumn, { anker: string; artikel: string }> = {
+  stock_sync: { anker: 'voorraad-sync', artikel: 'voorraadsynchronisatie-en-levertijdlogica' },
+  purchase_order: { anker: 'inkooporder', artikel: UITLEG_ARTIKEL },
+  order_confirmation: { anker: 'orderbevestiging', artikel: UITLEG_ARTIKEL },
+  carrier: { anker: 'leverancier-of-vervoerder-haal-dat-niet-door-elkaar', artikel: UITLEG_ARTIKEL },
+  tracking: { anker: 'tracking', artikel: UITLEG_ARTIKEL },
 };
 
-export function statusVan(s: Supplier, stap: SupplierStep): AutomationStatus | null {
-  return s[`${stap}_status`];
+/** Landen waaruit een leverancier kan opereren; de namen komen uit Intl, in de taal van de lezer. */
+export const VANUIT_LANDEN = ['NL', 'BE', 'DE', 'GB', 'FR', 'IT', 'AT', 'CH', 'DK', 'SE', 'PL', 'CZ', 'ES', 'CN'];
+
+export function landNaam(code: string, taal: Taal) {
+  try {
+    return new Intl.DisplayNames([taal], { type: 'region' }).of(code) ?? code;
+  } catch {
+    return code;
+  }
+}
+
+export function statusVan(regio: SupplierRegion, stap: SupplierStep): AutomationStatus | null {
+  return regio[`${stap}_status`];
+}
+
+export function regioVan(s: Supplier, regio: Region): SupplierRegion | undefined {
+  return s.regions.find((r) => r.region === regio);
 }
 
 /** Zelfde slug-regels als maakSlug() in beheer/artikelen/acties.ts. */
@@ -60,31 +77,41 @@ const STATUS_TEKST: Record<AutomationStatus, string> = {
   nvt: 'n.v.t.',
 };
 
+const REGIO_TEKST: Record<Region, string> = { nlbe: 'NL/BE', uk: 'UK' };
+
 /**
- * Het overzicht als platte tabel voor de AI-assistent. Deze gegevens stonden
- * eerder als tabel in het uitlegartikel; zonder dit blok zou de assistent ze
- * kwijt zijn.
+ * Het overzicht als platte tabel voor de AI-assistent: één regel per
+ * leverancier per regio, want de werkwijze verschilt per regio.
  */
 export function leveranciersVoorAssistent(leveranciers: Supplier[]): string {
   const cel = (status: AutomationStatus | null) => (status ? STATUS_TEKST[status] : 'nog niet ingevuld');
   const schoon = (tekst: string | null) => (tekst ?? '').replace(/\s*\n\s*/g, ' ').replace(/\|/g, '/');
 
   const regels = [
-    '| Leverancier | Landen | Type | Inkooporder | Orderbevestiging (leverweek) | Tracking | Voorraad-sync | Vervoerder | Toelichting |',
-    '|---|---|---|---|---|---|---|---|---|',
-    ...leveranciers.map((s) =>
-      [
-        s.name,
-        s.countries.length ? s.countries.join('/') : '—',
-        s.types.length ? s.types.join('/') : '—',
-        cel(s.purchase_order_status),
-        cel(s.order_confirmation_status),
-        cel(s.tracking_status),
-        cel(s.stock_sync_status) + (s.stock_sync_frequency ? ` (${schoon(s.stock_sync_frequency)})` : ''),
-        schoon(s.carrier) || '—',
-        [schoon(s.notes), schoon(s.details_markdown)].filter(Boolean).join(' — ') || '—',
-      ].join(' | '),
-    ).map((r) => `| ${r} |`),
+    '| Leverancier | Regio | Vanuit | Type | Voorraad-sync | Inkooporder | Orderbevestiging (leverweek) | Vervoerder | Tracking | Toelichting |',
+    '|---|---|---|---|---|---|---|---|---|---|',
   ];
-  return regels.join('\n');
+  for (const s of leveranciers) {
+    for (const r of s.regions) {
+      const cellen = [
+        s.name + (s.own_stock ? ' (eigen voorraad)' : ''),
+        REGIO_TEKST[r.region],
+        s.based_in ?? '—',
+        r.types.length ? r.types.map((t) => (t === 'fulfilment' ? 'E-fulfilment' : t)).join('/') : '—',
+        cel(r.stock_sync_status) + (r.stock_sync_frequency ? ` (${schoon(r.stock_sync_frequency)})` : ''),
+        cel(r.purchase_order_status),
+        cel(r.order_confirmation_status),
+        schoon(r.carrier) || '—',
+        cel(r.tracking_status),
+        schoon(r.notes) || '—',
+      ];
+      regels.push(`| ${cellen.join(' | ')} |`);
+    }
+  }
+
+  const uitleg = leveranciers
+    .filter((s) => s.details_markdown)
+    .map((s) => `#### ${s.name}\n${s.details_markdown}`);
+
+  return [regels.join('\n'), ...(uitleg.length ? ['Uitleg per leverancier:', ...uitleg] : [])].join('\n\n');
 }

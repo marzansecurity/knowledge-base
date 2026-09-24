@@ -1,5 +1,13 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import type { ArticleDetail, ArticleSummary, Category, Country, Supplier, SupplierType, Tag } from '@/lib/types';
+import {
+  REGIONS,
+  type ArticleDetail,
+  type ArticleSummary,
+  type Category,
+  type Supplier,
+  type SupplierRegion,
+  type Tag,
+} from '@/lib/types';
 import { STANDAARD_TAAL, type Taal } from '@/lib/talen';
 
 /**
@@ -23,24 +31,38 @@ function kiesBesteVertaling<T extends { article_id: string; locale: Taal }>(
   return beste;
 }
 
-/** Haalt leveranciers op, eventueel gefilterd op land (NL/BE/UK) en/of type (fulfilment/dropshipment/installateur). */
-export async function haalLeveranciers(
-  supabase: SupabaseClient,
-  filter: { countries?: Country[]; types?: SupplierType[] } = {},
-): Promise<Supplier[]> {
-  let query = supabase.from('suppliers').select('*').order('name');
-  if (filter.countries?.length) query = query.overlaps('countries', filter.countries);
-  if (filter.types?.length) query = query.overlaps('types', filter.types);
+const LEVERANCIER_VELDEN =
+  'id, slug, name, based_in, own_stock, details_markdown, related_article_slugs, reviewed_at, updated_at, supplier_regions(*)';
 
-  const { data, error } = await query;
+type LeverancierRij = Omit<Supplier, 'regions'> & { supplier_regions: SupplierRegion[] | null };
+
+function naarLeverancier({ supplier_regions, ...rest }: LeverancierRij): Supplier {
+  const regions = [...(supplier_regions ?? [])].sort(
+    (a, b) => REGIONS.indexOf(a.region) - REGIONS.indexOf(b.region),
+  );
+  return { ...rest, regions };
+}
+
+/**
+ * Alle leveranciers met hun regio's. Eigen voorraad (PON) eerst, daarna op
+ * naam — zo staat die in elk overzicht bovenaan.
+ */
+export async function haalLeveranciers(supabase: SupabaseClient): Promise<Supplier[]> {
+  const { data, error } = await supabase.from('suppliers').select(LEVERANCIER_VELDEN).order('name');
   if (error) throw error;
-  return data as Supplier[];
+  return ((data ?? []) as unknown as LeverancierRij[])
+    .map(naarLeverancier)
+    .sort((a, b) => Number(b.own_stock) - Number(a.own_stock) || a.name.localeCompare(b.name));
 }
 
 export async function haalLeverancier(supabase: SupabaseClient, slug: string): Promise<Supplier | null> {
-  const { data, error } = await supabase.from('suppliers').select('*').eq('slug', slug).maybeSingle();
+  const { data, error } = await supabase
+    .from('suppliers')
+    .select(LEVERANCIER_VELDEN)
+    .eq('slug', slug)
+    .maybeSingle();
   if (error) throw error;
-  return data as Supplier | null;
+  return data ? naarLeverancier(data as unknown as LeverancierRij) : null;
 }
 
 /**

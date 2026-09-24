@@ -10,12 +10,22 @@ const OPMAAK: Record<AutomationStatus | 'onbekend', string> = {
 };
 
 /** Statuslabel voor één onderdeel van het orderproces; null = nog niet ingevuld. */
-export function AutomatiseringBadge({ status, t }: { status: AutomationStatus | null; t: Berichten }) {
+export function AutomatiseringBadge({
+  status,
+  t,
+  compact = false,
+}: {
+  status: AutomationStatus | null;
+  t: Berichten;
+  /** Kleinere variant, voor de legenda. */
+  compact?: boolean;
+}) {
   const sleutel = status ?? 'onbekend';
+  const maat = compact ? 'min-w-[44px] px-2 py-0 text-[11px]' : 'min-w-[64px] px-2.5 py-0.5 text-[12px]';
   return (
     <span
       title={t.leveranciers.legenda[sleutel]}
-      className={`inline-flex min-w-[64px] justify-center rounded-full border px-2.5 py-0.5 text-[12px] font-semibold whitespace-nowrap ${OPMAAK[sleutel]}`}
+      className={`inline-flex justify-center rounded-full border font-semibold whitespace-nowrap ${maat} ${OPMAAK[sleutel]}`}
     >
       {t.labels.automatisering[sleutel]}
     </span>

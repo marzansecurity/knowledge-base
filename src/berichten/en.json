@@ -43,8 +43,9 @@
       "UK": "UK"
     },
     "automatisering": { "auto": "Auto", "half": "Partial", "manual": "Manual", "nvt": "N/A", "onbekend": "?" },
+    "regio": { "nlbe": "Netherlands & Belgium", "uk": "United Kingdom" },
     "leverancierstype": {
-      "fulfilment": "Fulfilment",
+      "fulfilment": "E-fulfilment",
       "dropshipment": "Drop shipment",
       "installateur": "Installer"
     },
@@ -165,35 +166,47 @@
   },
   "leveranciers": {
     "titel": "Suppliers",
-    "introTekst": "Per supplier in the Netherlands, Belgium and the UK: what runs automatically and where you need to step in. Click a column heading for an explanation of that step, or a supplier for all details.",
-    "filterLand": "Country",
+    "introTekst": "Per supplier: what runs automatically and where you need to step in. Choose the region at the top. Click ⓘ for an explanation of a column, or a supplier for all details.",
     "filterType": "Type",
     "filterWissen": "Clear",
     "geenResultaten": "No suppliers found for this filter.",
-    "nogGeen": "No suppliers added yet.",
+    "geenInRegio": "No suppliers in {regio} yet.",
     "kolomLeverancier": "Supplier",
-    "kolomLand": "Country",
+    "kolomVanuit": "Based in",
     "kolomType": "Type",
     "vervoerder": "Carrier",
     "onderdeel": {
+      "stock_sync": "Stock sync",
       "purchase_order": "Purchase order",
       "order_confirmation": "Order confirmation",
-      "tracking": "Tracking",
-      "stock_sync": "Stock sync"
+      "tracking": "Tracking"
     },
-    "watIsDit": "What does this mean?",
-    "legendaTitel": "What the statuses mean",
+    "uitlegOpenen": "Explanation: {onderdeel}",
+    "uitlegHeleArtikel": "Read the full article",
+    "uitlegOntbreekt": "No explanation for this yet.",
     "legenda": {
-      "auto": "Runs by itself — you don't need to do anything.",
-      "half": "Partly automatic, or not yet proven reliable — check it.",
+      "auto": "Runs by itself - you don't need to do anything.",
+      "half": "Partly automatic, or not yet proven reliable - check it.",
       "manual": "You have to do this by hand.",
       "nvt": "Not applicable or not needed.",
-      "onbekend": "Not filled in yet — ask before you assume anything."
+      "onbekend": "Not filled in yet - ask before you assume anything."
     },
-    "uitlegLink": "How an order flows and what each step means →",
+    "legendaKort": {
+      "auto": "runs by itself",
+      "half": "check it",
+      "manual": "do it yourself",
+      "nvt": "not needed",
+      "onbekend": "not filled in yet"
+    },
+    "eigenVoorraad": "Own stock",
+    "eigenVoorraadHint": "Our own stock (such as PON): shown at the top of the overview, in its own colour.",
     "vervoerdersTitel": "Supplier or carrier?",
-    "vervoerdersTekst": "Bpost, GLS, DPD, Schenker, Transmission and Schmidt & Gevelberg are carriers, not suppliers. We have no contract with them. If a shipment goes wrong, call the supplier — not the carrier.",
-    "vervoerdersLink": "Read why →",
+    "vervoerdersTekst": "Bpost, GLS, DPD, Schenker, Transmission and Schmidt & Gevelberg are carriers, not suppliers. We have no contract with them. If a shipment goes wrong, call the supplier - not the carrier.",
+    "vanuit": "Operates from",
+    "vanuitOnbekend": "Unknown",
+    "actiefIn": "Active in",
+    "regioActief": "Active in {regio}",
+    "regioUitvinkenHint": "Unticking and saving deletes the data for this region.",
     "frequentie": "Stock sync frequency",
     "frequentiePlaceholder": "e.g. roughly hourly, once a day",
     "vervoerderPlaceholder": "e.g. Transmission, GLS",
@@ -209,11 +222,10 @@
     "laatstGecontroleerd": "Last checked: {datum}",
     "nietGecontroleerd": "Not checked yet",
     "nieuweTitel": "Add a new supplier",
-    "nieuweHint": "After adding, you land on the supplier's page to fill in the statuses.",
+    "nieuweHint": "After adding, you land on the supplier's page to fill in the statuses per region.",
     "naam": "Name",
     "naamPlaceholder": "Supplier name",
     "toevoegen": "+ Add",
-    "landen": "Countries",
     "types": "Type"
   },
   "beheer": {

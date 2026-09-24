@@ -51,7 +51,7 @@ tekst.
 **Per leverancier** of er een voorraadkoppeling is en hoe vaak die synchroniseert, staat in
 het **[leveranciersoverzicht](/nl/leveranciers)**, in de kolom *Voorraad-sync*. Ter
 illustratie: bij Nauta en De Raat is dat ongeveer elk uur, bij Phoenix één keer per dag, en
-Burgwacht heeft geen koppeling nodig omdat de producten nagenoeg altijd op voorraad zijn.
+BurgWachter heeft geen koppeling nodig omdat de producten nagenoeg altijd op voorraad zijn.
 
 ---
 
