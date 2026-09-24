@@ -4,7 +4,7 @@
     "slug": "pon",
     "based_in": "NL",
     "own_stock": true,
-    "details_markdown": "PON is onze 3PL-partner en de enige leverancier met **eigen voorraad**; alle andere leveranciers zijn dropshipment.\n\nEen order met het statuslabel **e-fulfillment** gaat via de API-koppeling automatisch naar PON. PON pickt en verstuurt, en koppelt de track & trace automatisch terug. Ook de voorraad loopt via de koppeling.\n\nJe hoeft hier dus niets zelf te doen - alleen ingrijpen als er iets níét gebeurt wat wel had moeten gebeuren.",
+    "details_markdown": "PON is onze 3PL-partner: hier ligt onze **eigen voorraad**. Wat wij voor NL/BE in grotere aantallen inkopen, bijvoorbeeld een deel van de producten van De Raat, Kruse en Phoenix, ligt hier op voorraad.\n\nEen order met het statuslabel **E-fulfilment** gaat via de API-koppeling automatisch naar PON. PON pickt en verstuurt, en koppelt de track & trace automatisch terug. Ook de voorraad loopt via de koppeling.\n\nJe hoeft hier dus niets zelf te doen - alleen ingrijpen als er iets níét gebeurt wat wel had moeten gebeuren.",
     "related_article_slugs": [],
     "regions": {
       "nlbe": {
@@ -17,7 +17,7 @@
         "order_confirmation_status": "auto",
         "carrier": null,
         "tracking_status": "auto",
-        "notes": "Eigen voorraad (e-fulfillment) - alles loopt via de API-koppeling."
+        "notes": "Eigen voorraad (E-fulfilment) - alles loopt via de API-koppeling."
       }
     }
   },
