@@ -32,7 +32,13 @@ function kiesBesteVertaling<T extends { article_id: string; locale: Taal }>(
 }
 
 const LEVERANCIER_VELDEN =
-  'id, slug, name, based_in, own_stock, details_markdown, related_article_slugs, reviewed_at, updated_at, supplier_regions(*)';
+  'id, slug, name, based_in, own_stock, container_purchase, details_markdown, related_article_slugs, reviewed_at, updated_at, supplier_regions(*)';
+
+/** Eigen voorraad bovenaan, containerinkoop onderaan, de rest daartussen. */
+function volgorde(s: Supplier) {
+  if (s.own_stock) return 0;
+  return s.container_purchase ? 2 : 1;
+}
 
 type LeverancierRij = Omit<Supplier, 'regions'> & { supplier_regions: SupplierRegion[] | null };
 
@@ -44,15 +50,15 @@ function naarLeverancier({ supplier_regions, ...rest }: LeverancierRij): Supplie
 }
 
 /**
- * Alle leveranciers met hun regio's. Eigen voorraad (PON) eerst, daarna op
- * naam — zo staat die in elk overzicht bovenaan.
+ * Alle leveranciers met hun regio's. Eigen voorraad (PON) eerst, containerinkoop
+ * als laatste, daartussen op naam.
  */
 export async function haalLeveranciers(supabase: SupabaseClient): Promise<Supplier[]> {
   const { data, error } = await supabase.from('suppliers').select(LEVERANCIER_VELDEN).order('name');
   if (error) throw error;
   return ((data ?? []) as unknown as LeverancierRij[])
     .map(naarLeverancier)
-    .sort((a, b) => Number(b.own_stock) - Number(a.own_stock) || a.name.localeCompare(b.name));
+    .sort((a, b) => volgorde(a) - volgorde(b) || a.name.localeCompare(b.name));
 }
 
 export async function haalLeverancier(supabase: SupabaseClient, slug: string): Promise<Supplier | null> {

@@ -6,7 +6,7 @@ import { MultiChipFilter } from '@/components/multi-chip-filter';
 import { TaalLink } from '@/components/taal-link';
 import { vereisIngelogd } from '@/lib/auth';
 import { haalLeveranciers } from '@/lib/data';
-import { landNaam, regioVan, statusVan } from '@/lib/leveranciers';
+import { isGemengd, landNaam, regioVan, statusVan } from '@/lib/leveranciers';
 import { haalKolomUitleg } from '@/lib/leveranciers-uitleg';
 import { isTaal, type Taal } from '@/lib/talen';
 import { haalVertalingen, type Berichten } from '@/lib/vertalingen';
@@ -43,6 +43,10 @@ export default async function LeveranciersPagina({
   const leveranciers = inRegio.filter(
     (s) => geselecteerdeTypes.length === 0 || regioVan(s, regio)!.types.some((tp) => geselecteerdeTypes.includes(tp)),
   );
+  // Containerinkoop regelt Martijn zelf; die staat in een eigen blok onderaan.
+  const gewoon = leveranciers.filter((s) => !s.container_purchase);
+  const containers = leveranciers.filter((s) => s.container_purchase);
+  const kolommen = 3 + SUPPLIER_COLUMNS.length;
 
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
@@ -94,12 +98,12 @@ export default async function LeveranciersPagina({
                 </tr>
               </thead>
               <tbody>
-                {leveranciers.map((s) => (
+                {gewoon.map((s) => (
                   <LeverancierRij key={s.id} leverancier={s} gegevens={regioVan(s, regio)!} taal={taal} t={t} />
                 ))}
                 {leveranciers.length === 0 && (
                   <tr>
-                    <td colSpan={3 + SUPPLIER_COLUMNS.length} className="kb-empty">
+                    <td colSpan={kolommen} className="kb-empty">
                       {inRegio.length > 0
                         ? t.leveranciers.geenResultaten
                         : t.leveranciers.geenInRegio.replace('{regio}', t.labels.regio[regio])}
@@ -107,14 +111,25 @@ export default async function LeveranciersPagina({
                   </tr>
                 )}
               </tbody>
+              {containers.length > 0 && (
+                <tbody>
+                  <tr>
+                    <td colSpan={kolommen} className="border-t-[10px] border-page bg-[#f4f5f8] px-4 pt-3 pb-2.5">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="kb-section-title">{t.leveranciers.containerinkoopTitel}</span>
+                        <span className="rounded-full bg-page px-2 py-0.5 text-[11px] font-semibold text-muted">
+                          {containers.length}
+                        </span>
+                      </div>
+                      <p className="mt-0.5 max-w-[760px] text-[12px] text-muted">{t.leveranciers.containerinkoopHint}</p>
+                    </td>
+                  </tr>
+                  {containers.map((s) => (
+                    <LeverancierRij key={s.id} leverancier={s} gegevens={regioVan(s, regio)!} taal={taal} t={t} />
+                  ))}
+                </tbody>
+              )}
             </table>
-          </div>
-        </div>
-
-        <div className="kb-card p-4">
-          <div className="kb-section-title mb-2">{t.leveranciers.vervoerdersTitel}</div>
-          <div className="kb-callout kb-callout-warning my-0">
-            <p>{t.leveranciers.vervoerdersTekst}</p>
           </div>
         </div>
 
@@ -190,8 +205,13 @@ function LeverancierRij({
   taal: Taal;
   t: Berichten;
 }) {
-  // Eigen voorraad (PON) in een eigen tint, zodat die er in één oogopslag uitspringt.
-  const achtergrond = s.own_stock ? 'bg-[#eaf4fb]' : 'bg-white';
+  // Eigen voorraad (PON) in een eigen tint, zodat die er in één oogopslag
+  // uitspringt; containerinkoop grijs en gedimd, want daar hoeft de backoffice
+  // niets mee.
+  const achtergrond = s.own_stock ? 'bg-[#eaf4fb]' : s.container_purchase ? 'bg-[#f4f5f8]' : 'bg-white';
+  // Per cel dimmen, niet de hele rij: een doorzichtige vaste eerste kolom laat
+  // bij horizontaal scrollen de andere kolommen erdoorheen schemeren.
+  const dim = s.container_purchase ? 'opacity-70' : '';
   return (
     <tr className={`group border-b border-line last:border-b-0 ${achtergrond} hover:bg-[#f2f6fa]`}>
       <td
@@ -199,7 +219,7 @@ function LeverancierRij({
           s.own_stock ? 'border-l-4 border-l-navy-mid' : ''
         }`}
       >
-        <TaalLink href={`/leveranciers/${s.slug}`} className="text-[14px] font-semibold text-navy hover:text-orange">
+        <TaalLink href={`/leveranciers/${s.slug}`} className={`text-[14px] font-semibold text-navy hover:text-orange ${dim}`}>
           {s.name}
         </TaalLink>
         {s.own_stock && (
@@ -207,12 +227,13 @@ function LeverancierRij({
             {t.leveranciers.eigenVoorraad}
           </span>
         )}
-        {r.notes && <div className="mt-0.5 max-w-[280px] text-[12px] leading-snug text-muted">{r.notes}</div>}
+
+        {r.notes && <div className={`mt-0.5 max-w-[280px] text-[12px] leading-snug text-muted ${dim}`}>{r.notes}</div>}
       </td>
-      <td className="px-3 py-2.5 align-top whitespace-nowrap text-ink-soft">
+      <td className={`px-3 py-2.5 align-top whitespace-nowrap text-ink-soft ${dim}`}>
         {s.based_in ? landNaam(s.based_in, taal) : <span className="text-muted">?</span>}
       </td>
-      <td className="px-3 py-2.5 align-top text-ink-soft">
+      <td className={`px-3 py-2.5 align-top text-ink-soft ${dim}`}>
         {r.types.length ? (
           <div className="flex flex-col gap-0.5">
             {r.types.map((tp) => (
@@ -227,14 +248,17 @@ function LeverancierRij({
       </td>
       {SUPPLIER_COLUMNS.map((kolom) =>
         kolom === 'carrier' ? (
-          <td key={kolom} className="px-3 py-2.5 align-top text-ink-soft">
+          <td key={kolom} className={`px-3 py-2.5 align-top text-ink-soft ${dim}`}>
             {r.carrier || <span className="text-muted">-</span>}
           </td>
         ) : (
-          <td key={kolom} className="px-3 py-2.5 text-center align-top">
+          <td key={kolom} className={`px-3 py-2.5 text-center align-top ${dim}`}>
             <AutomatiseringBadge status={statusVan(r, kolom)} t={t} />
             {kolom === 'stock_sync' && r.stock_sync_frequency && (
               <div className="mt-1 text-[11px] text-muted">{r.stock_sync_frequency}</div>
+            )}
+            {kolom === 'stock_sync' && isGemengd(r) && (
+              <div className="mt-1 text-[11px] whitespace-nowrap text-navy-mid">{t.leveranciers.efulfilmentViaPon}</div>
             )}
           </td>
         ),

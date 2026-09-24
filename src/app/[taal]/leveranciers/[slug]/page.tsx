@@ -6,7 +6,7 @@ import { KolomKop, RegioVelden, VanuitKeuze } from '@/components/leverancier-vel
 import { TaalLink } from '@/components/taal-link';
 import { vereisIngelogd } from '@/lib/auth';
 import { haalArtikelLinks, haalLeverancier } from '@/lib/data';
-import { landNaam, regioVan, statusVan } from '@/lib/leveranciers';
+import { isGemengd, landNaam, regioVan, statusVan } from '@/lib/leveranciers';
 import { haalKolomUitleg, type KolomUitleg } from '@/lib/leveranciers-uitleg';
 import { ArtikelMarkdown } from '@/lib/markdown';
 import { isTaal, TAAL_OPMAAK, type Taal } from '@/lib/talen';
@@ -49,7 +49,13 @@ export default async function LeverancierPagina({ params }: PageProps<'/[taal]/l
                 {t.leveranciers.eigenVoorraad}
               </span>
             )}
+            {s.container_purchase && (
+              <span className="rounded-full bg-muted px-2.5 py-0.5 text-[11px] font-bold tracking-[0.04em] text-white uppercase">
+                {t.leveranciers.containerinkoop}
+              </span>
+            )}
           </div>
+          {s.container_purchase && <p className="mt-2 text-[13px] text-muted">{t.leveranciers.containerinkoopHint}</p>}
           <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-[13px] text-ink-soft">
             <span>
               <span className="text-muted">{t.leveranciers.vanuit}: </span>
@@ -147,6 +153,9 @@ function RegioBlok({
                 {kolom === 'stock_sync' && r.stock_sync_frequency && (
                   <div className="mt-1.5 text-[12px] text-ink-soft">{r.stock_sync_frequency}</div>
                 )}
+                {kolom === 'stock_sync' && isGemengd(r) && (
+                  <div className="mt-1.5 text-[12px] font-medium text-navy-mid">{t.leveranciers.efulfilmentViaPon}</div>
+                )}
                 <div className="mt-1.5 text-[12px] leading-snug text-muted">
                   {t.leveranciers.legenda[statusVan(r, kolom) ?? 'onbekend']}
                 </div>
@@ -200,6 +209,20 @@ function BewerkFormulier({ leverancier: s, taal, t }: { leverancier: Supplier; t
             <strong className="font-semibold text-navy">{t.leveranciers.eigenVoorraad}</strong>
             {' - '}
             {t.leveranciers.eigenVoorraadHint}
+          </span>
+        </label>
+
+        <label className="flex items-start gap-2 text-[13px] text-ink-soft">
+          <input
+            type="checkbox"
+            name="container_purchase"
+            defaultChecked={s.container_purchase}
+            className="mt-0.5 h-3.5 w-3.5"
+          />
+          <span>
+            <strong className="font-semibold text-navy">{t.leveranciers.containerinkoop}</strong>
+            {' - '}
+            {t.leveranciers.containerinkoopHint}
           </span>
         </label>
 

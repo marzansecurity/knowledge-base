@@ -22,6 +22,9 @@ betekenen en wat je doet bij elke status. In het overzicht open je dezelfde uitl
 - **Nederland & België** en het **Verenigd Koninkrijk** hebben elk een eigen tabblad. Dezelfde
   leverancier kan in de UK anders werken dan in NL/BE — kijk dus altijd in het tabblad van de
   webshop waar de order vandaan komt.
+- Helemaal onderaan staat een apart blok **Containerinkoop**: leveranciers waar we containers
+  bestellen (bulk, via Phoenix: Diplomat en Safewell). Daar is geen tracking en dat regelt
+  Martijn zelf. Als backoffice hoef je daar niets mee.
 
 ---
 
@@ -71,6 +74,11 @@ rechtstreeks de levertijd die Magento aan de klant belooft. Hoe dat precies werk
 - **Manual** — de voorraad wordt met de hand bijgewerkt. Reken er dan niet op dat de getoonde
   levertijd actueel is.
 
+**Dropshipment én E-fulfilment?** Dan loopt de voorraad langs twee wegen. Het deel dat bij PON
+op voorraad ligt (E-fulfilment) wordt automatisch bijgewerkt via PON; de status in het
+overzicht gaat over het dropshipment-deel. Daarom staat er bij zo'n leverancier onder de
+voorraad-sync *E-fulfilment: auto via PON*.
+
 ### Inkooporder
 
 **Wat het is:** het doorzetten van de bestelling naar de toeleverancier.
@@ -113,6 +121,8 @@ ervoor.
   order dus wel of er echt een track & trace is binnengekomen.
 - **Manual** — jij voert de track & trace zelf in. Doe je dat niet, dan blijft de order
   openstaan en hoort de klant niets.
+- **n.v.t.** — er is geen track & trace, bijvoorbeeld bij Gunnebo of Kniggendorf, of de order
+  loopt via PON (E-fulfilment). Beloof de klant dan ook geen track & trace.
 
 ---
 
@@ -158,7 +168,9 @@ Dit kan alleen een redacteur of beheerder.
    het dan op "?" staan**, zodat iedereen ziet dat het nog nagevraagd moet worden in plaats van
    dat er ten onrechte "Auto" staat.
 4. Vink per regio het **type** aan. Een leverancier kan zowel **Dropshipment** als
-   **E-fulfilment** zijn, als een deel van zijn producten bij PON op voorraad ligt.
+   **E-fulfilment** zijn, als een deel van zijn producten bij PON op voorraad ligt. Bestellen we
+   bij deze leverancier containers, vink dan **Containerinkoop** aan; hij komt dan in het aparte
+   blok onderaan het overzicht.
 5. Vul per regio de **frequentie** van de voorraad-sync en de **vervoerder(s)** in, als je die
    weet.
 6. Zet bijzonderheden en uitzonderingen in **Uitleg bij deze leverancier**, en plak onder
@@ -183,21 +195,15 @@ Dit kan alleen een redacteur of beheerder.
 
 ## Nog te controleren door Martijn
 
-1. **Volledigheid.** De lijst met alle leveranciers voor NL, BE en UK moet nog in het
-   overzicht; nu staan alleen de zeven uit de oorspronkelijke tabel erin.
-2. **UK-werkwijze.** Bij De Raat staat de UK-regio klaar, maar alle statussen en de vervoerder
-   staan nog op "?". Hoe werkt De Raat in de UK?
-3. **Phoenix-tracking.** Loopt de recent geautomatiseerde tracking inmiddels stabiel? Dan kan
+1. **UK-werkwijze.** In het tabblad Verenigd Koninkrijk staan alle statussen, types en
+   vervoerders nog op "?". Hoe werken de UK-leveranciers, en hoe werken De Raat, BurgWachter,
+   Gunnebo en Phoenix in de UK?
+2. **Phoenix-tracking.** Loopt de recent geautomatiseerde tracking inmiddels stabiel? Dan kan
    de status van "Half" naar "Auto".
-4. **Gunnebo-voorraadsync.** Werkt die betrouwbaar? In de bron stond dit als onzeker.
-5. **Gunnebo-tracking.** Komt de Bpost-tracking automatisch in Magento, of moet die
-   handmatig ingevoerd worden? Staat nu op "?".
-6. **Gunnebo-inkooporder.** De oude tabel zei "automatisch", maar *Inkooporder plaatsen bij
-   Gunnebo* beschrijft een handmatig inkoopformulier. In het overzicht staat Gunnebo nu op
-   "Manual". Klopt dat?
-7. **Kruse-voorraad.** Is er echt geen voorraadkoppeling, of is die er wel maar onbekend?
-   Staat nu op "?".
-8. **Vanuit.** Bij BurgWachter is nog niet ingevuld vanuit welk land ze opereren.
+3. **Vervoerders in NL/BE.** Nog onbekend bij Anlag, Kniggendorf en Yale, welke pakketdienst
+   Metain gebruikt, en wie de pallets van Kruse vervoert.
+4. **Gunnebo-inkoopformulier.** De link `www.kluisstore.nl/media/po.html` is een voorlopige
+   URL. Wordt die nog definitief?
 
 ---
 

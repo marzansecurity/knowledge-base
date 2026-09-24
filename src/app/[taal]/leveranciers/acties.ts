@@ -99,6 +99,7 @@ export async function bewaarLeverancier(supplierId: string, formData: FormData):
       name: leesNaam(formData),
       based_in: leesVanuit(formData),
       own_stock: formData.get('own_stock') === 'on',
+      container_purchase: formData.get('container_purchase') === 'on',
       details_markdown: tekstOfNull(formData, 'details_markdown'),
       related_article_slugs: leesArtikelSlugs(String(formData.get('related_articles') ?? '')),
       reviewed_at: new Date().toISOString(),
