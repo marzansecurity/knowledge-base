@@ -1,4 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
+import { haalLeveranciers } from '@/lib/data';
+import { leveranciersVoorAssistent, UITLEG_ARTIKEL } from '@/lib/leveranciers';
 import { STANDAARD_TAAL, type Taal } from '@/lib/talen';
 
 export type KennisbankArtikel = {
@@ -60,14 +62,17 @@ export async function bouwKennisbank(
   // artikel de beste. Eén query, dus geen tweede rondje naar de database.
   const talen = taal === STANDAARD_TAAL ? [STANDAARD_TAAL] : [taal, STANDAARD_TAAL];
 
-  const { data, error } = await supabase
-    .from('article_translations')
-    .select(
-      'article_id, locale, slug, title, content_markdown, articles!inner(category_id, status, type, countries, channel, categories(name), article_tags(tags(name)))',
-    )
-    .eq('articles.status', 'published')
-    .in('locale', talen)
-    .order('title');
+  const [{ data, error }, leveranciers] = await Promise.all([
+    supabase
+      .from('article_translations')
+      .select(
+        'article_id, locale, slug, title, content_markdown, articles!inner(category_id, status, type, countries, channel, categories(name), article_tags(tags(name)))',
+      )
+      .eq('articles.status', 'published')
+      .in('locale', talen)
+      .order('title'),
+    haalLeveranciers(supabase),
+  ]);
   if (error) throw error;
 
   const rijen = (data ?? []) as unknown as Rij[];
@@ -134,6 +139,21 @@ export async function bouwKennisbank(
       ]
         .filter((regel): regel is string => regel !== null)
         .join('\n'),
+    );
+  }
+
+  // Het leveranciersoverzicht is geen artikel maar een aparte pagina. De uitleg
+  // van de kolommen staat wél in een artikel; dat is de bron om te citeren.
+  if (leveranciers.length > 0) {
+    const uitleg = [...artikelMap.values()].find((a) => a.slug === UITLEG_ARTIKEL);
+    delen.push(
+      [
+        '### LEVERANCIERSOVERZICHT (pagina "Leveranciers", geen artikel)',
+        'Per toeleverancier: wat gaat automatisch en wat moet de medewerker zelf doen.' +
+          (uitleg ? ` Wat de kolommen betekenen staat in ${uitleg.ref}; citeer dat artikel.` : ''),
+        '',
+        leveranciersVoorAssistent(leveranciers),
+      ].join('\n'),
     );
   }
 

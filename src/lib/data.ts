@@ -37,6 +37,52 @@ export async function haalLeveranciers(
   return data as Supplier[];
 }
 
+export async function haalLeverancier(supabase: SupabaseClient, slug: string): Promise<Supplier | null> {
+  const { data, error } = await supabase.from('suppliers').select('*').eq('slug', slug).maybeSingle();
+  if (error) throw error;
+  return data as Supplier | null;
+}
+
+/**
+ * Titels bij artikel-slugs, in de gevraagde taal met terugval op het Nederlands.
+ * Slugs die niet (meer) bestaan of niet zichtbaar zijn voor deze gebruiker
+ * ontbreken in het resultaat — de aanroeper toont daar dan geen link.
+ */
+export async function haalArtikelLinks(
+  supabase: SupabaseClient,
+  slugs: string[],
+  taal: Taal,
+): Promise<Map<string, { slug: string; title: string }>> {
+  if (slugs.length === 0) return new Map();
+
+  // De meegegeven slugs zijn Nederlands; via het artikel-id vinden we ook de
+  // vertaalde slug, zodat de link in de taal van de lezer uitkomt.
+  const { data: basis, error } = await supabase
+    .from('article_translations')
+    .select('article_id, slug')
+    .eq('locale', STANDAARD_TAAL)
+    .in('slug', slugs);
+  if (error) throw error;
+  if (!basis?.length) return new Map();
+
+  const { data } = await supabase
+    .from('article_translations')
+    .select('article_id, locale, slug, title')
+    .in('article_id', basis.map((b) => b.article_id))
+    .in('locale', talenMetTerugval(taal));
+
+  const beste = kiesBesteVertaling(
+    (data ?? []) as { article_id: string; locale: Taal; slug: string; title: string }[],
+    taal,
+  );
+  const resultaat = new Map<string, { slug: string; title: string }>();
+  for (const b of basis) {
+    const v = beste.get(b.article_id);
+    if (v) resultaat.set(b.slug, { slug: v.slug, title: v.title });
+  }
+  return resultaat;
+}
+
 /** Bouwt de categorieboom op basis van parent_id, in sort_order. */
 export function bouwCategorieboom(categorieen: Category[]) {
   const perOuder = new Map<string | null, Category[]>();
