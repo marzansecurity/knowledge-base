@@ -454,20 +454,6 @@
     }
   },
   {
-    "name": "Oxygen",
-    "slug": "oxygen",
-    "based_in": null,
-    "own_stock": false,
-    "details_markdown": "In Magento heet deze leverancier `oxygen` (veld *Supplier*).",
-    "related_article_slugs": [],
-    "regions": {
-      "nlbe": {
-        "types": [],
-        "notes": "Geen omzet in 2026 - mogelijk gestopt."
-      }
-    }
-  },
-  {
     "name": "Promet",
     "slug": "promet",
     "based_in": null,
