@@ -2,7 +2,8 @@
 
 import { useRef, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArtikelMarkdown, CALLOUT_TYPES, type CalloutType } from '@/lib/markdown';
+import { ArtikelMarkdown } from '@/lib/markdown';
+import { RijkeEditor, type RijkeEditorHandle } from '@/components/rijke-editor';
 import { StatusBadge } from '@/components/status-badge';
 import { useVertalingen } from '@/components/vertaling-provider';
 import { pad } from '@/lib/paden';
@@ -27,12 +28,6 @@ import {
   wijzigStatus,
 } from '@/app/[taal]/beheer/artikelen/acties';
 
-/** De sleutel in t.editor waaronder het label van dit callout-type staat. */
-const CALLOUT_SLEUTEL: Record<CalloutType, 'calloutTip' | 'calloutInfo' | 'calloutWaarschuwing'> = {
-  TIP: 'calloutTip',
-  INFO: 'calloutInfo',
-  WARNING: 'calloutWaarschuwing',
-};
 
 type Revisie = {
   id: string;
@@ -71,7 +66,7 @@ const VOLGENDE_STATUS: Partial<Record<ArticleStatus, Vervolgstap[]>> = {
 export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
   const router = useRouter();
   const { taal, berichten: t } = useVertalingen();
-  const [tab, setTab] = useState<'bewerken' | 'voorbeeld' | 'geschiedenis'>('bewerken');
+  const [tab, setTab] = useState<'bewerken' | 'voorbeeld' | 'broncode' | 'geschiedenis'>('bewerken');
   const [titel, setTitel] = useState(artikel.title);
   const [samenvatting, setSamenvatting] = useState(artikel.summary ?? '');
   const [inhoud, setInhoud] = useState(artikel.content_markdown);
@@ -85,11 +80,9 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
   const [verplicht, setVerplicht] = useState(artikel.required_reading);
   const [melding, setMelding] = useState<string | null>(null);
   const [fout, setFout] = useState<string | null>(null);
-  const [uploadBezig, setUploadBezig] = useState(false);
   const [bezig, startTransitie] = useTransition();
   const wijzignotitieRef = useRef<HTMLInputElement>(null);
-  const inhoudRef = useRef<HTMLTextAreaElement>(null);
-  const bestandInputRef = useRef<HTMLInputElement>(null);
+  const editorRef = useRef<RijkeEditorHandle>(null);
 
   const gewijzigd =
     titel !== artikel.title ||
@@ -102,77 +95,39 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
     padVolgorde !== (artikel.path_order === null ? '' : String(artikel.path_order)) ||
     verplicht !== artikel.required_reading;
 
-  /** Voegt tekst in op de cursorpositie van het tekstvak (of vervangt de selectie). */
-  function voegInBijCursor(tekst: string) {
-    const el = inhoudRef.current;
-    if (!el) {
-      setInhoud((huidig) => `${huidig}\n\n${tekst}\n`);
-      return;
-    }
-    const start = el.selectionStart ?? el.value.length;
-    const eind = el.selectionEnd ?? el.value.length;
-    const nieuw = `${el.value.slice(0, start)}${tekst}${el.value.slice(eind)}`;
-    setInhoud(nieuw);
-    requestAnimationFrame(() => {
-      el.focus();
-      const cursor = start + tekst.length;
-      el.setSelectionRange(cursor, cursor);
-    });
-  }
-
-  function voegCalloutIn(type: CalloutType) {
-    voegInBijCursor(`\n> [!${type}] ${t.editor.calloutPlaceholder}\n\n`);
-  }
-
-  async function uploadEnVoegAfbeeldingIn(bestand: File) {
+  /** Uploadt een afbeelding voor de editor; geeft het pad terug, of null bij een fout. */
+  async function uploadVoorEditor(bestand: File): Promise<string | null> {
     if (!bestand.type.startsWith('image/')) {
       setFout(t.editor.alleenAfbeeldingen);
-      return;
+      return null;
     }
     setFout(null);
-    setUploadBezig(true);
     const formData = new FormData();
     formData.set('bestand', bestand);
     const resultaat = await uploadAfbeelding(formData);
-    setUploadBezig(false);
     if (resultaat.fout || !resultaat.pad) {
       setFout(resultaat.fout ?? t.editor.uploadenMislukt);
-      return;
+      return null;
     }
-    voegInBijCursor(`![${bestand.name}](${resultaat.pad})`);
+    return resultaat.pad;
   }
 
-  function opBestandGekozen(e: React.ChangeEvent<HTMLInputElement>) {
-    const bestand = e.target.files?.[0];
-    e.target.value = '';
-    if (bestand) void uploadEnVoegAfbeeldingIn(bestand);
+  /** Wisselt van tabblad; haalt eerst de laatste wijziging uit de editor op. */
+  function kiesTab(naam: typeof tab) {
+    if (tab === 'bewerken' && editorRef.current) setInhoud(editorRef.current.markdown());
+    setTab(naam);
   }
-
-  function opPlakken(e: React.ClipboardEvent<HTMLTextAreaElement>) {
-    const bestand = Array.from(e.clipboardData.items)
-      .find((item) => item.type.startsWith('image/'))
-      ?.getAsFile();
-    if (bestand) {
-      e.preventDefault();
-      void uploadEnVoegAfbeeldingIn(bestand);
-    }
-  }
-
-  function opSlepen(e: React.DragEvent<HTMLTextAreaElement>) {
-    const bestand = Array.from(e.dataTransfer.files).find((f) => f.type.startsWith('image/'));
-    if (bestand) {
-      e.preventDefault();
-      void uploadEnVoegAfbeeldingIn(bestand);
-    }
-  }
-
   function bewaar() {
     setFout(null);
     setMelding(null);
+    // Staat de editor open, dan de actuele inhoud daaruit, ook als de laatste
+    // toetsaanslag nog niet was doorgegeven.
+    const markdown = tab === 'bewerken' && editorRef.current ? editorRef.current.markdown() : inhoud;
+    if (markdown !== inhoud) setInhoud(markdown);
     const formData = new FormData();
     formData.set('title', titel);
     formData.set('summary', samenvatting);
-    formData.set('content_markdown', inhoud);
+    formData.set('content_markdown', markdown);
     formData.set('category_id', categoryId);
     formData.set('type', type);
     formData.set('channel', kanaal);
@@ -345,10 +300,10 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
 
       <div className="kb-card p-0">
         <div className="flex items-center gap-1 border-b border-line px-4 pt-3">
-          {(['bewerken', 'voorbeeld', 'geschiedenis'] as const).map((naam) => (
+          {(['bewerken', 'voorbeeld', 'broncode', 'geschiedenis'] as const).map((naam) => (
             <button
               key={naam}
-              onClick={() => setTab(naam)}
+              onClick={() => kiesTab(naam)}
               className={`rounded-t-md border border-b-0 px-4 py-2 text-[13px] font-semibold transition-colors ${
                 tab === naam
                   ? 'border-line bg-white text-navy'
@@ -359,7 +314,9 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
                 ? t.editor.tabBewerken
                 : naam === 'voorbeeld'
                   ? t.editor.tabVoorbeeld
-                  : t.editor.tabGeschiedenis.replace('{aantal}', String(revisies.length))}
+                  : naam === 'broncode'
+                    ? t.editor.tabBroncode
+                    : t.editor.tabGeschiedenis.replace('{aantal}', String(revisies.length))}
             </button>
           ))}
         </div>
@@ -367,50 +324,28 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
         <div className="p-5">
           {tab === 'bewerken' && (
             <div className="space-y-2">
-              <div className="flex flex-wrap items-center gap-2">
-                <input
-                  ref={bestandInputRef}
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={opBestandGekozen}
-                />
-                <button
-                  type="button"
-                  onClick={() => bestandInputRef.current?.click()}
-                  disabled={uploadBezig}
-                  className="kb-btn"
-                >
-                  {uploadBezig ? t.editor.uploaden : t.editor.afbeelding}
-                </button>
-                <span className="mx-1 h-5 w-px bg-line" />
-                {CALLOUT_TYPES.map((type) => (
-                  <button
-                    key={type}
-                    type="button"
-                    onClick={() => voegCalloutIn(type)}
-                    className="kb-btn"
-                  >
-                    {t.editor[CALLOUT_SLEUTEL[type]]}
-                  </button>
-                ))}
-              </div>
-
-              <textarea
-                ref={inhoudRef}
-                value={inhoud}
-                onChange={(e) => setInhoud(e.target.value)}
-                onPaste={opPlakken}
-                onDrop={opSlepen}
-                onDragOver={(e) => e.preventDefault()}
-                className="h-[520px] w-full resize-y rounded-md border border-line bg-page p-4 font-mono text-[13px] leading-relaxed text-ink outline-none focus:border-teal focus:bg-white"
-                placeholder={t.editor.inhoudPlaceholder}
-                spellCheck={false}
+              <RijkeEditor
+                ref={editorRef}
+                markdown={inhoud}
+                onChange={setInhoud}
+                uploadAfbeelding={uploadVoorEditor}
               />
               <p className="text-[11px] text-muted">{t.editor.inhoudTip}</p>
             </div>
           )}
 
+          {tab === 'broncode' && (
+            <div className="space-y-2">
+              <textarea
+                value={inhoud}
+                onChange={(e) => setInhoud(e.target.value)}
+                className="h-[520px] w-full resize-y rounded-md border border-line bg-page p-4 font-mono text-[13px] leading-relaxed text-ink outline-none focus:border-teal focus:bg-white"
+                placeholder={t.editor.inhoudPlaceholder}
+                spellCheck={false}
+              />
+              <p className="text-[11px] text-muted">{t.editor.broncodeTip}</p>
+            </div>
+          )}
           {tab === 'voorbeeld' && (
             <div className="min-h-[520px] rounded-md border border-line p-5">
               {inhoud.trim() ? (

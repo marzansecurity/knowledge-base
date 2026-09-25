@@ -139,8 +139,16 @@ body {
     @apply my-3 max-w-full rounded-md border border-line;
   }
   /* Highlight-vakken (callouts), zoals de tip/info/waarschuwing-blokken in Zoho Desk. */
+  /* Blok met het icoon links ervoor, zodat meerdere alinea's onder elkaar staan
+     (met flex kwamen ze naast elkaar te staan). */
   .kb-callout {
-    @apply my-3 flex items-start gap-2 rounded-md border-l-4 px-3.5 py-2.5 text-[14px] not-italic;
+    @apply relative my-3 block rounded-md border-l-4 py-2.5 pr-3.5 pl-10 text-[14px] not-italic;
+  }
+  .kb-callout::before {
+    @apply absolute top-2.5 left-3.5;
+  }
+  .kb-callout > p + p {
+    @apply mt-2;
   }
   .kb-callout-tip {
     @apply border-l-teal bg-[#f0faf6] text-[#1d5c46];
@@ -171,5 +179,51 @@ body {
   }
   .kb-prose td {
     @apply border-b border-line px-2.5 py-1.5 align-top;
+  }
+  .kb-prose u {
+    @apply underline underline-offset-2;
+  }
+
+  /* Afvinklijstjes: in het artikel (GFM) en in de editor. */
+  .kb-prose ul.contains-task-list,
+  .kb-prose ul[data-type='taskList'] {
+    @apply list-none pl-1;
+  }
+  .kb-prose li.task-list-item > input {
+    @apply mr-2 align-middle;
+  }
+  .kb-prose ul[data-type='taskList'] li {
+    @apply flex items-start gap-2;
+  }
+  .kb-prose ul[data-type='taskList'] li > label {
+    @apply mt-[3px] shrink-0;
+  }
+  .kb-prose ul[data-type='taskList'] li > div {
+    @apply flex-1;
+  }
+
+  /* De rich-text editor. */
+  .kb-editor-inhoud {
+    @apply min-h-[480px] px-5 py-3 outline-none;
+  }
+  .kb-editor-inhoud > :first-child {
+    @apply mt-2;
+  }
+  .kb-editor-inhoud img.ProseMirror-selectednode {
+    @apply outline-2 outline-teal;
+  }
+  .kb-editor-inhoud table {
+    @apply table-fixed;
+  }
+  .kb-editor-inhoud td,
+  .kb-editor-inhoud th {
+    @apply relative border border-line;
+  }
+  .kb-editor-inhoud td > p,
+  .kb-editor-inhoud th > p {
+    @apply my-0;
+  }
+  .kb-editor-inhoud .selectedCell::after {
+    @apply pointer-events-none absolute inset-0 bg-teal/15 content-[''];
   }
 }
