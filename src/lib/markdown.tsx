@@ -1,47 +1,59 @@
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import type { Element } from 'hast';
+import ReactMarkdown, { type Components } from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
+import rehypeSanitize, { defaultSchema } from 'rehype-sanitize';
 import rehypeSlug from 'rehype-slug';
+import remarkGfm from 'remark-gfm';
+import { KopieerBlok } from '@/components/kopieer-blok';
+import { KOPIEERBLOK_TAAL, schoonKopieerHtml } from '@/lib/kopieerblok';
+import { remarkCallouts } from '@/lib/markdown-callouts';
 
-export const CALLOUT_TYPES = ['TIP', 'INFO', 'WARNING'] as const;
-export type CalloutType = (typeof CALLOUT_TYPES)[number];
+export { CALLOUT_TYPES, type CalloutType } from '@/lib/markdown-callouts';
 
-const CALLOUT_MARKER = /^\[!(TIP|INFO|WARNING)\]\s*/i;
+/**
+ * Wat er aan HTML in een artikel mag staan. Losse HTML (zoals <u> voor
+ * onderstreept, uit de editor) wordt doorgelaten, maar gefilterd: het schema van
+ * GitHub, plus onderstrepen en de klassen van de gekleurde vakken.
+ */
+const SCHEMA = {
+  ...defaultSchema,
+  tagNames: [...(defaultSchema.tagNames ?? []), 'u'],
+  attributes: {
+    ...defaultSchema.attributes,
+    div: [
+      ...(defaultSchema.attributes?.div ?? []),
+      ['className', 'kb-callout', 'kb-callout-tip', 'kb-callout-info', 'kb-callout-warning'],
+    ],
+  },
+};
 
-/** Zoekt in de mdast-boom naar blockquotes die beginnen met `[!TIP]`/`[!INFO]`/`[!WARNING]`
- *  en zet die om naar een `<div class="kb-callout kb-callout-...">`, zodat ze net als in
- *  Zoho Desk als gekleurd vak met icoon worden getoond. */
-function markeerCallouts(node: any) {
-  if (!node || typeof node !== 'object') return;
-  if (Array.isArray(node.children)) {
-    for (const kind of node.children) markeerCallouts(kind);
-  }
-  if (node.type === 'blockquote') {
-    const eerstePar = node.children?.[0];
-    const eersteText = eerstePar?.type === 'paragraph' ? eerstePar.children?.[0] : null;
-    if (eersteText?.type === 'text') {
-      const match = eersteText.value.match(CALLOUT_MARKER);
-      if (match) {
-        eersteText.value = eersteText.value.slice(match[0].length);
-        const type = match[1].toUpperCase() as CalloutType;
-        node.data = node.data ?? {};
-        node.data.hName = 'div';
-        node.data.hProperties = { className: `kb-callout kb-callout-${type.toLowerCase()}` };
-      }
+const KOPIEERBLOK_KLASSE = `language-${KOPIEERBLOK_TAAL}`;
+
+/** Een ```html-kopie-blok wordt geen codeblok maar een kopieerblok met knop. */
+const COMPONENTEN: Components = {
+  pre({ node, children, ...rest }) {
+    const code = node?.children[0] as Element | undefined;
+    const klassen = code?.properties?.className;
+    if (code?.tagName === 'code' && Array.isArray(klassen) && klassen.includes(KOPIEERBLOK_KLASSE)) {
+      const tekst = code.children.map((k) => (k.type === 'text' ? k.value : '')).join('');
+      return <KopieerBlok html={schoonKopieerHtml(tekst)} />;
     }
-  }
-}
-
-function remarkCallouts() {
-  return (tree: unknown) => {
-    markeerCallouts(tree);
-  };
-}
+    return <pre {...rest}>{children}</pre>;
+  },
+};
 
 /** Rendert artikel-Markdown met dezelfde opmaak als de rest van de app. */
 export function ArtikelMarkdown({ children }: { children: string }) {
   return (
     <div className="kb-prose">
-      <ReactMarkdown remarkPlugins={[remarkGfm, remarkCallouts]} rehypePlugins={[rehypeSlug]}>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm, remarkCallouts]}
+        // Eerst de losse HTML inlezen, dan filteren, en pas daarna de koppen een
+        // id geven: anders zet de filter er "user-content-" voor en werken de
+        // ankerlinks van de inhoudsopgave niet meer.
+        rehypePlugins={[rehypeRaw, [rehypeSanitize, SCHEMA], rehypeSlug]}
+        components={COMPONENTEN}
+      >
         {children}
       </ReactMarkdown>
     </div>
