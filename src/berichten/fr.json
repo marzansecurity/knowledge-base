@@ -423,7 +423,9 @@
     "kopieerblokBewerken": "Modifier",
     "kopieerblokVerwijderen": "Supprimer",
     "kopieerblokLabel": "📋 Bloc à copier - les collègues le copient avec sa mise en forme",
-    "logoWaarschuwing": "Attention : une image doit se trouver à une adresse publique (p. ex. kluisshop.be). Les images de la base de connaissances ou d'un système protégé ne sont pas visibles pour le destinataire de l'e-mail."
+    "logoWaarschuwing": "Attention : une image doit se trouver à une adresse publique (p. ex. kluisshop.be). Les images de la base de connaissances ou d'un système protégé ne sont pas visibles pour le destinataire de l'e-mail.",
+    "nietOpgeslagen": "Non enregistré",
+    "onopgeslagenWeggaan": "Vous avez des modifications non enregistrées. Si vous quittez maintenant, elles seront perdues. Quitter quand même ?"
   },
   "vertaling": {
     "terugvalMelding": "Cet article n'a pas encore été traduit. Vous lisez la version néerlandaise.",
