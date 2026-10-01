@@ -479,7 +479,12 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
               disabled={bezig}
               className={`kb-btn ${optie.klasse}`}
             >
-              {t.editor[optie.sleutel]}
+              {/* Publiceren slaat onopgeslagen wijzigingen eerst op (zie status()); laat dat ook zien. */}
+              {gewijzigd && optie.naar === 'published'
+                ? optie.sleutel === 'opnieuwPubliceren'
+                  ? t.editor.opslaanEnOpnieuwPubliceren
+                  : t.editor.opslaanEnPubliceren
+                : t.editor[optie.sleutel]}
             </button>
           ))}
           {artikel.status !== 'archived' && (

@@ -425,7 +425,9 @@
     "kopieerblokLabel": "📋 Copy block - colleagues copy this with formatting",
     "logoWaarschuwing": "Note: an image must be at a public address (e.g. kluisshop.be). Images from the knowledge base or from a protected system are not visible to the recipient of the email.",
     "nietOpgeslagen": "Not saved",
-    "onopgeslagenWeggaan": "You have changes that have not been saved. If you leave now, they will be lost. Leave anyway?"
+    "onopgeslagenWeggaan": "You have changes that have not been saved. If you leave now, they will be lost. Leave anyway?",
+    "opslaanEnPubliceren": "Save and publish",
+    "opslaanEnOpnieuwPubliceren": "Save and republish"
   },
   "vertaling": {
     "terugvalMelding": "This article has not been translated yet. You are reading the Dutch version.",
