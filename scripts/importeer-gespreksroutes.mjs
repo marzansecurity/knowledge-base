@@ -23,9 +23,18 @@
  * gedupliceerd. De nl-rij in article_translations wordt door de databasetrigger
  * `articles_spiegel_vertaling` bijgewerkt; dit script raakt die tabel niet aan.
  *
- *   node --env-file=.env.local scripts/importeer-gespreksroutes.mjs [--droogloop]
+ * Bewerkingen in de app gaan voor. In import/importstatus.json staat per artikel
+ * een vingerafdruk van wat er laatst is geïmporteerd. Wijkt de database daarvan
+ * af, dan is het artikel in de app bewerkt en wordt het overgeslagen — anders
+ * zou een import die bewerkingen ongemerkt terugdraaien. Dan kun je kiezen:
+ *
+ *   --haal-op      de app-versie naar het bestand halen (tekst en samenvatting)
+ *   --overschrijf  toch de bestandsversie importeren; de app-bewerking gaat verloren
+ *
+ *   node --env-file=.env.local scripts/importeer-gespreksroutes.mjs [--droogloop] [--haal-op | --overschrijf]
  */
-import { readdir, readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { createClient } from '@supabase/supabase-js';
 
@@ -46,6 +55,41 @@ const KANALEN = ['klantcontact', 'backoffice', 'technisch', 'alle'];
 const LANDEN = ['NL', 'BE', 'UK'];
 
 const DROOGLOOP = process.argv.includes('--droogloop');
+const HAAL_OP = process.argv.includes('--haal-op');
+const OVERSCHRIJF = process.argv.includes('--overschrijf');
+if (HAAL_OP && OVERSCHRIJF) {
+  console.error('Kies --haal-op óf --overschrijf, niet allebei.');
+  process.exit(1);
+}
+
+const STATUS_PAD = path.join(process.cwd(), 'import', 'importstatus.json');
+
+/**
+ * Vingerafdruk van de velden die dit script schrijft. Verandert er in de app
+ * iets aan een van deze velden, dan verandert de vingerafdruk.
+ */
+function vingerafdruk(rij) {
+  const tekst = (rij.content_markdown ?? '').replace(/\r\n/g, '\n').trim();
+  const waarden = [
+    rij.title ?? '',
+    rij.summary ?? '',
+    tekst,
+    rij.category_id ?? null,
+    rij.type ?? null,
+    rij.channel ?? null,
+    [...(rij.countries ?? [])].sort().join(','),
+    rij.path_order ?? null,
+    Boolean(rij.required_reading),
+  ];
+  return createHash('sha256').update(JSON.stringify(waarden)).digest('hex').slice(0, 16);
+}
+
+let importstatus = {};
+try {
+  importstatus = JSON.parse(await readFile(STATUS_PAD, 'utf8'));
+} catch {
+  // Nog geen statusbestand: wordt bij deze run aangemaakt.
+}
 const STANDAARD_EIGENAAR = process.env.IMPORT_EIGENAAR?.trim() || null;
 
 const supabase = createClient(
@@ -177,7 +221,7 @@ for (const { map, standaard } of MAPPEN) {
             `bekend zijn: ${[...profielIdPerNaam.keys()].join(', ')}`,
         );
       }
-      artikelen.push({ bestand, ...artikel, slug: maakSlug(artikel.titel) });
+      artikelen.push({ bestand, map, ...artikel, slug: maakSlug(artikel.titel) });
     } catch (fout) {
       console.error(`  FOUT  ${bestand}: ${fout.message}`);
       process.exitCode = 1;
@@ -215,27 +259,16 @@ if (nieuweTags.length) console.log(`nieuwe tags: ${nieuweTags.join(', ')}\n`);
 
 let nieuw = 0;
 let bijgewerkt = 0;
+let ongewijzigd = 0;
+let overgeslagen = 0;
+let opgehaald = 0;
 
 for (const artikel of artikelen) {
   const { data: bestaand } = await supabase
     .from('articles')
-    .select('id, owner_id')
+    .select('id, owner_id, title, summary, content_markdown, category_id, type, channel, countries, path_order, required_reading')
     .eq('slug', artikel.slug)
     .maybeSingle();
-
-  const label = bestaand ? 'bijwerken' : 'nieuw    ';
-  // Bij bijwerken alleen de eigenaar tonen als die daadwerkelijk wordt gezet.
-  const toontEigenaar = !bestaand || artikel.eigenaarUitKop || !bestaand.owner_id;
-  console.log(
-    `  ${label}  [${artikel.type}] ${artikel.slug}` +
-      (toontEigenaar ? `  → ${artikel.eigenaar}` : ''),
-  );
-
-  if (DROOGLOOP) {
-    if (bestaand) bijgewerkt += 1;
-    else nieuw += 1;
-    continue;
-  }
 
   const velden = {
     slug: artikel.slug,
@@ -250,6 +283,54 @@ for (const artikel of artikelen) {
     required_reading: artikel.verplicht,
     source: 'handmatig',
   };
+
+  if (bestaand) {
+    const inDatabase = vingerafdruk(bestaand);
+    const laatstGeimporteerd = importstatus[artikel.slug];
+    // Zonder eerdere vingerafdruk weten we niet wat nieuwer is: dan telt elk
+    // verschil met het bestand als een bewerking in de app, en slaan we het over.
+    const inAppBewerkt = laatstGeimporteerd ? inDatabase !== laatstGeimporteerd : inDatabase !== vingerafdruk(velden);
+
+    if (inAppBewerkt && !OVERSCHRIJF) {
+      if (HAAL_OP) {
+        console.log(`  ophalen    ${artikel.slug}  ← app-versie naar ${path.basename(artikel.map)}/${artikel.bestand}`);
+        opgehaald += 1;
+        if (!DROOGLOOP) {
+          const bestandspad = path.join(artikel.map, artikel.bestand);
+          const ruw = (await readFile(bestandspad, 'utf8')).replace(/\r\n/g, '\n');
+          const kop = ruw.match(/^---\n[\s\S]*?\n---\n/)[0];
+          const samenvatting = (bestaand.summary ?? '').replace(/\s*\n\s*/g, ' ').trim();
+          const nieuweKop = samenvatting ? kop.replace(/^samenvatting:.*$/m, `samenvatting: ${samenvatting}`) : kop;
+          await writeFile(bestandspad, `${nieuweKop}\n${(bestaand.content_markdown ?? '').replace(/\r\n/g, '\n').trim()}\n`, 'utf8');
+          importstatus[artikel.slug] = inDatabase;
+        }
+      } else {
+        console.log(`  OVERGESLAGEN ${artikel.slug}  (in de app bewerkt sinds de laatste import)`);
+        overgeslagen += 1;
+      }
+      continue;
+    }
+
+    if (!inAppBewerkt && inDatabase === vingerafdruk(velden)) {
+      ongewijzigd += 1;
+      if (!DROOGLOOP) importstatus[artikel.slug] = inDatabase;
+      continue;
+    }
+  }
+
+  const label = bestaand ? (OVERSCHRIJF ? 'overschrijf' : 'bijwerken') : 'nieuw    ';
+  // Bij bijwerken alleen de eigenaar tonen als die daadwerkelijk wordt gezet.
+  const toontEigenaar = !bestaand || artikel.eigenaarUitKop || !bestaand.owner_id;
+  console.log(
+    `  ${label}  [${artikel.type}] ${artikel.slug}` +
+      (toontEigenaar ? `  → ${artikel.eigenaar}` : ''),
+  );
+
+  if (DROOGLOOP) {
+    if (bestaand) bijgewerkt += 1;
+    else nieuw += 1;
+    continue;
+  }
 
   const eigenaarId = profielIdPerNaam.get(artikel.eigenaar);
 
@@ -285,9 +366,25 @@ for (const artikel of artikelen) {
       .upsert(tagIds.map((tag_id) => ({ article_id: artikelId, tag_id })));
     if (error) throw error;
   }
+
+  importstatus[artikel.slug] = vingerafdruk(velden);
+}
+
+if (!DROOGLOOP) {
+  const gesorteerd = Object.fromEntries(Object.entries(importstatus).sort(([a], [b]) => a.localeCompare(b)));
+  await writeFile(STATUS_PAD, `${JSON.stringify(gesorteerd, null, 2)}\n`, 'utf8');
 }
 
 console.log(
-  `\n${DROOGLOOP ? 'Droogloop: ' : ''}${nieuw} nieuw, ${bijgewerkt} bijgewerkt.` +
+  `\n${DROOGLOOP ? 'Droogloop: ' : ''}${nieuw} nieuw, ${bijgewerkt} bijgewerkt, ${ongewijzigd} ongewijzigd` +
+    (opgehaald ? `, ${opgehaald} opgehaald uit de app` : '') +
+    (overgeslagen ? `, ${overgeslagen} OVERGESLAGEN` : '') +
+    '.' +
     `${DROOGLOOP ? ' Niets weggeschreven.' : ' Nieuwe artikelen staan op concept; bestaande houden hun status.'}\n`,
 );
+if (overgeslagen) {
+  console.log(
+    'Overgeslagen artikelen zijn in de app bewerkt. Draai met --haal-op om die versie naar de bestanden te halen,\n' +
+      'of met --overschrijf om toch de bestandsversie te importeren (de app-bewerking gaat dan verloren).\n',
+  );
+}

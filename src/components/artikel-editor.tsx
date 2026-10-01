@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useTransition } from 'react';
+import { useEffect, useRef, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArtikelMarkdown } from '@/lib/markdown';
 import { RijkeEditor, type RijkeEditorHandle } from '@/components/rijke-editor';
@@ -84,16 +84,67 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
   const wijzignotitieRef = useRef<HTMLInputElement>(null);
   const editorRef = useRef<RijkeEditorHandle>(null);
 
-  const gewijzigd =
-    titel !== artikel.title ||
-    inhoud !== artikel.content_markdown ||
-    samenvatting !== (artikel.summary ?? '') ||
-    categoryId !== (artikel.category_id ?? '') ||
-    type !== artikel.type ||
-    kanaal !== artikel.channel ||
-    landen.join(',') !== (artikel.countries ?? []).join(',') ||
-    padVolgorde !== (artikel.path_order === null ? '' : String(artikel.path_order)) ||
-    verplicht !== artikel.required_reading;
+  /** Wijkt iets af van wat er is opgeslagen? `markdown` is de actuele inhoud. */
+  function isGewijzigd(markdown: string) {
+    return (
+      titel !== artikel.title ||
+      markdown !== artikel.content_markdown ||
+      samenvatting !== (artikel.summary ?? '') ||
+      categoryId !== (artikel.category_id ?? '') ||
+      type !== artikel.type ||
+      kanaal !== artikel.channel ||
+      landen.join(',') !== (artikel.countries ?? []).join(',') ||
+      padVolgorde !== (artikel.path_order === null ? '' : String(artikel.path_order)) ||
+      verplicht !== artikel.required_reading
+    );
+  }
+  const gewijzigd = isGewijzigd(inhoud);
+
+  /** De actuele inhoud, ook als de laatste toetsaanslag in de editor nog niet was doorgegeven. */
+  function actueleInhoud() {
+    const markdown = tab === 'bewerken' && editorRef.current ? editorRef.current.markdown() : inhoud;
+    if (markdown !== inhoud) setInhoud(markdown);
+    return markdown;
+  }
+
+  // Waarschuwen bij weggaan met onopgeslagen wijzigingen: bij sluiten of
+  // herladen van het tabblad (beforeunload), en bij een klik op een link binnen
+  // de kennisbank, want die navigeert zonder dat de pagina ontlaadt.
+  const onopgeslagenRef = useRef(false);
+  useEffect(() => {
+    onopgeslagenRef.current = gewijzigd;
+  });
+  useEffect(() => {
+    const heeftOnopgeslagen = () => onopgeslagenRef.current || (editorRef.current?.wachtend() ?? false);
+
+    const voorSluiten = (e: BeforeUnloadEvent) => {
+      if (!heeftOnopgeslagen()) return;
+      e.preventDefault();
+      e.returnValue = '';
+    };
+
+    const voorKlik = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const link = (e.target as Element | null)?.closest?.('a[href]') as HTMLAnchorElement | null;
+      if (!link || link.target === '_blank' || link.hasAttribute('download')) return;
+      const doel = new URL(link.href, window.location.href);
+      // Een andere site ontlaadt de pagina wél; daar waarschuwt beforeunload al.
+      if (doel.origin !== window.location.origin) return;
+      if (doel.pathname === window.location.pathname && doel.search === window.location.search) return;
+      if (!heeftOnopgeslagen()) return;
+      if (!window.confirm(t.editor.onopgeslagenWeggaan)) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+
+    window.addEventListener('beforeunload', voorSluiten);
+    document.addEventListener('click', voorKlik, true);
+    return () => {
+      window.removeEventListener('beforeunload', voorSluiten);
+      document.removeEventListener('click', voorKlik, true);
+    };
+  }, [t]);
 
   /** Uploadt een afbeelding voor de editor; geeft het pad terug, of null bij een fout. */
   async function uploadVoorEditor(bestand: File): Promise<string | null> {
@@ -114,16 +165,12 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
 
   /** Wisselt van tabblad; haalt eerst de laatste wijziging uit de editor op. */
   function kiesTab(naam: typeof tab) {
-    if (tab === 'bewerken' && editorRef.current) setInhoud(editorRef.current.markdown());
+    actueleInhoud();
     setTab(naam);
   }
-  function bewaar() {
-    setFout(null);
-    setMelding(null);
-    // Staat de editor open, dan de actuele inhoud daaruit, ook als de laatste
-    // toetsaanslag nog niet was doorgegeven.
-    const markdown = tab === 'bewerken' && editorRef.current ? editorRef.current.markdown() : inhoud;
-    if (markdown !== inhoud) setInhoud(markdown);
+
+  /** Slaat alles op; geeft true terug als dat gelukt is. */
+  async function slaOp(markdown: string): Promise<boolean> {
     const formData = new FormData();
     formData.set('title', titel);
     formData.set('summary', samenvatting);
@@ -136,32 +183,55 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
     if (verplicht) formData.set('required_reading', 'on');
     formData.set('change_note', wijzignotitieRef.current?.value ?? '');
 
+    const resultaat = await bewaarArtikel(artikel.id, formData);
+    if (resultaat.fout) {
+      setFout(resultaat.fout);
+      return false;
+    }
+    if (wijzignotitieRef.current) wijzignotitieRef.current.value = '';
+    return true;
+  }
+
+  function bewaar() {
+    setFout(null);
+    setMelding(null);
+    const markdown = actueleInhoud();
     startTransitie(async () => {
-      const resultaat = await bewaarArtikel(artikel.id, formData);
-      if (resultaat.fout) setFout(resultaat.fout);
-      else {
+      if (await slaOp(markdown)) {
         setMelding(t.editor.opgeslagen);
-        if (wijzignotitieRef.current) wijzignotitieRef.current.value = '';
         router.refresh();
       }
     });
   }
 
+  // Publiceren of een andere statuswijziging slaat zelf niets op. Staan er nog
+  // wijzigingen open, dan eerst opslaan — anders gaan ze verloren (30-09 gebeurd).
   function status(naar: ArticleStatus) {
+    setFout(null);
+    setMelding(null);
+    const markdown = actueleInhoud();
     startTransitie(async () => {
+      const eerstOpgeslagen = isGewijzigd(markdown);
+      if (eerstOpgeslagen && !(await slaOp(markdown))) return;
       const resultaat = await wijzigStatus(artikel.id, naar);
       if (resultaat.fout) setFout(resultaat.fout);
       else {
-        setMelding(naar === 'published' ? t.editor.gepubliceerd : t.editor.statusBijgewerkt);
+        const gedaan = naar === 'published' ? t.editor.gepubliceerd : t.editor.statusBijgewerkt;
+        setMelding(eerstOpgeslagen ? `${t.editor.opgeslagen} ${gedaan}` : gedaan);
         router.refresh();
       }
     });
   }
 
   function markeerControle() {
+    setFout(null);
+    setMelding(null);
+    const markdown = actueleInhoud();
     startTransitie(async () => {
+      const eerstOpgeslagen = isGewijzigd(markdown);
+      if (eerstOpgeslagen && !(await slaOp(markdown))) return;
       await markeerGecontroleerd(artikel.id);
-      setMelding(t.editor.gecontroleerdMelding);
+      setMelding(eerstOpgeslagen ? `${t.editor.opgeslagen} ${t.editor.gecontroleerdMelding}` : t.editor.gecontroleerdMelding);
       router.refresh();
     });
   }
@@ -393,6 +463,9 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
           <button onClick={bewaar} disabled={bezig || !gewijzigd} className="kb-btn kb-btn-primary">
             {bezig ? t.algemeen.bezig : t.algemeen.opslaan}
           </button>
+          {gewijzigd && !bezig && (
+            <span className="text-[12px] font-semibold text-amber">● {t.editor.nietOpgeslagen}</span>
+          )}
           <button onClick={markeerControle} disabled={bezig} className="kb-btn">
             {t.editor.markeerGecontroleerd}
           </button>

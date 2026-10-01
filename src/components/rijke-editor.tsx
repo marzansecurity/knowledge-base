@@ -22,6 +22,8 @@ import type { Berichten } from '@/lib/vertalingen';
 export type RijkeEditorHandle = {
   /** De actuele inhoud als Markdown, ook als de laatste wijziging nog niet is doorgegeven. */
   markdown: () => string;
+  /** True als er een wijziging is die nog niet via onChange is doorgegeven. */
+  wachtend: () => boolean;
 };
 
 const CALLOUT_SLEUTEL: Record<CalloutType, 'calloutTip' | 'calloutInfo' | 'calloutWaarschuwing'> = {
@@ -133,6 +135,7 @@ export function RijkeEditor({
       doorgeven();
       return editor ? htmlNaarMarkdown(editor.getHTML()) : markdown;
     },
+    wachtend: () => laatsteHtml.current !== null,
   }));
 
   // Het kopieerblok in de editor vraagt via een event om het invoegvenster.

@@ -423,7 +423,9 @@
     "kopieerblokBewerken": "Bewerken",
     "kopieerblokVerwijderen": "Verwijderen",
     "kopieerblokLabel": "📋 Kopieerblok - medewerkers kopiëren dit met opmaak",
-    "logoWaarschuwing": "Let op: een afbeelding moet op een openbaar adres staan (bv. kluisshop.be). Afbeeldingen uit de kennisbank of uit een afgeschermd systeem ziet de ontvanger van de mail niet."
+    "logoWaarschuwing": "Let op: een afbeelding moet op een openbaar adres staan (bv. kluisshop.be). Afbeeldingen uit de kennisbank of uit een afgeschermd systeem ziet de ontvanger van de mail niet.",
+    "nietOpgeslagen": "Niet opgeslagen",
+    "onopgeslagenWeggaan": "Je hebt wijzigingen die nog niet zijn opgeslagen. Als je nu weggaat, ben je ze kwijt. Toch weggaan?"
   },
   "vertaling": {
     "terugvalMelding": "Dit artikel is nog niet vertaald. Je leest de Nederlandse versie.",
