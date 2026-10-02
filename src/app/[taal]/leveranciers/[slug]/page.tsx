@@ -6,7 +6,7 @@ import { KolomKop, RegioVelden, VanuitKeuze } from '@/components/leverancier-vel
 import { TaalLink } from '@/components/taal-link';
 import { vereisIngelogd } from '@/lib/auth';
 import { haalArtikelLinks, haalLeverancier } from '@/lib/data';
-import { isGemengd, landNaam, regioVan, statusVan } from '@/lib/leveranciers';
+import { landNaam, regioVan, statusVan } from '@/lib/leveranciers';
 import { haalKolomUitleg, type KolomUitleg } from '@/lib/leveranciers-uitleg';
 import { ArtikelMarkdown } from '@/lib/markdown';
 import { isTaal, TAAL_OPMAAK, type Taal } from '@/lib/talen';
@@ -153,9 +153,7 @@ function RegioBlok({
                 {kolom === 'stock_sync' && r.stock_sync_frequency && (
                   <div className="mt-1.5 text-[12px] text-ink-soft">{r.stock_sync_frequency}</div>
                 )}
-                {kolom === 'stock_sync' && isGemengd(r) && (
-                  <div className="mt-1.5 text-[12px] font-medium text-navy-mid">{t.leveranciers.efulfilmentViaPon}</div>
-                )}
+
                 <div className="mt-1.5 text-[12px] leading-snug text-muted">
                   {t.leveranciers.legenda[statusVan(r, kolom) ?? 'onbekend']}
                 </div>

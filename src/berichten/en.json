@@ -216,7 +216,6 @@
     "containerinkoop": "Container purchasing",
     "containerinkoopTitel": "Container purchasing",
     "containerinkoopHint": "We order containers here (bulk, via Phoenix). There is no tracking and Martijn handles this himself: the back office does not need to do anything here.",
-    "efulfilmentViaPon": "E-fulfilment: auto via PON",
     "vanuit": "Operates from",
     "vanuitOnbekend": "Unknown",
     "actiefIn": "Active in",
@@ -241,7 +240,9 @@
     "naam": "Name",
     "naamPlaceholder": "Supplier name",
     "toevoegen": "+ Add",
-    "types": "Type"
+    "types": "Type",
+    "kolomToelichting": "Notes",
+    "ookViaPon": "Also via PON:"
   },
   "beheer": {
     "overzicht": {

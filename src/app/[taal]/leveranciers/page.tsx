@@ -6,7 +6,7 @@ import { MultiChipFilter } from '@/components/multi-chip-filter';
 import { TaalLink } from '@/components/taal-link';
 import { vereisIngelogd } from '@/lib/auth';
 import { haalLeveranciers } from '@/lib/data';
-import { isGemengd, landNaam, regioVan, statusVan } from '@/lib/leveranciers';
+import { isVolledigViaPon, landNaam, regioVan, statusVan } from '@/lib/leveranciers';
 import { haalKolomUitleg } from '@/lib/leveranciers-uitleg';
 import { isTaal, type Taal } from '@/lib/talen';
 import { haalVertalingen, type Berichten } from '@/lib/vertalingen';
@@ -46,7 +46,11 @@ export default async function LeveranciersPagina({
   // Containerinkoop regelt Martijn zelf; die staat in een eigen blok onderaan.
   const gewoon = leveranciers.filter((s) => !s.container_purchase);
   const containers = leveranciers.filter((s) => s.container_purchase);
-  const kolommen = 3 + SUPPLIER_COLUMNS.length;
+  // Leveranciers die volledig via PON lopen, staan niet als eigen rij maar bij PON.
+  const eigenVoorraad = gewoon.find((s) => s.own_stock);
+  const viaPon = eigenVoorraad ? gewoon.filter((s) => isVolledigViaPon(s, regioVan(s, regio)!)) : [];
+  const rijen = gewoon.filter((s) => !viaPon.includes(s));
+  const kolommen = 4 + SUPPLIER_COLUMNS.length;
 
   return (
     <KbShell naam={profiel?.display_name ?? undefined} rol={profiel?.role}>
@@ -78,7 +82,7 @@ export default async function LeveranciersPagina({
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[980px] border-collapse text-[13px]">
+            <table className="w-full min-w-[1060px] border-collapse text-[13px]">
               <thead>
                 <tr className="border-b border-line bg-page text-left">
                   <th className="sticky left-0 z-10 bg-page px-4 py-2.5">
@@ -95,11 +99,21 @@ export default async function LeveranciersPagina({
                       <KolomKop kolom={kolom} uitleg={uitleg[kolom]} t={t} />
                     </th>
                   ))}
+                  <th className="px-3 py-2.5">
+                    <span className="kb-label">{t.leveranciers.kolomToelichting}</span>
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {gewoon.map((s) => (
-                  <LeverancierRij key={s.id} leverancier={s} gegevens={regioVan(s, regio)!} taal={taal} t={t} />
+                {rijen.map((s) => (
+                  <LeverancierRij
+                    key={s.id}
+                    leverancier={s}
+                    gegevens={regioVan(s, regio)!}
+                    viaPon={s === eigenVoorraad ? viaPon : undefined}
+                    taal={taal}
+                    t={t}
+                  />
                 ))}
                 {leveranciers.length === 0 && (
                   <tr>
@@ -197,76 +211,78 @@ function Legenda({ t }: { t: Berichten }) {
 function LeverancierRij({
   leverancier: s,
   gegevens: r,
+  viaPon,
   taal,
   t,
 }: {
   leverancier: Supplier;
   gegevens: SupplierRegion;
+  /** Alleen bij PON: de leveranciers die volledig via PON lopen. */
+  viaPon?: Supplier[];
   taal: Taal;
   t: Berichten;
 }) {
   // Eigen voorraad (PON) in een eigen tint, zodat die er in één oogopslag
-  // uitspringt; containerinkoop grijs en gedimd, want daar hoeft de backoffice
-  // niets mee.
-  const achtergrond = s.own_stock ? 'bg-[#eaf4fb]' : s.container_purchase ? 'bg-[#f4f5f8]' : 'bg-white';
-  // Per cel dimmen, niet de hele rij: een doorzichtige vaste eerste kolom laat
-  // bij horizontaal scrollen de andere kolommen erdoorheen schemeren.
-  const dim = s.container_purchase ? 'opacity-70' : '';
+  // uitspringt; containerinkoop licht grijs, in een eigen blok onderaan.
+  const achtergrond = s.own_stock ? 'bg-[#eaf4fb]' : s.container_purchase ? 'bg-[#f7f8fa]' : 'bg-white';
   return (
     <tr className={`group border-b border-line last:border-b-0 ${achtergrond} hover:bg-[#f2f6fa]`}>
       <td
-        className={`sticky left-0 px-4 py-2.5 align-top group-hover:bg-[#f2f6fa] ${achtergrond} ${
+        className={`sticky left-0 px-4 py-2 align-top group-hover:bg-[#f2f6fa] ${achtergrond} ${
           s.own_stock ? 'border-l-4 border-l-navy-mid' : ''
         }`}
       >
-        <TaalLink href={`/leveranciers/${s.slug}`} className={`text-[14px] font-semibold text-navy hover:text-orange ${dim}`}>
-          {s.name}
-        </TaalLink>
-        {s.own_stock && (
-          <span className="ml-2 rounded-full bg-navy-mid px-2 py-0.5 text-[10px] font-bold tracking-[0.04em] text-white uppercase">
-            {t.leveranciers.eigenVoorraad}
-          </span>
-        )}
-
-        {r.notes && <div className={`mt-0.5 max-w-[280px] text-[12px] leading-snug text-muted ${dim}`}>{r.notes}</div>}
-      </td>
-      <td className={`px-3 py-2.5 align-top whitespace-nowrap text-ink-soft ${dim}`}>
-        {s.based_in ? landNaam(s.based_in, taal) : <span className="text-muted">?</span>}
-      </td>
-      <td className={`px-3 py-2.5 align-top text-ink-soft ${dim}`}>
-        {r.types.length ? (
-          <div className="flex flex-col gap-0.5">
-            {r.types.map((tp) => (
-              <span key={tp} className="whitespace-nowrap">
-                {t.labels.leverancierstype[tp]}
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+          <TaalLink href={`/leveranciers/${s.slug}`} className="text-[14px] font-semibold whitespace-nowrap text-navy hover:text-orange">
+            {s.name}
+          </TaalLink>
+          {s.own_stock && (
+            <span className="rounded-full bg-navy-mid px-2 py-0.5 text-[10px] font-bold tracking-[0.04em] whitespace-nowrap text-white uppercase">
+              {t.leveranciers.eigenVoorraad}
+            </span>
+          )}
+        </div>
+        {viaPon && viaPon.length > 0 && (
+          <div className="mt-1 max-w-[300px] text-[12px] leading-snug text-ink-soft">
+            <span className="text-muted">{t.leveranciers.ookViaPon} </span>
+            {viaPon.map((v, i) => (
+              <span key={v.id}>
+                {i > 0 && <span className="text-muted"> · </span>}
+                <TaalLink href={`/leveranciers/${v.slug}`} className="font-medium text-navy-mid hover:text-orange">
+                  {v.name}
+                </TaalLink>
               </span>
             ))}
           </div>
+        )}
+      </td>
+      <td className="px-3 py-2 align-top whitespace-nowrap text-ink-soft">
+        {s.based_in ? landNaam(s.based_in, taal) : <span className="text-muted">?</span>}
+      </td>
+      <td className="px-3 py-2 align-top text-ink-soft">
+        {r.types.length ? (
+          r.types.map((tp) => t.labels.leverancierstype[tp]).join(', ')
         ) : (
           <span className="text-muted">-</span>
         )}
       </td>
       {SUPPLIER_COLUMNS.map((kolom) =>
         kolom === 'carrier' ? (
-          <td key={kolom} className={`px-3 py-2.5 align-top text-ink-soft ${dim}`}>
+          <td key={kolom} className="px-3 py-2 align-top text-ink-soft">
             {r.carrier || <span className="text-muted">-</span>}
           </td>
         ) : (
-          <td key={kolom} className={`px-3 py-2.5 text-center align-top ${dim}`}>
+          <td key={kolom} className="px-3 py-2 text-center align-top">
             <AutomatiseringBadge status={statusVan(r, kolom)} t={t} />
-            {kolom === 'stock_sync' && r.stock_sync_frequency && (
-              <div className="mt-1 text-[11px] text-muted">{r.stock_sync_frequency}</div>
-            )}
-            {kolom === 'stock_sync' && isGemengd(r) && (
-              <div className="mt-1 text-[11px] whitespace-nowrap text-navy-mid">{t.leveranciers.efulfilmentViaPon}</div>
-            )}
           </td>
         ),
       )}
+      <td className="min-w-[180px] px-3 py-2 align-top text-[12px] leading-snug text-muted">
+        {r.notes}
+      </td>
     </tr>
   );
 }
-
 function NieuweLeverancierFormulier({ regio, taal, t }: { regio: Region; taal: Taal; t: Berichten }) {
   return (
     <form action={maakLeverancier} className="kb-card p-4">

@@ -1,5 +1,13 @@
 import type { Taal } from '@/lib/talen';
-import type { AutomationStatus, Region, Supplier, SupplierColumn, SupplierRegion, SupplierStep } from '@/lib/types';
+import {
+  SUPPLIER_STEPS,
+  type AutomationStatus,
+  type Region,
+  type Supplier,
+  type SupplierColumn,
+  type SupplierRegion,
+  type SupplierStep,
+} from '@/lib/types';
 
 /**
  * Het artikel dat uitlegt wat de kolommen van het leveranciersoverzicht
@@ -42,6 +50,22 @@ export function statusVan(regio: SupplierRegion, stap: SupplierStep): Automation
  */
 export function isGemengd(regio: SupplierRegion) {
   return regio.types.includes('dropshipment') && regio.types.includes('fulfilment');
+}
+
+/**
+ * Loopt volledig via PON: alleen E-fulfilment en alle onderdelen n.v.t. (bv. De
+ * Beer, Masterlock, Osseman). Die leveranciers staan in het overzicht niet als
+ * eigen rij, maar als "ook via PON" bij PON — er valt voor de backoffice per
+ * onderdeel niets te doen. Containerinkoop valt hier bewust buiten.
+ */
+export function isVolledigViaPon(s: Supplier, regio: SupplierRegion) {
+  return (
+    !s.own_stock &&
+    !s.container_purchase &&
+    regio.types.length === 1 &&
+    regio.types[0] === 'fulfilment' &&
+    SUPPLIER_STEPS.every((stap) => statusVan(regio, stap) === 'nvt')
+  );
 }
 
 export function regioVan(s: Supplier, regio: Region): SupplierRegion | undefined {

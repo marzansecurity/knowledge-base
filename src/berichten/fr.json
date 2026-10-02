@@ -216,7 +216,6 @@
     "containerinkoop": "Achat par conteneur",
     "containerinkoopTitel": "Achat par conteneur",
     "containerinkoopHint": "Nous commandons ici des conteneurs (en gros, via Phoenix). Il n'y a pas de suivi et Martijn s'en occupe lui-même : le back-office n'a rien à faire ici.",
-    "efulfilmentViaPon": "E-fulfilment : auto via PON",
     "vanuit": "Opère depuis",
     "vanuitOnbekend": "Inconnu",
     "actiefIn": "Actif en",
@@ -241,7 +240,9 @@
     "naam": "Nom",
     "naamPlaceholder": "Nom du fournisseur",
     "toevoegen": "+ Ajouter",
-    "types": "Type"
+    "types": "Type",
+    "kolomToelichting": "Remarques",
+    "ookViaPon": "Aussi via PON :"
   },
   "beheer": {
     "overzicht": {
