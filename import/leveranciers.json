@@ -60,7 +60,7 @@
         "stock_sync_frequency": null,
         "purchase_order_status": "auto",
         "order_confirmation_status": "manual",
-        "carrier": "Wajenberg",
+        "carrier": "Waaijenberg",
         "tracking_status": "manual",
         "notes": null
       }
