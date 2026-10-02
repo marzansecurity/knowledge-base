@@ -8,6 +8,7 @@ import { StatusBadge } from '@/components/status-badge';
 import { useVertalingen } from '@/components/vertaling-provider';
 import { pad } from '@/lib/paden';
 import { TAAL_OPMAAK } from '@/lib/talen';
+import { normaliseerRegeleinden } from '@/lib/tekst';
 import {
   ARTICLE_CHANNELS,
   ARTICLE_TYPES,
@@ -69,7 +70,10 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
   const [tab, setTab] = useState<'bewerken' | 'voorbeeld' | 'broncode' | 'geschiedenis'>('bewerken');
   const [titel, setTitel] = useState(artikel.title);
   const [samenvatting, setSamenvatting] = useState(artikel.summary ?? '');
-  const [inhoud, setInhoud] = useState(artikel.content_markdown);
+  // Artikelen die eerder via een formulier zijn opgeslagen, hebben Windows-regeleinden;
+  // de editor werkt met gewone. Anders lijkt er direct na het opslaan weer iets gewijzigd.
+  const opgeslagenInhoud = normaliseerRegeleinden(artikel.content_markdown);
+  const [inhoud, setInhoud] = useState(opgeslagenInhoud);
   const [categoryId, setCategoryId] = useState(artikel.category_id ?? '');
   const [type, setType] = useState<ArticleType>(artikel.type);
   const [kanaal, setKanaal] = useState<ArticleChannel>(artikel.channel);
@@ -88,7 +92,7 @@ export function ArtikelEditor({ artikel, categorieen, revisies }: Props) {
   function isGewijzigd(markdown: string) {
     return (
       titel !== artikel.title ||
-      markdown !== artikel.content_markdown ||
+      normaliseerRegeleinden(markdown) !== opgeslagenInhoud ||
       samenvatting !== (artikel.summary ?? '') ||
       categoryId !== (artikel.category_id ?? '') ||
       type !== artikel.type ||
