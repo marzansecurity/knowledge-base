@@ -7,6 +7,7 @@ import { vereisRedacteurOfHoger } from '@/lib/auth';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { huidigeTaal } from '@/lib/taal-server';
 import { pad } from '@/lib/paden';
+import { normaliseerRegeleinden } from '@/lib/tekst';
 import { STANDAARD_TAAL, type Taal } from '@/lib/talen';
 import {
   ARTICLE_CHANNELS,
@@ -99,7 +100,7 @@ export async function bewaarArtikel(articleId: string, formData: FormData): Prom
 
   const titel = String(formData.get('title') ?? '').trim();
   const samenvatting = String(formData.get('summary') ?? '').trim() || null;
-  const inhoud = String(formData.get('content_markdown') ?? '');
+  const inhoud = normaliseerRegeleinden(String(formData.get('content_markdown') ?? ''));
   const categoryId = String(formData.get('category_id') ?? '') || null;
   const wijzignotitie = String(formData.get('change_note') ?? '').trim() || null;
 
@@ -128,7 +129,8 @@ export async function bewaarArtikel(articleId: string, formData: FormData): Prom
   if (leesFout || !huidig) return { fout: 'Artikel niet gevonden.' };
 
   // Vorige versie bewaren, alleen als er echt iets is veranderd.
-  if (huidig.title !== titel || huidig.content_markdown !== inhoud) {
+  // Zonder inhoudelijke wijziging (ook niet in regeleinden) geen nieuwe revisie.
+  if (huidig.title !== titel || normaliseerRegeleinden(huidig.content_markdown) !== inhoud) {
     await supabase.from('article_revisions').insert({
       article_id: articleId,
       title: huidig.title,
@@ -304,7 +306,7 @@ export async function bewaarVertaling(
 
   const titel = String(formData.get('title') ?? '').trim();
   const samenvatting = String(formData.get('summary') ?? '').trim() || null;
-  const inhoud = String(formData.get('content_markdown') ?? '');
+  const inhoud = normaliseerRegeleinden(String(formData.get('content_markdown') ?? ''));
   const slug = String(formData.get('slug') ?? '').trim();
 
   if (!titel) return { fout: 'Een titel is verplicht.' };
@@ -318,7 +320,7 @@ export async function bewaarVertaling(
     .eq('locale', taal)
     .maybeSingle();
 
-  if (vorige && (vorige.title !== titel || vorige.content_markdown !== inhoud)) {
+  if (vorige && (vorige.title !== titel || normaliseerRegeleinden(vorige.content_markdown) !== inhoud)) {
     await supabase.from('article_revisions').insert({
       article_id: articleId,
       locale: taal,
