@@ -443,11 +443,11 @@
         ],
         "stock_sync_status": "nvt",
         "stock_sync_frequency": null,
-        "purchase_order_status": "auto",
-        "order_confirmation_status": "manual",
-        "carrier": "Pakketdienst",
+        "purchase_order_status": "nvt",
+        "order_confirmation_status": "nvt",
+        "carrier": "n.v.t.",
         "tracking_status": "nvt",
-        "notes": null
+        "notes": "Loopt via PON."
       }
     }
   },
