@@ -53,7 +53,7 @@ Bij een storing is de eerste vraag niet *wat* er kapot is, maar **wie het moet o
 - de kennisbank
 - het orderdashboard
 - het eigen CRM
-- Websites: marzansecurity.com, AccuKluis.nl, AccuKluis.be, [BatterySafety.co.uk](http://BatterySafety.co.uk), Kluis.eu
+- Websites: [marzansecurity.com](http://marzansecurity.com), [AccuKluis.nl](http://AccuKluis.nl), [AccuKluis.be](http://AccuKluis.be), [BatterySafety.co.uk](http://BatterySafety.co.uk), [Kluis.eu](http://Kluis.eu)
 
 **Bel:** **Martijn**, rechtstreeks. Er is hier geen externe partij bij betrokken — er is dus ook niemand anders die dit kan oppakken.
 
@@ -68,7 +68,7 @@ Bij een storing is de eerste vraag niet *wat* er kapot is, maar **wie het moet o
 - E-mail die niet meer werkt
 - Een virusmelding
 - Er is per ongeluk op een phishing-link geklikt
-- Er moet een programma geïnstalleerd worden op mijn laptop
+- Er moet een programma geïnstalleerd worden op je laptop
 - Alles rond de Microsoft Office-inrichting, laptops en de Windows-installatie daarop — inclusief virusscanner-updates op afstand en het herstarten van een computer om updates te laden
 
 **Bel of mail:** **Lime Networks** in Rotterdam. Er is **geen vaste contactpersoon**; gebruik het algemene contact.
@@ -91,7 +91,7 @@ Waarom dit expliciet in dit artikel staat: dit is eerder misgegaan. Een storing 
 
 ## Beslisboom
 
-1. **Is het een webshop die klanten zien (KluisStore, KluisShop, LipsBrandkasten, SimplySafes)?** → Hyper. Donderdag: algemeen nummer.
+1. **Is het een webshop die klanten zien (KluisStore, KluisShop, LIPSBrandkasten, SimplySafes)?** → Hyper. Donderdag: algemeen nummer.
 2. **Nee — is het iets wat wij zelf gebouwd hebben (AccuKluis, kennisbank, werkbon-app, orderdashboard, CRM, Kluis.eu, marzansecurity.com)?** → Martijn.
 3. **Nee — heeft het met Zoho Desk of Zoho Voice te maken?** → Zoho support, met brede CC.
 4. **Nee — gaat het over e-mail, je laptop, Windows, een virus of phishing?** → Lime Networks.
