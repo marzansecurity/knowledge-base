@@ -236,7 +236,7 @@
         "types": [
           "dropshipment"
         ],
-        "stock_sync_status": null,
+        "stock_sync_status": "auto",
         "stock_sync_frequency": null,
         "purchase_order_status": null,
         "order_confirmation_status": null,
@@ -335,7 +335,7 @@
     "regions": {
       "uk": {
         "types": [],
-        "stock_sync_status": null,
+        "stock_sync_status": "auto",
         "stock_sync_frequency": null,
         "purchase_order_status": null,
         "order_confirmation_status": null,
@@ -550,7 +550,7 @@
       },
       "uk": {
         "types": [],
-        "stock_sync_status": null,
+        "stock_sync_status": "auto",
         "stock_sync_frequency": null,
         "purchase_order_status": null,
         "order_confirmation_status": null,
@@ -594,7 +594,7 @@
     "regions": {
       "uk": {
         "types": [],
-        "stock_sync_status": null,
+        "stock_sync_status": "auto",
         "stock_sync_frequency": null,
         "purchase_order_status": null,
         "order_confirmation_status": null,
