@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { Taalwissel } from '@/components/taalwissel';
+import { TaalLink } from '@/components/taal-link';
 import { useVertalingen } from '@/components/vertaling-provider';
 import { pad } from '@/lib/paden';
 
@@ -85,6 +86,9 @@ function LoginFormulier() {
             onChange={(e) => setWachtwoord(e.target.value)}
             className="kb-input"
           />
+          <TaalLink href="/login/vergeten" className="mt-1.5 inline-block text-[11px] text-muted underline hover:text-navy">
+            {t.login.vergeten.link}
+          </TaalLink>
         </div>
       </div>
 

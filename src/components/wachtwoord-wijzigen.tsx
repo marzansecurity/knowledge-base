@@ -3,9 +3,7 @@
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { useVertalingen } from '@/components/vertaling-provider';
-
-/** Het minimum dat Supabase en het formulier allebei afdwingen. */
-const MINIMUM_LENGTE = 8;
+import { MINIMUM_WACHTWOORD_LENGTE } from '@/lib/wachtwoord';
 
 export function WachtwoordWijzigen() {
   const { berichten: t } = useVertalingen();
@@ -36,14 +34,14 @@ export function WachtwoordWijzigen() {
       <form onSubmit={verstuur} className="flex flex-wrap items-end gap-3">
         <div className="min-w-[220px] flex-1">
           <label htmlFor="nieuw-wachtwoord" className="kb-label mb-1.5 block">
-            {t.login.wachtwoordWijzigen.nieuwWachtwoord.replace('{aantal}', String(MINIMUM_LENGTE))}
+            {t.login.wachtwoordWijzigen.nieuwWachtwoord.replace('{aantal}', String(MINIMUM_WACHTWOORD_LENGTE))}
           </label>
           <input
             id="nieuw-wachtwoord"
             type="password"
             autoComplete="new-password"
             required
-            minLength={MINIMUM_LENGTE}
+            minLength={MINIMUM_WACHTWOORD_LENGTE}
             value={wachtwoord}
             onChange={(e) => setWachtwoord(e.target.value)}
             className="kb-input"

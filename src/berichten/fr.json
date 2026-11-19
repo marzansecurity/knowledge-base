@@ -148,6 +148,37 @@
       "opslaan": "Enregistrer le mot de passe",
       "bijgewerkt": "Mot de passe mis à jour."
     },
+    "vergeten": {
+      "link": "Mot de passe oublié ?",
+      "titel": "Mot de passe oublié",
+      "uitleg": "Saisissez votre adresse e-mail. Si elle correspond à un compte, nous vous enverrons un lien pour choisir vous-même un nouveau mot de passe.",
+      "versturen": "Envoyer le lien",
+      "bezig": "Envoi en cours…",
+      "verstuurd": "Si cette adresse e-mail correspond à un compte, un e-mail avec un lien de réinitialisation est en route. Vérifiez aussi vos courriers indésirables. Le lien n'est valable que peu de temps.",
+      "teVaak": "Un lien vient d'être demandé. Patientez quelques minutes et réessayez.",
+      "mislukt": "L'envoi a échoué. Réessayez plus tard ou demandez de l'aide à Martijn.",
+      "tweeFactorTip": "Vous avez aussi perdu votre application d'authentification ? Demandez à Martijn de récupérer votre compte.",
+      "terug": "Retour à la connexion"
+    },
+    "herstellen": {
+      "titel": "Choisir un nouveau mot de passe",
+      "uitleg": "Continuez pour choisir un nouveau mot de passe pour votre compte.",
+      "doorgaan": "Continuer",
+      "bezig": "Un instant…",
+      "ongeldig": "Ce lien est incomplet. Rouvrez le lien de l'e-mail, ou demandez-en un nouveau.",
+      "verlopen": "Ce lien a expiré ou a déjà été utilisé. Demandez un nouveau lien.",
+      "nieuweLink": "Demander un nouveau lien"
+    },
+    "nieuwWachtwoord": {
+      "titel": "Choisissez un nouveau mot de passe",
+      "uitleg": "Vous serez ensuite déconnecté de vos autres appareils.",
+      "nieuw": "Nouveau mot de passe (min. {aantal} caractères)",
+      "herhaal": "Répétez le nouveau mot de passe",
+      "nietGelijk": "Les deux mots de passe ne sont pas identiques.",
+      "opslaan": "Enregistrer le mot de passe",
+      "bezig": "Enregistrement…",
+      "klaar": "Votre mot de passe a été modifié. Redirection…"
+    },
     "tweeFactor": {
       "titel": "Authentification à deux facteurs",
       "laden": "Chargement…",
