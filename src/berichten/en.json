@@ -148,6 +148,37 @@
       "opslaan": "Save password",
       "bijgewerkt": "Password updated."
     },
+    "vergeten": {
+      "link": "Forgot your password?",
+      "titel": "Forgot your password",
+      "uitleg": "Enter your email address. If it belongs to an account, we'll send you a link to choose a new password yourself.",
+      "versturen": "Send reset link",
+      "bezig": "Sending…",
+      "verstuurd": "If this email address belongs to an account, an email with a reset link is on its way. Check your spam folder too. The link is only valid for a short time.",
+      "teVaak": "A reset link was just requested. Please wait a few minutes and try again.",
+      "mislukt": "Sending failed. Please try again later or ask Martijn for help.",
+      "tweeFactorTip": "Lost your authenticator app too? Ask Martijn to recover your account.",
+      "terug": "Back to sign in"
+    },
+    "herstellen": {
+      "titel": "Choose a new password",
+      "uitleg": "Continue to choose a new password for your account.",
+      "doorgaan": "Continue",
+      "bezig": "One moment…",
+      "ongeldig": "This link is incomplete. Open the link from the email again, or request a new one.",
+      "verlopen": "This link has expired or has already been used. Please request a new reset link.",
+      "nieuweLink": "Request a new reset link"
+    },
+    "nieuwWachtwoord": {
+      "titel": "Choose a new password",
+      "uitleg": "You will be signed out on your other devices afterwards.",
+      "nieuw": "New password (min. {aantal} characters)",
+      "herhaal": "Repeat new password",
+      "nietGelijk": "The two passwords do not match.",
+      "opslaan": "Save password",
+      "bezig": "Saving…",
+      "klaar": "Your password has been changed. Redirecting…"
+    },
     "tweeFactor": {
       "titel": "Two-factor authentication",
       "laden": "Loading…",

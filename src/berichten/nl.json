@@ -148,6 +148,37 @@
       "opslaan": "Wachtwoord opslaan",
       "bijgewerkt": "Wachtwoord bijgewerkt."
     },
+    "vergeten": {
+      "link": "Wachtwoord vergeten?",
+      "titel": "Wachtwoord vergeten",
+      "uitleg": "Vul je e-mailadres in. Hoort het bij een account, dan sturen we een link waarmee je zelf een nieuw wachtwoord kiest.",
+      "versturen": "Stuur herstellink",
+      "bezig": "Bezig met versturen…",
+      "verstuurd": "Als dit e-mailadres bij een account hoort, is er een e-mail met een herstellink onderweg. Kijk ook in je spam. De link is maar kort geldig.",
+      "teVaak": "Er is net al een herstellink aangevraagd. Wacht een paar minuten en probeer het opnieuw.",
+      "mislukt": "Versturen is niet gelukt. Probeer het later opnieuw of vraag Martijn om hulp.",
+      "tweeFactorTip": "Ook je authenticator-app kwijt? Vraag dan Martijn om je account te herstellen.",
+      "terug": "Terug naar inloggen"
+    },
+    "herstellen": {
+      "titel": "Nieuw wachtwoord kiezen",
+      "uitleg": "Ga verder om een nieuw wachtwoord voor je account te kiezen.",
+      "doorgaan": "Doorgaan",
+      "bezig": "Bezig…",
+      "ongeldig": "Deze link is onvolledig. Open de link uit de e-mail opnieuw, of vraag een nieuwe aan.",
+      "verlopen": "Deze link is verlopen of al gebruikt. Vraag een nieuwe herstellink aan.",
+      "nieuweLink": "Nieuwe herstellink aanvragen"
+    },
+    "nieuwWachtwoord": {
+      "titel": "Kies een nieuw wachtwoord",
+      "uitleg": "Je wordt daarna op andere apparaten uitgelogd.",
+      "nieuw": "Nieuw wachtwoord (min. {aantal} tekens)",
+      "herhaal": "Herhaal nieuw wachtwoord",
+      "nietGelijk": "De twee wachtwoorden zijn niet gelijk.",
+      "opslaan": "Wachtwoord opslaan",
+      "bezig": "Bezig met opslaan…",
+      "klaar": "Je wachtwoord is gewijzigd. Je wordt doorgestuurd…"
+    },
     "tweeFactor": {
       "titel": "Twee-factor-authenticatie",
       "laden": "Laden…",
